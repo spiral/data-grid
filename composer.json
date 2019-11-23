@@ -1,0 +1,34 @@
+{
+  "name": "spiral/data-grid",
+  "type": "module",
+  "license": "MIT",
+  "description": "Data Grid specification builder",
+  "authors": [
+    {
+      "name": "Valentin Vintsukevich (vvval)",
+      "email": "valentin@spiralscout.com"
+    },
+    {
+      "name": "Anton Tsitou (wolfy-j)",
+      "email": "wolfy-j@spiralscout.com"
+    }
+  ],
+  "require": {
+    "php": "^7.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.0",
+    "cycle/orm": "^1.1",
+    "spiral/code-style": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Spiral\\DataGrid\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Spiral\\Tests\\": "tests/"
+    }
+  }
+}
