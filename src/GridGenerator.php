@@ -131,7 +131,10 @@ class GridGenerator implements GeneratorInterface
         }
         $view = $view->withOption(GridViewInterface::FILTERS, $filters);
 
-        if ($source instanceof Countable && $this->hasOption(static::KEY_FETCH_COUNT)) {
+        if (
+            $source instanceof Countable
+            && $this->getOption(static::KEY_FETCH_COUNT)
+        ) {
             $view = $view->withOption(GridViewInterface::COUNT, $source->count());
         }
 
