@@ -153,7 +153,7 @@ class GeneratorTest extends TestCase
         $view = $this
             ->initGenerator()
             ->withDefault(new ArrayInput([
-                GridGenerator::KEY_SORTERS => ['id' => 'desc']
+                GridGenerator::KEY_SORT => ['id' => 'desc']
             ]))
             ->generate(
                 $this->db->table('users')->select('*'),
@@ -182,7 +182,7 @@ class GeneratorTest extends TestCase
         $view = $this
             ->initGenerator()
             ->withDefault(new ArrayInput([
-                GridGenerator::KEY_SORTERS => ['id' => 1]
+                GridGenerator::KEY_SORT => ['id' => 1]
             ]))
             ->generate(
                 $this->db->table('users')->select('*'),
@@ -211,7 +211,7 @@ class GeneratorTest extends TestCase
         $view = $this
             ->initGenerator()
             ->withDefault(new ArrayInput([
-                GridGenerator::KEY_SORTERS => ['id' => 2]
+                GridGenerator::KEY_SORT => ['id' => 2]
             ]))
             ->generate(
                 $this->db->table('users')->select('*'),

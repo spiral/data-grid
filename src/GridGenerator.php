@@ -22,7 +22,7 @@ use Spiral\DataGrid\Input\NullInput;
 class GridGenerator implements GeneratorInterface
 {
     public const KEY_FILTERS     = 'filter';
-    public const KEY_SORTERS     = 'sorter';
+    public const KEY_SORT        = 'sort';
     public const KEY_PAGINATE    = 'paginate';
     public const KEY_FETCH_COUNT = 'fetchCount';
 
@@ -136,7 +136,7 @@ class GridGenerator implements GeneratorInterface
         }
 
         $sorters = [];
-        foreach ($this->getOptionArray(static::KEY_SORTERS) ?? [] as $name => $value) {
+        foreach ($this->getOptionArray(static::KEY_SORT) ?? [] as $name => $value) {
             if ($schema->hasSorter($name)) {
                 $sorter = $schema->getSorter($name)->withDirection($value);
 
