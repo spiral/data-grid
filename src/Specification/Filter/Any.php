@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Spiral Framework.
+ * Spiral Framework. PHP Data Grid
  *
- * @license   MIT
- * @author    Valentin Vintsukevich (vvval)
- * @author    Anton Tsitou (Wolfy-J)
+ * @license MIT
+ * @author  Anton Tsitou (Wolfy-J)
+ * @author  Valentin Vintsukevich (vvval)
  */
 
 declare(strict_types=1);
@@ -41,14 +41,13 @@ final class Any implements FilterInterface
 
             if ($applied === null) {
                 // all nested filters must be configured
-                return null;
+                continue;
             }
-
 
             $filter->filters[] = $applied;
         }
 
-        return $filter;
+        return !empty($filter->filters) ? $filter : null;
     }
 
     /**

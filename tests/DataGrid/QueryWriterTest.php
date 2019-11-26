@@ -1,33 +1,26 @@
 <?php
 
 /**
- * Spiral Framework.
+ * Spiral Framework. PHP Data Grid
  *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J)
+ * @license MIT
+ * @author  Anton Tsitou (Wolfy-J)
+ * @author  Valentin Vintsukevich (vvval)
  */
 
 declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid;
 
-use PHPUnit\Framework\TestCase;
-use Spiral\Database\Database;
-use Spiral\Database\Driver\SQLite\SQLiteDriver;
-use Spiral\Database\Query\Interpolator;
-use Spiral\Database\Query\SelectQuery;
-use Spiral\DataGrid\Compiler;
-use Spiral\DataGrid\GridHydrator;
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Pagination;
-use Spiral\DataGrid\Specification\Sorter;
-use Spiral\DataGrid\Writer\QueryWriter;
+use Spiral\Tests\DataGrid\QueryWriter\BaseTest;
 
-class QueryWriterTest extends TestCase
+class QueryWriterTest extends BaseTest
 {
     public function testLimit(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             new Pagination\Limit(10)
         );
@@ -40,7 +33,7 @@ class QueryWriterTest extends TestCase
 
     public function testLimitOffset(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             new Pagination\Limit(10),
             new Pagination\Offset(100)
@@ -54,7 +47,7 @@ class QueryWriterTest extends TestCase
 
     public function testEquals(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             new Filter\Equals('name', 'Antony')
         );
@@ -67,7 +60,7 @@ class QueryWriterTest extends TestCase
 
     public function testLike(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             new Filter\Like('name', 'Antony')
         );
@@ -80,7 +73,7 @@ class QueryWriterTest extends TestCase
 
     public function testLikePattern(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             new Filter\Like('name', 'Antony', '%%%s')
         );
@@ -93,7 +86,7 @@ class QueryWriterTest extends TestCase
 
     public function testAndQuery(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             new Filter\All(
                 new Filter\Equals('name', 'Antony'),
@@ -109,7 +102,7 @@ class QueryWriterTest extends TestCase
 
     public function testOrQuery(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             new Filter\Any(
                 new Filter\Equals('name', 'Antony'),
@@ -125,7 +118,7 @@ class QueryWriterTest extends TestCase
 
     public function testOrAndOrQuery(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             new Filter\All(
                 new Filter\Any(
@@ -145,190 +138,10 @@ class QueryWriterTest extends TestCase
         );
     }
 
-    public function testSort(): void
-    {
-        $select = $this->initCompiler()->compile(
-            $this->initQuery(),
-            new Sorter\AscSorter('balance')
-        );
-
-        $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" ASC',
-            $select
-        );
-    }
-
-    public function testSortDesc(): void
-    {
-        $select = $this->initCompiler()->compile(
-            $this->initQuery(),
-            new Sorter\DescSorter('balance')
-        );
-
-        $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" DESC',
-            $select
-        );
-    }
-
-    public function testSortMultiple(): void
-    {
-        $select = $this->initCompiler()->compile(
-            $this->initQuery(),
-            new Sorter\AscSorter('balance'),
-            new Sorter\AscSorter('credits'),
-            new Sorter\DescSorter('attempts')
-        );
-
-        $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
-            $select
-        );
-    }
-
-    public function testUnary(): void
-    {
-        $unary = new Sorter\UnarySorter(
-            new Sorter\AscSorter('balance'),
-            new Sorter\AscSorter('credits'),
-            new Sorter\DescSorter('attempts')
-        );
-        $select = $this->initCompiler()->compile(
-            $this->initQuery(),
-            $unary
-        );
-
-        $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
-            $select
-        );
-
-        $select = $this->initCompiler()->compile(
-            $this->initQuery(),
-            new Sorter\UnarySorter($unary)
-        );
-
-        $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
-            $select
-        );
-    }
-
-    /**
-     * @dataProvider binarySortProvider
-     * @param mixed      $direction
-     * @param mixed|null $resultDirection
-     */
-    public function testBinary($direction, $resultDirection = null): void
-    {
-        $sorter = new Sorter\BinarySorter(
-            new Sorter\UnarySorter(
-                new Sorter\AscSorter('balance'),
-                new Sorter\AscSorter('credits')
-            ), new Sorter\UnarySorter(
-                new Sorter\DescSorter('balance'),
-                new Sorter\DescSorter('credits')
-            )
-        );
-
-        if ($resultDirection === null) {
-            $this->assertNull($sorter->withDirection($direction));
-        } else {
-            $select = $this->initCompiler()->compile(
-                $this->initQuery(),
-                $sorter->withDirection($direction)
-            );
-
-            $this->assertEqualSQL(
-                sprintf(
-                    'SELECT * FROM "users"  ORDER BY "balance" %s, "credits" %s',
-                    $resultDirection,
-                    $resultDirection
-                ),
-                $select
-            );
-        }
-    }
-
-    public function testMixedBinary(): void
-    {
-        $sorter = new Sorter\BinarySorter(
-            new Sorter\UnarySorter(
-                new Sorter\AscSorter('balance'),
-                new Sorter\DescSorter('credits')
-            ), new Sorter\UnarySorter(
-                new Sorter\DescSorter('balance'),
-                new Sorter\AscSorter('credits')
-            )
-        );
-
-        $select = $this->initCompiler()->compile(
-            $this->initQuery(),
-            $sorter->withDirection('asc')
-        );
-        $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" DESC',
-            $select
-        );
-
-        $select = $this->initCompiler()->compile(
-            $this->initQuery(),
-            $sorter->withDirection('desc')
-        );
-        $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" DESC, "credits" ASC',
-            $select
-        );
-    }
-
-    /**
-     * @dataProvider binarySortProvider
-     * @param mixed      $direction
-     * @param mixed|null $resultDirection
-     */
-    public function testSortBinary($direction, $resultDirection = null): void
-    {
-        $sorter = new Sorter\Sorter('balance', 'credits');
-
-        if ($resultDirection === null) {
-            $this->assertNull($sorter->withDirection($direction));
-        } else {
-            $select = $this->initCompiler()->compile(
-                $this->initQuery(),
-                $sorter->withDirection($direction)
-            );
-
-            $this->assertEqualSQL(
-                sprintf(
-                    'SELECT * FROM "users"  ORDER BY "balance" %s, "credits" %s',
-                    $resultDirection,
-                    $resultDirection
-                ),
-                $select
-            );
-        }
-    }
-
-    public function binarySortProvider(): array
-    {
-        return [
-            ['asc', 'ASC'],
-            ['1', 'ASC'],
-            [1, 'ASC'],
-            [SORT_ASC, 'ASC'],
-
-            ['desc', 'DESC'],
-            ['-1', 'DESC'],
-            [-1, 'DESC'],
-            [SORT_DESC, 'DESC'],
-
-            [123, null],
-        ];
-    }
 
     public function testInArray(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             new Filter\InArray('id', [1, 2, 3])
         );
@@ -341,7 +154,7 @@ class QueryWriterTest extends TestCase
 
     public function testNotInArray(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             new Filter\NotInArray('id', [1, 2, 3])
         );
@@ -354,7 +167,7 @@ class QueryWriterTest extends TestCase
 
     public function testPaginate(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             (new Pagination\PagePaginator(25))->withValue([])
         );
@@ -367,7 +180,7 @@ class QueryWriterTest extends TestCase
 
     public function testPaginate2(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             (new Pagination\PagePaginator(25))->withValue(['page' => 2])
         );
@@ -380,7 +193,7 @@ class QueryWriterTest extends TestCase
 
     public function testPaginate3(): void
     {
-        $select = $this->initCompiler()->compile(
+        $select = $this->compile(
             $this->initQuery(),
             (new Pagination\PagePaginator(25, [50]))->withValue([
                 'page'  => '2',
@@ -391,50 +204,6 @@ class QueryWriterTest extends TestCase
         $this->assertEqualSQL(
             'SELECT * FROM "users" LIMIT 50 OFFSET 50',
             $select
-        );
-    }
-
-    /**
-     * @return Compiler
-     */
-    public function initCompiler(): Compiler
-    {
-        $compiler = new Compiler();
-        $compiler->addWriter(new QueryWriter());
-
-        return $compiler;
-    }
-
-    /**
-     * @return SelectQuery
-     */
-    private function initQuery(): SelectQuery
-    {
-        return (new Database('default', '', new SQLiteDriver([])))->select()->from('users');
-    }
-
-    /**
-     * @return GridHydrator
-     */
-    private function initGenerator(): GridHydrator
-    {
-        return new GridHydrator($this->initCompiler());
-    }
-
-    /**
-     * @param string      $expected
-     * @param SelectQuery $compiled
-     */
-    private function assertEqualSQL(string $expected, SelectQuery $compiled): void
-    {
-        $compiled = Interpolator::interpolate(
-            $compiled->sqlStatement(),
-            $compiled->getParameters()
-        );
-
-        $this->assertSame(
-            preg_replace("/\s+/", '', $expected),
-            preg_replace("/\s+/", '', $compiled)
         );
     }
 }
