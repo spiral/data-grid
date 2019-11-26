@@ -24,7 +24,7 @@ class WriteSorterTest extends BaseTest
         );
 
         $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" ASC',
+            'SELECT * FROM "users" ORDER BY "balance" ASC',
             $select
         );
     }
@@ -37,7 +37,7 @@ class WriteSorterTest extends BaseTest
         );
 
         $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" DESC',
+            'SELECT * FROM "users" ORDER BY "balance" DESC',
             $select
         );
     }
@@ -52,7 +52,7 @@ class WriteSorterTest extends BaseTest
         );
 
         $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
+            'SELECT * FROM "users" ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
             $select
         );
     }
@@ -70,7 +70,7 @@ class WriteSorterTest extends BaseTest
         );
 
         $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
+            'SELECT * FROM "users" ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
             $select
         );
 
@@ -80,7 +80,7 @@ class WriteSorterTest extends BaseTest
         );
 
         $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
+            'SELECT * FROM "users" ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
             $select
         );
     }
@@ -113,7 +113,7 @@ class WriteSorterTest extends BaseTest
 
             $this->assertEqualSQL(
                 sprintf(
-                    'SELECT * FROM "users"  ORDER BY "balance" %s, "credits" %s',
+                    'SELECT * FROM "users" ORDER BY "balance" %s, "credits" %s',
                     $resultDirection,
                     $resultDirection
                 ),
@@ -140,7 +140,7 @@ class WriteSorterTest extends BaseTest
             $sorter->withDirection('asc')
         );
         $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" DESC',
+            'SELECT * FROM "users" ORDER BY "balance" ASC, "credits" DESC',
             $select
         );
 
@@ -149,7 +149,7 @@ class WriteSorterTest extends BaseTest
             $sorter->withDirection('desc')
         );
         $this->assertEqualSQL(
-            'SELECT * FROM "users"  ORDER BY "balance" DESC, "credits" ASC',
+            'SELECT * FROM "users" ORDER BY "balance" DESC, "credits" ASC',
             $select
         );
     }
@@ -173,7 +173,7 @@ class WriteSorterTest extends BaseTest
 
             $this->assertEqualSQL(
                 sprintf(
-                    'SELECT * FROM "users"  ORDER BY "balance" %s, "credits" %s',
+                    'SELECT * FROM "users" ORDER BY "balance" %s, "credits" %s',
                     $resultDirection,
                     $resultDirection
                 ),

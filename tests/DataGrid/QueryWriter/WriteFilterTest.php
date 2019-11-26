@@ -10,7 +10,9 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid\QueryWriter;
 
+use Spiral\DataGrid\Exception\CompilerException;
 use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Value\IntValue;
 
 class WriteFilterTest extends BaseTest
 {
@@ -24,6 +26,15 @@ class WriteFilterTest extends BaseTest
         $this->assertEqualSQL(
             'SELECT * FROM "users" WHERE "name" = \'Antony\'',
             $select
+        );
+    }
+
+    public function testEqualsNoValue(): void
+    {
+        $this->expectException(CompilerException::class);
+        $this->compile(
+            $this->initQuery(),
+            new Filter\Equals('balance', new IntValue())
         );
     }
 
@@ -53,7 +64,7 @@ class WriteFilterTest extends BaseTest
         );
     }
 
-    public function testAndQuery(): void
+    public function testAll(): void
     {
         $select = $this->compile(
             $this->initQuery(),
@@ -69,7 +80,7 @@ class WriteFilterTest extends BaseTest
         );
     }
 
-    public function testOrQuery(): void
+    public function testAny(): void
     {
         $select = $this->compile(
             $this->initQuery(),
@@ -85,7 +96,7 @@ class WriteFilterTest extends BaseTest
         );
     }
 
-    public function testOrAndOrQuery(): void
+    public function testAnyAndAnyQuery(): void
     {
         $select = $this->compile(
             $this->initQuery(),
@@ -106,7 +117,6 @@ class WriteFilterTest extends BaseTest
             $select
         );
     }
-
 
     public function testInArray(): void
     {
