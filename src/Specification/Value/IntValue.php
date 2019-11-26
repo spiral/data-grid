@@ -21,7 +21,7 @@ final class IntValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return is_int($value) || is_numeric($value) || (!is_bool($value) && is_scalar($value) && (string)$value === '');
+        return is_int($value) || is_numeric($value) || (is_string($value) && (string)$value === '');
     }
 
     /**

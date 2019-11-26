@@ -21,7 +21,7 @@ final class DatetimeValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return is_scalar($value) && ($this->convert($value) !== null || (string)$value === '');
+        return (is_numeric($value) || is_string($value)) && ($this->convert($value) !== null || (string)$value === '');
     }
 
     /**

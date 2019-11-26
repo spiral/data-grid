@@ -22,11 +22,15 @@ final class BootValue implements ValueInterface
      */
     public function accepts($value): bool
     {
+        if (is_bool($value)) {
+            return true;
+        }
+
         if (is_scalar($value)) {
             return in_array(strtolower($value), ['0', '1', 'true', 'false'], true);
         }
 
-        return is_bool($value);
+        return false;
     }
 
     /**
@@ -34,6 +38,10 @@ final class BootValue implements ValueInterface
      */
     public function convert($value)
     {
+        if (is_bool($value)) {
+            return $value;
+        }
+
         if (is_scalar($value)) {
             switch (strtolower($value)) {
                 case '0':
@@ -44,10 +52,6 @@ final class BootValue implements ValueInterface
                 case 'true':
                     return true;
             }
-        }
-
-        if (is_bool($value)) {
-            return $value;
         }
 
         throw new ValueException(sprintf(
