@@ -21,7 +21,7 @@ final class DatetimeValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return is_scalar($value) && $this->convert($value) !== null;
+        return is_scalar($value) && ($this->convert($value) !== null || (string)$value === '');
     }
 
     /**
@@ -31,6 +31,7 @@ final class DatetimeValue implements ValueInterface
     {
         try {
             $value = (string)$value;
+
             return new \DateTimeImmutable(is_numeric($value) ? "@$value" : $value);
         } catch (\Throwable $e) {
             return null;

@@ -143,4 +143,34 @@ class WriteFilterTest extends BaseTest
             $select
         );
     }
+
+    public function testGt(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    public function testGte(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    public function testLt(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    public function testLte(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    public function testMap(): void
+    {
+        $this->assertTrue(true);
+    }
+
+    public function testNotEquals(): void
+    {
+        $this->assertTrue(true);
+    }
 }

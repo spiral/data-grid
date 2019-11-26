@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Spiral\DataGrid\Specification\Sorter;
 
 use Spiral\DataGrid\Specification\SorterInterface;
-use Spiral\DataGrid\Specification\Value\StringValue;
 use Spiral\DataGrid\SpecificationInterface;
 
 final class Sorter implements SorterInterface

@@ -14,14 +14,14 @@ namespace Spiral\DataGrid\Specification\Value;
 
 use Spiral\DataGrid\Specification\ValueInterface;
 
-final class FloatValue implements ValueInterface
+final class ScalarValue implements ValueInterface
 {
     /**
      * @inheritDoc
      */
     public function accepts($value): bool
     {
-        return is_float($value) || is_numeric($value) || (!is_bool($value) && is_scalar($value) && (string)$value === '');
+        return is_scalar($value);
     }
 
     /**
@@ -29,6 +29,6 @@ final class FloatValue implements ValueInterface
      */
     public function convert($value)
     {
-        return (float)$value;
+        return $value;
     }
 }
