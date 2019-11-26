@@ -16,7 +16,7 @@ use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
 /**
- * Complex filter provides the ability to distribute complex array value acorss multiple
+ * Complex filter provides the ability to distribute complex array value across multiple
  * nested filters.
  */
 final class Map implements FilterInterface

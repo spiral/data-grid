@@ -171,6 +171,161 @@ class QueryWriterTest extends TestCase
         );
     }
 
+    public function testSortMultiple(): void
+    {
+        $select = $this->initCompiler()->compile(
+            $this->initQuery(),
+            new Sorter\AscSorter('balance'),
+            new Sorter\AscSorter('credits'),
+            new Sorter\DescSorter('attempts')
+        );
+
+        $this->assertEqualSQL(
+            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
+            $select
+        );
+    }
+
+    public function testUnary(): void
+    {
+        $unary = new Sorter\UnarySorter(
+            new Sorter\AscSorter('balance'),
+            new Sorter\AscSorter('credits'),
+            new Sorter\DescSorter('attempts')
+        );
+        $select = $this->initCompiler()->compile(
+            $this->initQuery(),
+            $unary
+        );
+
+        $this->assertEqualSQL(
+            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
+            $select
+        );
+
+        $select = $this->initCompiler()->compile(
+            $this->initQuery(),
+            new Sorter\UnarySorter($unary)
+        );
+
+        $this->assertEqualSQL(
+            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" ASC, "attempts" DESC',
+            $select
+        );
+    }
+
+    /**
+     * @dataProvider binarySortProvider
+     * @param mixed      $direction
+     * @param mixed|null $resultDirection
+     */
+    public function testBinary($direction, $resultDirection = null): void
+    {
+        $sorter = new Sorter\BinarySorter(
+            new Sorter\UnarySorter(
+                new Sorter\AscSorter('balance'),
+                new Sorter\AscSorter('credits')
+            ), new Sorter\UnarySorter(
+                new Sorter\DescSorter('balance'),
+                new Sorter\DescSorter('credits')
+            )
+        );
+
+        if ($resultDirection === null) {
+            $this->assertNull($sorter->withDirection($direction));
+        } else {
+            $select = $this->initCompiler()->compile(
+                $this->initQuery(),
+                $sorter->withDirection($direction)
+            );
+
+            $this->assertEqualSQL(
+                sprintf(
+                    'SELECT * FROM "users"  ORDER BY "balance" %s, "credits" %s',
+                    $resultDirection,
+                    $resultDirection
+                ),
+                $select
+            );
+        }
+    }
+
+    public function testMixedBinary(): void
+    {
+        $sorter = new Sorter\BinarySorter(
+            new Sorter\UnarySorter(
+                new Sorter\AscSorter('balance'),
+                new Sorter\DescSorter('credits')
+            ), new Sorter\UnarySorter(
+                new Sorter\DescSorter('balance'),
+                new Sorter\AscSorter('credits')
+            )
+        );
+
+        $select = $this->initCompiler()->compile(
+            $this->initQuery(),
+            $sorter->withDirection('asc')
+        );
+        $this->assertEqualSQL(
+            'SELECT * FROM "users"  ORDER BY "balance" ASC, "credits" DESC',
+            $select
+        );
+
+        $select = $this->initCompiler()->compile(
+            $this->initQuery(),
+            $sorter->withDirection('desc')
+        );
+        $this->assertEqualSQL(
+            'SELECT * FROM "users"  ORDER BY "balance" DESC, "credits" ASC',
+            $select
+        );
+    }
+
+    /**
+     * @dataProvider binarySortProvider
+     * @param mixed      $direction
+     * @param mixed|null $resultDirection
+     */
+    public function testSortBinary($direction, $resultDirection = null): void
+    {
+        $sorter = new Sorter\Sorter('balance', 'credits');
+
+        if ($resultDirection === null) {
+            $this->assertNull($sorter->withDirection($direction));
+        } else {
+            $select = $this->initCompiler()->compile(
+                $this->initQuery(),
+                $sorter->withDirection($direction)
+            );
+
+            $this->assertEqualSQL(
+                sprintf(
+                    'SELECT * FROM "users"  ORDER BY "balance" %s, "credits" %s',
+                    $resultDirection,
+                    $resultDirection
+                ),
+                $select
+            );
+        }
+    }
+
+    public function binarySortProvider(): array
+    {
+        return [
+            ['asc', 'ASC'],
+            ['1', 'ASC'],
+            [1, 'ASC'],
+            [SORT_ASC, 'ASC'],
+
+            ['desc', 'DESC'],
+            ['-1', 'DESC'],
+            [-1, 'DESC'],
+            [SORT_DESC, 'DESC'],
+
+            [123, null],
+        ];
+    }
+
     public function testInArray(): void
     {
         $select = $this->initCompiler()->compile(

@@ -179,14 +179,13 @@ class GridGenerator implements GeneratorInterface
      * Return array of options for the input. Checks the default input in case of value missing in parent.
      *
      * @param string $option
-     * @return mixed
+     * @return array
      */
-    private function getOption(string $option)
+    private function getOptionArray(string $option): array
     {
-        if ($this->input->hasValue($option)) {
-            $result = $this->input->getValue($option);
-        } else {
-            $result = $this->defaultInput->getValue($option);
+        $result = $this->getOption($option);
+        if (!is_array($result)) {
+            return [];
         }
 
         return $result;
@@ -196,13 +195,14 @@ class GridGenerator implements GeneratorInterface
      * Return array of options for the input. Checks the default input in case of value missing in parent.
      *
      * @param string $option
-     * @return array
+     * @return mixed
      */
-    private function getOptionArray(string $option): array
+    private function getOption(string $option)
     {
-        $result = $this->getOption($option);
-        if (!is_array($result)) {
-            return [];
+        if ($this->input->hasValue($option)) {
+            $result = $this->input->getValue($option);
+        } else {
+            $result = $this->defaultInput->getValue($option);
         }
 
         return $result;

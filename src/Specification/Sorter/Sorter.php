@@ -44,6 +44,6 @@ final class Sorter implements SorterInterface
      */
     public function getValue()
     {
-        return new StringValue();
+        return $this->sorter->getValue();
     }
 }
