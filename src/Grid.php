@@ -52,10 +52,10 @@ class Grid implements GridInterface
      */
     public function withOption(string $name, $value): GridInterface
     {
-        $view = clone $this;
-        $view->options[$name] = $value;
+        $grid = clone $this;
+        $grid->options[$name] = $value;
 
-        return $view;
+        return $grid;
     }
 
     /**
@@ -71,10 +71,18 @@ class Grid implements GridInterface
      */
     public function withSource(iterable $source): GridInterface
     {
-        $view = clone $this;
-        $view->source = $source;
+        $grid = clone $this;
+        $grid->source = $source;
 
-        return $view;
+        return $grid;
+    }
+
+    /**
+     * @return iterable|null
+     */
+    public function getSource(): ?iterable
+    {
+        return $this->source;
     }
 
     /**
@@ -82,9 +90,9 @@ class Grid implements GridInterface
      */
     public function withView(callable $view): GridInterface
     {
-        $view = clone $this;
-        $view->mapper = $view;
+        $grid = clone $this;
+        $grid->mapper = $view;
 
-        return $view;
+        return $grid;
     }
 }
