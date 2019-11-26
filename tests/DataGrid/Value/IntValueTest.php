@@ -51,6 +51,10 @@ class IntValueTest extends TestCase
             ['1', true],
             [1.1, true],
             ['1.1', true],
+            [-2, true],
+            ['-2', true],
+            [-2.2, true],
+            ['-2.2', true],
             ['', true],
 
             [false, false],
@@ -76,6 +80,10 @@ class IntValueTest extends TestCase
             ['1', 1],
             [1.1, 1],
             ['1.1', 1],
+            [-2, -2],
+            ['-2', -2],
+            [-2.2, -2],
+            ['-2.2', -2],
             ['', 0],
         ];
     }
