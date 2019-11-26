@@ -18,7 +18,7 @@ interface GeneratorInterface
      *
      * @param mixed      $source
      * @param GridSchema $schema
-     * @return GridViewInterface
+     * @return GridInterface
      */
-    public function generate($source, GridSchema $schema): GridViewInterface;
+    public function hydrate($source, GridSchema $schema): GridInterface;
 }

@@ -15,9 +15,9 @@ use PHPUnit\Framework\TestCase;
 use Spiral\Database\Database;
 use Spiral\Database\Driver\SQLite\SQLiteDriver;
 use Spiral\DataGrid\Compiler;
-use Spiral\DataGrid\GridGenerator;
+use Spiral\DataGrid\GridHydrator;
 use Spiral\DataGrid\GridSchema;
-use Spiral\DataGrid\GridView;
+use Spiral\DataGrid\Grid;
 use Spiral\DataGrid\Input\ArrayInput;
 use Spiral\DataGrid\Specification\Pagination\PagePaginator;
 use Spiral\DataGrid\Specification\Sorter\Sorter;
@@ -59,7 +59,7 @@ class GeneratorTest extends TestCase
 
         $view = $this->initGenerator()
             ->withInput(new ArrayInput([]))
-            ->generate(
+            ->hydrate(
                 $this->db->table('users')->select('*'),
                 $schema
             );
@@ -72,12 +72,12 @@ class GeneratorTest extends TestCase
             ]
         ], iterator_to_array($view));
 
-        $this->assertNull($view->getOption(GridView::COUNT));
+        $this->assertNull($view->getOption(Grid::COUNT));
 
         $this->assertSame([
             'limit' => 1,
             'page'  => 1
-        ], $view->getOption(GridView::PAGINATOR));
+        ], $view->getOption(Grid::PAGINATOR));
     }
 
     public function testPaginateWithCount(): void
@@ -88,10 +88,10 @@ class GeneratorTest extends TestCase
         $view = $this
             ->initGenerator()
             ->withInput(new ArrayInput([
-                GridGenerator::KEY_PAGINATE    => ['page' => 2],
-                GridGenerator::KEY_FETCH_COUNT => true
+                GridHydrator::KEY_PAGINATE    => ['page' => 2],
+                GridHydrator::KEY_FETCH_COUNT => true
             ]))
-            ->generate(
+            ->hydrate(
                 $this->db->table('users')->select('*'),
                 $schema
             );
@@ -104,12 +104,12 @@ class GeneratorTest extends TestCase
             ]
         ], iterator_to_array($view));
 
-        $this->assertSame(3, $view->getOption(GridView::COUNT));
+        $this->assertSame(3, $view->getOption(Grid::COUNT));
 
         $this->assertSame([
             'limit' => 1,
             'page'  => 2
-        ], $view->getOption(GridView::PAGINATOR));
+        ], $view->getOption(Grid::PAGINATOR));
     }
 
     public function testDefaultWithMapping(): void
@@ -120,16 +120,16 @@ class GeneratorTest extends TestCase
         $view = $this
             ->initGenerator()
             ->withInput(new ArrayInput([
-                GridGenerator::KEY_PAGINATE => ['page' => 2]
+                GridHydrator::KEY_PAGINATE => ['page' => 2]
             ]))
-            ->withDefault(new ArrayInput([
-                GridGenerator::KEY_FETCH_COUNT => true
+            ->withDefaultInput(new ArrayInput([
+                GridHydrator::KEY_FETCH_COUNT => true
             ]))
-            ->generate(
+            ->hydrate(
                 $this->db->table('users')->select('*'),
                 $schema
             )
-            ->withMapper(static function ($u) {
+            ->withView(static function ($u) {
                 return $u['name'];
             });
 
@@ -137,12 +137,12 @@ class GeneratorTest extends TestCase
             'John'
         ], iterator_to_array($view));
 
-        $this->assertSame(3, $view->getOption(GridView::COUNT));
+        $this->assertSame(3, $view->getOption(Grid::COUNT));
 
         $this->assertSame([
             'limit' => 1,
             'page'  => 2
-        ], $view->getOption(GridView::PAGINATOR));
+        ], $view->getOption(Grid::PAGINATOR));
     }
 
     public function testSort(): void
@@ -152,14 +152,14 @@ class GeneratorTest extends TestCase
 
         $view = $this
             ->initGenerator()
-            ->withDefault(new ArrayInput([
-                GridGenerator::KEY_SORT => ['id' => 'desc']
+            ->withDefaultInput(new ArrayInput([
+                GridHydrator::KEY_SORT => ['id' => 'desc']
             ]))
-            ->generate(
+            ->hydrate(
                 $this->db->table('users')->select('*'),
                 $schema
             )
-            ->withMapper(static function ($u) {
+            ->withView(static function ($u) {
                 return $u['name'];
             });
 
@@ -171,7 +171,7 @@ class GeneratorTest extends TestCase
 
         $this->assertSame([
             'id' => 'desc'
-        ], $view->getOption(GridView::SORTERS));
+        ], $view->getOption(Grid::SORTERS));
     }
 
     public function testSortAsc(): void
@@ -181,14 +181,14 @@ class GeneratorTest extends TestCase
 
         $view = $this
             ->initGenerator()
-            ->withDefault(new ArrayInput([
-                GridGenerator::KEY_SORT => ['id' => 1]
+            ->withDefaultInput(new ArrayInput([
+                GridHydrator::KEY_SORT => ['id' => 1]
             ]))
-            ->generate(
+            ->hydrate(
                 $this->db->table('users')->select('*'),
                 $schema
             )
-            ->withMapper(static function ($u) {
+            ->withView(static function ($u) {
                 return $u['name'];
             });
 
@@ -200,7 +200,7 @@ class GeneratorTest extends TestCase
 
         $this->assertSame([
             'id' => 'asc'
-        ], $view->getOption(GridView::SORTERS));
+        ], $view->getOption(Grid::SORTERS));
     }
 
     public function testSortUnknown(): void
@@ -210,18 +210,18 @@ class GeneratorTest extends TestCase
 
         $view = $this
             ->initGenerator()
-            ->withDefault(new ArrayInput([
-                GridGenerator::KEY_SORT => ['id' => 2]
+            ->withDefaultInput(new ArrayInput([
+                GridHydrator::KEY_SORT => ['id' => 2]
             ]))
-            ->generate(
+            ->hydrate(
                 $this->db->table('users')->select('*'),
                 $schema
             )
-            ->withMapper(static function ($u) {
+            ->withView(static function ($u) {
                 return $u['name'];
             });
 
-        $this->assertSame([], $view->getOption(GridView::SORTERS));
+        $this->assertSame([], $view->getOption(Grid::SORTERS));
     }
 
     /**
@@ -244,10 +244,10 @@ class GeneratorTest extends TestCase
     }
 
     /**
-     * @return GridGenerator
+     * @return GridHydrator
      */
-    private function initGenerator(): GridGenerator
+    private function initGenerator(): GridHydrator
     {
-        return new GridGenerator($this->initCompiler());
+        return new GridHydrator($this->initCompiler());
     }
 }

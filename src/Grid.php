@@ -17,7 +17,7 @@ use Spiral\DataGrid\Exception\GridViewException;
 /**
  * Carries information about compiled selection results and their specifications.
  */
-class GridView implements GridViewInterface
+class Grid implements GridInterface
 {
     /** @var array */
     private $options = [];
@@ -50,12 +50,12 @@ class GridView implements GridViewInterface
     /**
      * @inheritDoc
      */
-    public function withOption(string $name, $value): GridViewInterface
+    public function withOption(string $name, $value): GridInterface
     {
-        $view = clone $this;
-        $view->options[$name] = $value;
+        $grid = clone $this;
+        $grid->options[$name] = $value;
 
-        return $view;
+        return $grid;
     }
 
     /**
@@ -69,22 +69,30 @@ class GridView implements GridViewInterface
     /**
      * @inheritDoc
      */
-    public function withSource(iterable $source): GridViewInterface
+    public function withSource(iterable $source): GridInterface
     {
-        $view = clone $this;
-        $view->source = $source;
+        $grid = clone $this;
+        $grid->source = $source;
 
-        return $view;
+        return $grid;
+    }
+
+    /**
+     * @return iterable|null
+     */
+    public function getSource(): ?iterable
+    {
+        return $this->source;
     }
 
     /**
      * @inheritDoc
      */
-    public function withMapper(callable $mapper): GridViewInterface
+    public function withView(callable $view): GridInterface
     {
-        $view = clone $this;
-        $view->mapper = $mapper;
+        $grid = clone $this;
+        $grid->mapper = $view;
 
-        return $view;
+        return $grid;
     }
 }
