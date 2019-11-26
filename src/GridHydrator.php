@@ -19,7 +19,7 @@ use Spiral\DataGrid\Input\NullInput;
 /**
  * Generates grid views based on provided inout source and grid specifications.
  */
-class GridGenerator implements GeneratorInterface
+class GridHydrator implements GeneratorInterface
 {
     public const KEY_FILTERS     = 'filter';
     public const KEY_SORT        = 'sort';
@@ -35,27 +35,27 @@ class GridGenerator implements GeneratorInterface
     /** @var InputInterface|null */
     private $defaultInput;
 
-    /** @var GridViewInterface */
+    /** @var GridInterface */
     private $view;
 
     /**
-     * @param Compiler               $compiler
-     * @param InputInterface|null    $input
-     * @param GridViewInterface|null $view
+     * @param Compiler            $compiler
+     * @param InputInterface|null $input
+     * @param GridInterface|null  $view
      */
-    public function __construct(Compiler $compiler, InputInterface $input = null, GridViewInterface $view = null)
+    public function __construct(Compiler $compiler, InputInterface $input = null, GridInterface $view = null)
     {
         $this->compiler = $compiler;
         $this->input = $input ?? new NullInput();
         $this->defaultInput = new NullInput();
-        $this->view = $view ?? new GridView();
+        $this->view = $view ?? new Grid();
     }
 
     /**
      * Associate new input source with grid generator.
      *
      * @param InputInterface $input
-     * @return GridGenerator
+     * @return GridHydrator
      */
     public function withInput(InputInterface $input): self
     {
@@ -69,7 +69,7 @@ class GridGenerator implements GeneratorInterface
      * Isolate input in a given namespace (won't affect the default input).
      *
      * @param string $namespace
-     * @return GridGenerator
+     * @return GridHydrator
      */
     public function withNamespace(string $namespace): self
     {
@@ -83,9 +83,9 @@ class GridGenerator implements GeneratorInterface
      * Associate new default input (fallback values) with grid generator.
      *
      * @param InputInterface $input
-     * @return GridGenerator
+     * @return GridHydrator
      */
-    public function withDefault(InputInterface $input): self
+    public function withDefaultInput(InputInterface $input): self
     {
         $generator = clone $this;
         $generator->defaultInput = $input;
@@ -96,13 +96,13 @@ class GridGenerator implements GeneratorInterface
     /**
      * Associate new grid view (presenter) with grid generator.
      *
-     * @param GridViewInterface $result
-     * @return GridGenerator
+     * @param GridInterface $grid
+     * @return GridHydrator
      */
-    public function withView(GridViewInterface $result): self
+    public function withGridPresenter(GridInterface $grid): self
     {
         $generator = clone $this;
-        $generator->view = $result;
+        $generator->view = $grid;
 
         return $generator;
     }
@@ -112,9 +112,9 @@ class GridGenerator implements GeneratorInterface
      *
      * @param mixed      $source
      * @param GridSchema $schema
-     * @return GridViewInterface
+     * @return GridInterface
      */
-    public function generate($source, GridSchema $schema): GridViewInterface
+    public function hydrate($source, GridSchema $schema): GridInterface
     {
         $view = clone $this->view;
 
@@ -129,13 +129,13 @@ class GridGenerator implements GeneratorInterface
                 }
             }
         }
-        $view = $view->withOption(GridViewInterface::FILTERS, $filters);
+        $view = $view->withOption(GridInterface::FILTERS, $filters);
 
         if (
             $source instanceof Countable
             && $this->getOption(static::KEY_FETCH_COUNT)
         ) {
-            $view = $view->withOption(GridViewInterface::COUNT, $source->count());
+            $view = $view->withOption(GridInterface::COUNT, $source->count());
         }
 
         $sorters = [];
@@ -149,7 +149,7 @@ class GridGenerator implements GeneratorInterface
                 }
             }
         }
-        $view = $view->withOption(GridViewInterface::SORTERS, $sorters);
+        $view = $view->withOption(GridInterface::SORTERS, $sorters);
 
         if ($schema->getPaginator() !== null) {
             $paginator = $schema->getPaginator()->withValue($this->getOption(static::KEY_PAGINATE));
@@ -158,7 +158,7 @@ class GridGenerator implements GeneratorInterface
             }
 
             $source = $this->compiler->compile($source, $paginator);
-            $view = $view->withOption(GridViewInterface::PAGINATOR, $paginator->getValue());
+            $view = $view->withOption(GridInterface::PAGINATOR, $paginator->getValue());
         }
 
         return $view->withSource($source);

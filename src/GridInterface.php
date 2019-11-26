@@ -14,7 +14,7 @@ namespace Spiral\DataGrid;
 /**
  * Responsible for grid data and specification representation.
  */
-interface GridViewInterface extends \IteratorAggregate
+interface GridInterface extends \IteratorAggregate
 {
     public const FILTERS   = 'filters';
     public const SORTERS   = 'sorters';
@@ -26,9 +26,9 @@ interface GridViewInterface extends \IteratorAggregate
      *
      * @param string $name
      * @param mixed  $value
-     * @return GridViewInterface
+     * @return GridInterface
      */
-    public function withOption(string $name, $value): GridViewInterface;
+    public function withOption(string $name, $value): GridInterface;
 
     /**
      * Returns associated value.
@@ -42,16 +42,16 @@ interface GridViewInterface extends \IteratorAggregate
      * Associated input source with the grid view. The source will be iterated using the given mapper.
      *
      * @param iterable $source
-     * @return GridViewInterface
+     * @return GridInterface
      */
-    public function withSource(iterable $source): GridViewInterface;
+    public function withSource(iterable $source): GridInterface;
 
     /**
      * Associate mapping class or function with the grid view.
      * All grid source items will be passed thought this function.
      *
-     * @param callable $mapper
-     * @return GridViewInterface
+     * @param callable $view
+     * @return GridInterface
      */
-    public function withMapper(callable $mapper): GridViewInterface;
+    public function withView(callable $view): GridInterface;
 }
