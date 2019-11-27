@@ -20,7 +20,7 @@ use Spiral\DataGrid\Input\NullInput;
 /**
  * Generates grid views based on provided inout source and grid specifications.
  */
-class GridFactory implements GeneratorInterface
+class GridFactory implements GridFactoryInterface
 {
     public const KEY_FILTERS     = 'filter';
     public const KEY_SORT        = 'sort';
