@@ -17,7 +17,7 @@ use Spiral\Database\Driver\SQLite\SQLiteDriver;
 use Spiral\Database\Query\Interpolator;
 use Spiral\Database\Query\SelectQuery;
 use Spiral\DataGrid\Compiler;
-use Spiral\DataGrid\GridHydrator;
+use Spiral\DataGrid\GridFactory;
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Pagination;
 use Spiral\DataGrid\Specification\Sorter;
@@ -259,11 +259,11 @@ class QueryWriterTest extends TestCase
     }
 
     /**
-     * @return GridHydrator
+     * @return GridFactory
      */
-    private function initGenerator(): GridHydrator
+    private function initGenerator(): GridFactory
     {
-        return new GridHydrator($this->initCompiler());
+        return new GridFactory($this->initCompiler());
     }
 
     /**

@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Spiral\Database\Database;
 use Spiral\Database\Driver\SQLite\SQLiteDriver;
 use Spiral\DataGrid\Compiler;
-use Spiral\DataGrid\GridHydrator;
+use Spiral\DataGrid\GridFactory;
 use Spiral\DataGrid\GridSchema;
 use Spiral\DataGrid\Grid;
 use Spiral\DataGrid\Input\ArrayInput;
@@ -59,7 +59,7 @@ class GeneratorTest extends TestCase
 
         $view = $this->initGenerator()
             ->withInput(new ArrayInput([]))
-            ->hydrate(
+            ->create(
                 $this->db->table('users')->select('*'),
                 $schema
             );
@@ -88,10 +88,10 @@ class GeneratorTest extends TestCase
         $view = $this
             ->initGenerator()
             ->withInput(new ArrayInput([
-                GridHydrator::KEY_PAGINATE    => ['page' => 2],
-                GridHydrator::KEY_FETCH_COUNT => true
+                GridFactory::KEY_PAGINATE    => ['page' => 2],
+                GridFactory::KEY_FETCH_COUNT => true
             ]))
-            ->hydrate(
+            ->create(
                 $this->db->table('users')->select('*'),
                 $schema
             );
@@ -120,10 +120,10 @@ class GeneratorTest extends TestCase
         $view = $this
             ->initGenerator()
             ->withInput(new ArrayInput([
-                GridHydrator::KEY_PAGINATE => ['page' => 2]
+                GridFactory::KEY_PAGINATE => ['page' => 2]
             ]))
             ->withDefaultInput(new ArrayInput([
-                GridHydrator::KEY_FETCH_COUNT => true
+                GridFactory::KEY_FETCH_COUNT => true
             ]))
             ->hydrate(
                 $this->db->table('users')->select('*'),
@@ -153,7 +153,7 @@ class GeneratorTest extends TestCase
         $view = $this
             ->initGenerator()
             ->withDefaultInput(new ArrayInput([
-                GridHydrator::KEY_SORT => ['id' => 'desc']
+                GridFactory::KEY_SORT => ['id' => 'desc']
             ]))
             ->hydrate(
                 $this->db->table('users')->select('*'),
@@ -182,7 +182,7 @@ class GeneratorTest extends TestCase
         $view = $this
             ->initGenerator()
             ->withDefaultInput(new ArrayInput([
-                GridHydrator::KEY_SORT => ['id' => 1]
+                GridFactory::KEY_SORT => ['id' => 1]
             ]))
             ->hydrate(
                 $this->db->table('users')->select('*'),
@@ -211,7 +211,7 @@ class GeneratorTest extends TestCase
         $view = $this
             ->initGenerator()
             ->withDefaultInput(new ArrayInput([
-                GridHydrator::KEY_SORT => ['id' => 2]
+                GridFactory::KEY_SORT => ['id' => 2]
             ]))
             ->hydrate(
                 $this->db->table('users')->select('*'),
@@ -244,10 +244,10 @@ class GeneratorTest extends TestCase
     }
 
     /**
-     * @return GridHydrator
+     * @return GridFactory
      */
-    private function initGenerator(): GridHydrator
+    private function initGenerator(): GridFactory
     {
-        return new GridHydrator($this->initCompiler());
+        return new GridFactory($this->initCompiler());
     }
 }

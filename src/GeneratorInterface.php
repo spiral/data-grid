@@ -20,5 +20,5 @@ interface GeneratorInterface
      * @param GridSchema $schema
      * @return GridInterface
      */
-    public function hydrate($source, GridSchema $schema): GridInterface;
+    public function create($source, GridSchema $schema): GridInterface;
 }

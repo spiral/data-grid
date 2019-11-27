@@ -14,12 +14,13 @@ namespace Spiral\DataGrid;
 
 use Countable;
 use Spiral\DataGrid\Exception\CompilerException;
+use Spiral\DataGrid\Input\ArrayInput;
 use Spiral\DataGrid\Input\NullInput;
 
 /**
  * Generates grid views based on provided inout source and grid specifications.
  */
-class GridHydrator implements GeneratorInterface
+class GridFactory implements GeneratorInterface
 {
     public const KEY_FILTERS     = 'filter';
     public const KEY_SORT        = 'sort';
@@ -55,7 +56,7 @@ class GridHydrator implements GeneratorInterface
      * Associate new input source with grid generator.
      *
      * @param InputInterface $input
-     * @return GridHydrator
+     * @return GridFactory
      */
     public function withInput(InputInterface $input): self
     {
@@ -66,43 +67,29 @@ class GridHydrator implements GeneratorInterface
     }
 
     /**
+     * USe default filter values.
+     *
+     * @param array $data
+     * @return $this
+     */
+    public function withDefaults(array $data): self
+    {
+        $generator = clone $this;
+        $generator->defaultInput = new ArrayInput($data);
+
+        return $generator;
+    }
+
+    /**
      * Isolate input in a given namespace (won't affect the default input).
      *
      * @param string $namespace
-     * @return GridHydrator
+     * @return GridFactory
      */
     public function withNamespace(string $namespace): self
     {
         $generator = clone $this;
         $generator->input = $generator->input->withNamespace($namespace);
-
-        return $generator;
-    }
-
-    /**
-     * Associate new default input (fallback values) with grid generator.
-     *
-     * @param InputInterface $input
-     * @return GridHydrator
-     */
-    public function withDefaultInput(InputInterface $input): self
-    {
-        $generator = clone $this;
-        $generator->defaultInput = $input;
-
-        return $generator;
-    }
-
-    /**
-     * Associate new grid view (presenter) with grid generator.
-     *
-     * @param GridInterface $grid
-     * @return GridHydrator
-     */
-    public function withGridPresenter(GridInterface $grid): self
-    {
-        $generator = clone $this;
-        $generator->view = $grid;
 
         return $generator;
     }
@@ -114,7 +101,7 @@ class GridHydrator implements GeneratorInterface
      * @param GridSchema $schema
      * @return GridInterface
      */
-    public function hydrate($source, GridSchema $schema): GridInterface
+    public function create($source, GridSchema $schema): GridInterface
     {
         $view = clone $this->view;
 
