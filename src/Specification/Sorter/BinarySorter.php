@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Spiral Framework.
+ * Spiral Framework. PHP Data Grid
  *
- * @license   MIT
- * @author    Valentin Vintsukevich (vvval)
- * @author    Anton Tsitou (Wolfy-J)
+ * @license MIT
+ * @author  Anton Tsitou (Wolfy-J)
+ * @author  Valentin Vintsukevich (vvval)
  */
 
 declare(strict_types=1);
@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Spiral\DataGrid\Specification\Sorter;
 
 use Spiral\DataGrid\Specification\SorterInterface;
-use Spiral\DataGrid\Specification\Value\StringValue;
 use Spiral\DataGrid\SpecificationInterface;
 
 final class BinarySorter implements SorterInterface
@@ -63,8 +62,7 @@ final class BinarySorter implements SorterInterface
     /**
      * @inheritDoc
      */
-    public function getValue()
+    public function getValue(): void
     {
-        return new StringValue();
     }
 }

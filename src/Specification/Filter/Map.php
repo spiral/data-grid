@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Spiral Framework.
+ * Spiral Framework. PHP Data Grid
  *
- * @license   MIT
- * @author    Valentin Vintsukevich (vvval)
- * @author    Anton Tsitou (Wolfy-J)
+ * @license MIT
+ * @author  Anton Tsitou (Wolfy-J)
+ * @author  Valentin Vintsukevich (vvval)
  */
 
 declare(strict_types=1);
@@ -16,7 +16,7 @@ use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
 /**
- * Complex filter provides the ability to distribute complex array value acorss multiple
+ * Complex filter provides the ability to distribute complex array value across multiple
  * nested filters.
  */
 final class Map implements FilterInterface
@@ -46,7 +46,7 @@ final class Map implements FilterInterface
         $map->filters = [];
 
         foreach ($this->filters as $name => $filter) {
-            if (!array_key_exists($name, $value)) {
+            if (!$this->hasKey($value, $name)) {
                 // all values must be provided
                 return null;
             }
@@ -81,5 +81,21 @@ final class Map implements FilterInterface
         }
 
         return $result;
+    }
+
+    /**
+     * @param array $array
+     * @param mixed $search
+     * @return bool
+     */
+    private function hasKey(array $array, $search): bool
+    {
+        foreach ($array as $key => $value) {
+            if (strcasecmp($key, $search) === 0) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

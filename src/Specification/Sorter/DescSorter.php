@@ -1,56 +1,19 @@
 <?php
 
 /**
- * Spiral Framework.
+ * Spiral Framework. PHP Data Grid
  *
- * @license   MIT
- * @author    Valentin Vintsukevich (vvval)
- * @author    Anton Tsitou (Wolfy-J)
+ * @license MIT
+ * @author  Anton Tsitou (Wolfy-J)
+ * @author  Valentin Vintsukevich (vvval)
  */
 
 declare(strict_types=1);
 
 namespace Spiral\DataGrid\Specification\Sorter;
 
-use Spiral\DataGrid\Specification\SorterInterface;
-use Spiral\DataGrid\SpecificationInterface;
-
-final class DescSorter implements SorterInterface
+final class DescSorter extends AbstractSorter
 {
-    /** @var array */
-    private $expressions;
-
-    /**
-     * AscSorter constructor.
-     *
-     * @param string ...$expressions
-     */
-    public function __construct(string ...$expressions)
-    {
-        $this->expressions = $expressions;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function withDirection($direction): ?SpecificationInterface
-    {
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getExpressions(): array
-    {
-        $expression = [];
-        foreach ($this->expressions as $name) {
-            $expression[$name] = self::DESC;
-        }
-
-        return $expression;
-    }
-
     /**
      * @inheritDoc
      */

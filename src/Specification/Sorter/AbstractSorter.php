@@ -15,34 +15,34 @@ namespace Spiral\DataGrid\Specification\Sorter;
 use Spiral\DataGrid\Specification\SorterInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
-final class Sorter implements SorterInterface
+abstract class AbstractSorter implements SorterInterface
 {
-    /** @var BinarySorter */
-    private $sorter;
+    /** @var array */
+    private $expressions;
 
     /**
-     * FieldSorter constructor.
+     * AscSorter constructor.
      *
      * @param string ...$expressions
      */
     public function __construct(string ...$expressions)
     {
-        $this->sorter = new BinarySorter(new AscSorter(...$expressions), new DescSorter(...$expressions));
+        $this->expressions = $expressions;
     }
 
     /**
      * @inheritDoc
      */
-    public function withDirection($direction): ?SpecificationInterface
+    public function withDirection($direction): SpecificationInterface
     {
-        return $this->sorter->withDirection($direction);
+        return $this;
     }
 
     /**
-     * @inheritDoc
+     * @return array
      */
-    public function getValue()
+    public function getExpressions(): array
     {
-        return $this->sorter->getValue();
+        return $this->expressions;
     }
 }

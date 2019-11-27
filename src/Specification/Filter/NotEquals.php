@@ -1,10 +1,11 @@
 <?php
 
 /**
- * PHP Data Source
+ * Spiral Framework. PHP Data Grid
  *
  * @license MIT
- * @author  Valentin V (vvval)
+ * @author  Anton Tsitou (Wolfy-J)
+ * @author  Valentin Vintsukevich (vvval)
  */
 
 declare(strict_types=1);

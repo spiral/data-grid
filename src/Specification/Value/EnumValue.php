@@ -1,17 +1,18 @@
 <?php
 
 /**
- * Spiral Framework.
+ * Spiral Framework. PHP Data Grid
  *
- * @license   MIT
- * @author    Valentin Vintsukevich (vvval)
- * @author    Anton Tsitou (Wolfy-J)
+ * @license MIT
+ * @author  Anton Tsitou (Wolfy-J)
+ * @author  Valentin Vintsukevich (vvval)
  */
 
 declare(strict_types=1);
 
 namespace Spiral\DataGrid\Specification\Value;
 
+use Spiral\DataGrid\Exception\ValueException;
 use Spiral\DataGrid\Specification\ValueInterface;
 
 final class EnumValue implements ValueInterface
@@ -29,7 +30,7 @@ final class EnumValue implements ValueInterface
     public function __construct(ValueInterface $base, ...$values)
     {
         $this->base = $base;
-        $this->values = $values;
+        $this->values = $this->convertEnum($values);
     }
 
     /**
@@ -50,5 +51,26 @@ final class EnumValue implements ValueInterface
     public function convert($value)
     {
         return $this->base->convert($value);
+    }
+
+    /**
+     * @param array $values
+     * @return array
+     */
+    private function convertEnum(array $values): array
+    {
+        if (empty($values)) {
+            throw new ValueException('Enum set should not be empty');
+        }
+
+        $type = new ArrayValue($this->base);
+        if (!$type->accepts($values)) {
+            throw new ValueException(sprintf(
+                '"Got non-compatible values, expected only compatible with `%s`.',
+                get_class($this->base)
+            ));
+        }
+
+        return $type->convert($values);
     }
 }

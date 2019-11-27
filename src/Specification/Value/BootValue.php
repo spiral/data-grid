@@ -1,17 +1,18 @@
 <?php
 
 /**
- * Spiral Framework.
+ * Spiral Framework. PHP Data Grid
  *
- * @license   MIT
- * @author    Valentin Vintsukevich (vvval)
- * @author    Anton Tsitou (Wolfy-J)
+ * @license MIT
+ * @author  Anton Tsitou (Wolfy-J)
+ * @author  Valentin Vintsukevich (vvval)
  */
 
 declare(strict_types=1);
 
 namespace Spiral\DataGrid\Specification\Value;
 
+use Spiral\DataGrid\Exception\ValueException;
 use Spiral\DataGrid\Specification\ValueInterface;
 
 final class BootValue implements ValueInterface
@@ -21,11 +22,15 @@ final class BootValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        if (is_string($value)) {
+        if (is_bool($value)) {
+            return true;
+        }
+
+        if (is_scalar($value)) {
             return in_array(strtolower($value), ['0', '1', 'true', 'false'], true);
         }
 
-        return is_bool($value);
+        return false;
     }
 
     /**
@@ -33,18 +38,25 @@ final class BootValue implements ValueInterface
      */
     public function convert($value)
     {
-        if (is_string($value)) {
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (is_scalar($value)) {
             switch (strtolower($value)) {
                 case '0':
                 case 'false':
-                    $value = false;
-                    break;
+                    return false;
+
                 case '1':
                 case 'true':
-                    $value = true;
+                    return true;
             }
         }
 
-        return (bool)$value;
+        throw new ValueException(sprintf(
+            'Value is expected to be boolean, got `%s`. Check the value with `accepts()` method first.',
+            is_object($value) ? get_class($value) : gettype($value)
+        ));
     }
 }

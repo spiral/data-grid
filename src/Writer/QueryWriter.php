@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Spiral Framework.
+ * Spiral Framework. PHP Data Grid
  *
- * @license   MIT
- * @author    Valentin Vintsukevich (vvval)
- * @author    Anton Tsitou (Wolfy-J)
+ * @license MIT
+ * @author  Anton Tsitou (Wolfy-J)
+ * @author  Valentin Vintsukevich (vvval)
  */
 
 declare(strict_types=1);
@@ -34,6 +34,12 @@ class QueryWriter implements WriterInterface
         Specification\Filter\NotEquals::class => '!=',
         Specification\Filter\Gt::class        => '>',
         Specification\Filter\Gte::class       => '>=',
+    ];
+
+    // Sorter directions mapping
+    private const SORTERS = [
+        Specification\Sorter\AscSorter::class  => 'ASC',
+        Specification\Sorter\DescSorter::class => 'DESC',
     ];
 
     /**
@@ -66,6 +72,14 @@ class QueryWriter implements WriterInterface
 
         if ($specification instanceof Specification\Filter\Expression) {
             return $this->writeFilter($source, $specification, $compiler);
+        }
+
+        if ($specification instanceof Specification\Sorter\UnarySorter) {
+            foreach ($specification->getSorters() as $sorter) {
+                $source = $compiler->compile($source, $sorter);
+            }
+
+            return $source;
         }
 
         if ($specification instanceof Specification\SorterInterface) {
@@ -138,7 +152,12 @@ class QueryWriter implements WriterInterface
             $sorter instanceof Specification\Sorter\AscSorter
             || $sorter instanceof Specification\Sorter\DescSorter
         ) {
-            return $source->orderBy($sorter->getExpressions());
+            $direction = static::SORTERS[get_class($sorter)];
+            foreach ($sorter->getExpressions() as $expression) {
+                $source = $source->orderBy($expression, $direction);
+            }
+
+            return $source;
         }
 
         return null;

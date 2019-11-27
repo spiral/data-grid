@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Spiral Framework.
+ * Spiral Framework. PHP Data Grid
  *
- * @license   MIT
- * @author    Valentin Vintsukevich (vvval)
- * @author    Anton Tsitou (Wolfy-J)
+ * @license MIT
+ * @author  Anton Tsitou (Wolfy-J)
+ * @author  Valentin Vintsukevich (vvval)
  */
 
 declare(strict_types=1);
@@ -21,7 +21,7 @@ final class IntValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return is_int($value) || is_numeric($value);
+        return is_int($value) || is_numeric($value) || (is_string($value) && (string)$value === '');
     }
 
     /**
