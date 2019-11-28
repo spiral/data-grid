@@ -123,10 +123,10 @@ class GeneratorTest extends TestCase
             ->withInput(new ArrayInput([
                 GridFactory::KEY_PAGINATE => ['page' => 2]
             ]))
-            ->withDefaultInput(new ArrayInput([
+            ->withDefaults([
                 GridFactory::KEY_FETCH_COUNT => true
-            ]))
-            ->hydrate(
+            ])
+            ->create(
                 $this->db->table('users')->select('*'),
                 $schema
             )
@@ -153,10 +153,10 @@ class GeneratorTest extends TestCase
 
         $view = $this
             ->initGenerator()
-            ->withDefaultInput(new ArrayInput([
+            ->withDefaults([
                 GridFactory::KEY_SORT => ['id' => 'desc']
-            ]))
-            ->hydrate(
+            ])
+            ->create(
                 $this->db->table('users')->select('*'),
                 $schema
             )
@@ -182,10 +182,10 @@ class GeneratorTest extends TestCase
 
         $view = $this
             ->initGenerator()
-            ->withDefaultInput(new ArrayInput([
+            ->withDefaults([
                 GridFactory::KEY_SORT => ['id' => 1]
-            ]))
-            ->hydrate(
+            ])
+            ->create(
                 $this->db->table('users')->select('*'),
                 $schema
             )
@@ -211,10 +211,10 @@ class GeneratorTest extends TestCase
 
         $view = $this
             ->initGenerator()
-            ->withDefaultInput(new ArrayInput([
+            ->withDefaults([
                 GridFactory::KEY_SORT => ['id' => 2]
-            ]))
-            ->hydrate(
+            ])
+            ->create(
                 $this->db->table('users')->select('*'),
                 $schema
             )
