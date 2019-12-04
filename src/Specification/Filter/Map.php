@@ -73,7 +73,7 @@ final class Map implements FilterInterface
     /**
      * @inheritDoc
      */
-    public function getValue(): array
+    public function getValue()
     {
         foreach ($this->filters as $filter) {
             return $filter->getValue();

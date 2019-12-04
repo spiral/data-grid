@@ -37,6 +37,8 @@ final class PagePaginator implements FilterInterface
             $allowedLimits[] = $defaultLimit;
         }
 
+        sort($allowedLimits);
+
         $this->limitValue = new Value\EnumValue(new Value\IntValue(), ...$allowedLimits);
     }
 
