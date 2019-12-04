@@ -19,7 +19,7 @@ final class NullInput implements InputInterface
     /**
      * @inheritDoc
      */
-    public function withNamespace(string $prefix): InputInterface
+    public function withNamespace(string $namespace): InputInterface
     {
         return clone $this;
     }

@@ -30,25 +30,17 @@ final class ArrayInput implements InputInterface
     /**
      * @inheritDoc
      */
-    public function withNamespace(string $prefix): InputInterface
+    public function withNamespace(string $namespace): InputInterface
     {
         $input = clone $this;
         $input->data = [];
 
-        $ns = $this->getValue($prefix, []);
-        if (is_array($ns)) {
-            $input->data = $ns;
+        $data = $this->getValue($namespace, []);
+        if (is_array($data)) {
+            $input->data = $data;
         }
 
         return $input;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function hasValue(string $option): bool
-    {
-        return array_key_exists($option, $this->data);
     }
 
     /**
@@ -61,5 +53,13 @@ final class ArrayInput implements InputInterface
         }
 
         return $this->data[$option];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hasValue(string $option): bool
+    {
+        return array_key_exists($option, $this->data);
     }
 }

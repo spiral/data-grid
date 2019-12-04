@@ -59,7 +59,7 @@ class WriteSorterTest extends BaseTest
 
     public function testUnary(): void
     {
-        $unary = new Sorter\UnarySorter(
+        $unary = new Sorter\SorterSet(
             new Sorter\AscSorter('balance'),
             new Sorter\AscSorter('credits'),
             new Sorter\DescSorter('attempts')
@@ -76,7 +76,7 @@ class WriteSorterTest extends BaseTest
 
         $select = $this->compile(
             $this->initQuery(),
-            new Sorter\UnarySorter($unary)
+            new Sorter\SorterSet($unary)
         );
 
         $this->assertEqualSQL(
@@ -92,12 +92,12 @@ class WriteSorterTest extends BaseTest
      */
     public function testBinary($direction, $resultDirection = null): void
     {
-        $sorter = new Sorter\BinarySorter(
-            new Sorter\UnarySorter(
+        $sorter = new Sorter\DirectionalSorter(
+            new Sorter\SorterSet(
                 new Sorter\AscSorter('balance'),
                 new Sorter\AscSorter('credits')
             ),
-            new Sorter\UnarySorter(
+            new Sorter\SorterSet(
                 new Sorter\DescSorter('balance'),
                 new Sorter\DescSorter('credits')
             )
@@ -124,12 +124,12 @@ class WriteSorterTest extends BaseTest
 
     public function testMixedBinary(): void
     {
-        $sorter = new Sorter\BinarySorter(
-            new Sorter\UnarySorter(
+        $sorter = new Sorter\DirectionalSorter(
+            new Sorter\SorterSet(
                 new Sorter\AscSorter('balance'),
                 new Sorter\DescSorter('credits')
             ),
-            new Sorter\UnarySorter(
+            new Sorter\SorterSet(
                 new Sorter\DescSorter('balance'),
                 new Sorter\AscSorter('credits')
             )
