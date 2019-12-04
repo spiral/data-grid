@@ -21,8 +21,6 @@ abstract class AbstractSorter implements SorterInterface
     private $expressions;
 
     /**
-     * AscSorter constructor.
-     *
      * @param string ...$expressions
      */
     public function __construct(string ...$expressions)

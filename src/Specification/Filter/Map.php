@@ -46,7 +46,7 @@ final class Map implements FilterInterface
         $map->filters = [];
 
         foreach ($this->filters as $name => $filter) {
-            if (!$this->hasKey($value, $name)) {
+            if (!$this->hasKey($value, (string)$name)) {
                 // all values must be provided
                 return null;
             }
@@ -63,7 +63,7 @@ final class Map implements FilterInterface
     }
 
     /**
-     * @return array|FilterInterface[]
+     * @return FilterInterface[]
      */
     public function getFilters(): array
     {
@@ -73,22 +73,21 @@ final class Map implements FilterInterface
     /**
      * @inheritDoc
      */
-    public function getValue()
+    public function getValue(): array
     {
-        $result = [];
-        foreach ($this->filters as $name => $filter) {
-            $result[$name] = $filter;
+        foreach ($this->filters as $filter) {
+            return $filter->getValue();
         }
 
-        return $result;
+        return null;
     }
 
     /**
-     * @param array $array
-     * @param mixed $search
+     * @param array  $array
+     * @param string $search
      * @return bool
      */
-    private function hasKey(array $array, $search): bool
+    private function hasKey(array $array, string $search): bool
     {
         foreach ($array as $key => $value) {
             if (strcasecmp($key, $search) === 0) {

@@ -15,7 +15,7 @@ namespace Spiral\DataGrid\Specification\Sorter;
 use Spiral\DataGrid\Specification\SorterInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
-final class UnarySorter implements SorterInterface
+final class SorterSet implements SorterInterface
 {
     /** @var SorterInterface[] */
     private $sorters;
@@ -47,7 +47,8 @@ final class UnarySorter implements SorterInterface
     /**
      * @inheritDoc
      */
-    public function getValue(): void
+    public function getValue(): string
     {
+        return '';
     }
 }

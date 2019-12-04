@@ -25,8 +25,6 @@ abstract class Expression implements FilterInterface
     protected $value;
 
     /**
-     * ExpressionFilter constructor.
-     *
      * @param string               $expression
      * @param ValueInterface|mixed $value
      */

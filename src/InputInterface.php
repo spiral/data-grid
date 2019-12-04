@@ -17,10 +17,10 @@ interface InputInterface
     /**
      * Isolate the input into given namespace (prefix).
      *
-     * @param string $prefix
+     * @param string $namespace
      * @return InputInterface
      */
-    public function withNamespace(string $prefix): InputInterface;
+    public function withNamespace(string $namespace): InputInterface;
 
     /**
      * @param string $option

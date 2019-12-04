@@ -118,10 +118,7 @@ class GridFactory implements GridFactoryInterface
         }
         $view = $view->withOption(GridInterface::FILTERS, $filters);
 
-        if (
-            $source instanceof Countable
-            && $this->getOption(static::KEY_FETCH_COUNT)
-        ) {
+        if ($source instanceof Countable && $this->getOption(static::KEY_FETCH_COUNT)) {
             $view = $view->withOption(GridInterface::COUNT, $source->count());
         }
 
@@ -187,11 +184,9 @@ class GridFactory implements GridFactoryInterface
     private function getOption(string $option)
     {
         if ($this->input->hasValue($option)) {
-            $result = $this->input->getValue($option);
-        } else {
-            $result = $this->defaultInput->getValue($option);
+            return $this->input->getValue($option);
         }
 
-        return $result;
+        return $this->defaultInput->getValue($option);
     }
 }

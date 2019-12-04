@@ -43,27 +43,26 @@ final class PagePaginator implements FilterInterface
     /**
      * @param mixed $value
      * @return FilterInterface|null
+     * @see \Spiral\DataGrid\Specification\Filter\Map todo can use functonality
      */
     public function withValue($value): ?SpecificationInterface
     {
-        $sequence = [
-            'limit' => $this->defaultLimit,
-            'page'  => 1
-        ];
+        $limit = $this->defaultLimit;
+        $page = 1;
 
         if (!is_array($value)) {
-            return $this->createSequence($sequence);
+            return $this->createSequence($limit, $page);
         }
 
         if (isset($value['limit']) && $this->limitValue->accepts($value['limit'])) {
-            $sequence['limit'] = $this->limitValue->convert($value['limit']);
+            $limit = $this->limitValue->convert($value['limit']);
         }
 
         if (isset($value['page']) && is_numeric($value['page'])) {
-            $sequence['page'] = max((int)$value['page'], 1);
+            $page = max((int)$value['page'], 1);
         }
 
-        return $this->createSequence($sequence);
+        return $this->createSequence($limit, $page);
     }
 
     /**
@@ -74,19 +73,17 @@ final class PagePaginator implements FilterInterface
     }
 
     /**
-     * @param array $sequence
+     * @param int $limit
+     * @param int $page
      * @return Sequence
      */
-    private function createSequence(array $sequence): Sequence
+    private function createSequence(int $limit, int $page): Sequence
     {
-        if ($sequence['page'] > 1) {
-            return new Sequence(
-                $sequence,
-                new Limit($sequence['limit']),
-                new Offset($sequence['limit'] * ($sequence['page'] - 1))
-            );
+        $specifications = [new Limit($limit)];
+        if ($page > 1) {
+            $specifications[] = new Offset($limit * ($page - 1));
         }
 
-        return new Sequence($sequence, new Limit($sequence['limit']));
+        return new Sequence(compact('limit', 'page'), ...$specifications);
     }
 }

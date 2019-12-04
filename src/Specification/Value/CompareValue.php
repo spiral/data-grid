@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Spiral\DataGrid\Specification\Value;
 
+use Spiral\DataGrid\Exception\ValueException;
 use Spiral\DataGrid\Specification\ValueInterface;
 
 abstract class CompareValue implements ValueInterface
@@ -19,6 +20,13 @@ abstract class CompareValue implements ValueInterface
 
     public function __construct(ValueInterface $base)
     {
+        if ($base instanceof ArrayValue) {
+            throw new ValueException(sprintf(
+                'Scalar value type expected, got `%s`',
+                get_class($base)
+            ));
+        }
+
         $this->base = $base;
     }
 

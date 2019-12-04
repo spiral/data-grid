@@ -29,8 +29,10 @@ final class EnumValue implements ValueInterface
      */
     public function __construct(ValueInterface $base, ...$values)
     {
+        sort($values);
+
         $this->base = $base;
-        $this->values = $this->convertEnum($values);
+        $this->values = $this->convertEnum(array_unique($values));
     }
 
     /**

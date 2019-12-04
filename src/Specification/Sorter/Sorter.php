@@ -17,17 +17,15 @@ use Spiral\DataGrid\SpecificationInterface;
 
 final class Sorter implements SorterInterface
 {
-    /** @var BinarySorter */
+    /** @var DirectionalSorter */
     private $sorter;
 
     /**
-     * FieldSorter constructor.
-     *
      * @param string ...$expressions
      */
     public function __construct(string ...$expressions)
     {
-        $this->sorter = new BinarySorter(new AscSorter(...$expressions), new DescSorter(...$expressions));
+        $this->sorter = new DirectionalSorter(new AscSorter(...$expressions), new DescSorter(...$expressions));
     }
 
     /**

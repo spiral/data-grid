@@ -27,13 +27,17 @@ use Spiral\DataGrid\WriterInterface;
 class QueryWriter implements WriterInterface
 {
     // Expression mapping
-    private const OPERATORS = [
+    private const COMPARE_OPERATORS = [
         Specification\Filter\Lte::class       => '<=',
         Specification\Filter\Lt::class        => '<',
         Specification\Filter\Equals::class    => '=',
         Specification\Filter\NotEquals::class => '!=',
         Specification\Filter\Gt::class        => '>',
         Specification\Filter\Gte::class       => '>=',
+    ];
+    private const ARRAY_OPERATORS   = [
+        Specification\Filter\InArray::class    => 'IN',
+        Specification\Filter\NotInArray::class => 'NOT IN',
     ];
 
     // Sorter directions mapping
@@ -51,35 +55,8 @@ class QueryWriter implements WriterInterface
             return null;
         }
 
-        if (
-            $specification instanceof Specification\Filter\All
-            || $specification instanceof Specification\Filter\Map
-        ) {
-            return $source->where(static function () use ($compiler, $specification, $source): void {
-                $compiler->compile($source, ...$specification->getFilters());
-            });
-        }
-
-        if ($specification instanceof Specification\Filter\Any) {
-            return $source->where(static function () use ($compiler, $specification, $source): void {
-                foreach ($specification->getFilters() as $filter) {
-                    $source->orWhere(static function () use ($compiler, $filter, $source): void {
-                        $compiler->compile($source, $filter);
-                    });
-                }
-            });
-        }
-
-        if ($specification instanceof Specification\Filter\Expression) {
+        if ($specification instanceof Specification\FilterInterface) {
             return $this->writeFilter($source, $specification, $compiler);
-        }
-
-        if ($specification instanceof Specification\Sorter\UnarySorter) {
-            foreach ($specification->getSorters() as $sorter) {
-                $source = $compiler->compile($source, $sorter);
-            }
-
-            return $source;
         }
 
         if ($specification instanceof Specification\SorterInterface) {
@@ -98,19 +75,27 @@ class QueryWriter implements WriterInterface
     }
 
     /**
-     * @param SelectQuery|Select              $source
-     * @param Specification\Filter\Expression $filter
-     * @param Compiler                        $compiler
+     * @param SelectQuery|Select            $source
+     * @param Specification\FilterInterface $filter
+     * @param Compiler                      $compiler
      * @return mixed
      */
-    protected function writeFilter($source, Specification\Filter\Expression $filter, Compiler $compiler)
+    protected function writeFilter($source, Specification\FilterInterface $filter, Compiler $compiler)
     {
-        if (isset(self::OPERATORS[get_class($filter)])) {
-            return $source->where(
-                $filter->getExpression(),
-                self::OPERATORS[get_class($filter)],
-                $this->fetchValue($filter->getValue())
-            );
+        if ($filter instanceof Specification\Filter\All || $filter instanceof Specification\Filter\Map) {
+            return $source->where(static function () use ($compiler, $filter, $source): void {
+                $compiler->compile($source, ...$filter->getFilters());
+            });
+        }
+
+        if ($filter instanceof Specification\Filter\Any) {
+            return $source->where(static function () use ($compiler, $filter, $source): void {
+                foreach ($filter->getFilters() as $subFilter) {
+                    $source->orWhere(static function () use ($compiler, $subFilter, $source): void {
+                        $compiler->compile($source, $subFilter);
+                    });
+                }
+            });
         }
 
         if ($filter instanceof Specification\Filter\Like) {
@@ -121,19 +106,19 @@ class QueryWriter implements WriterInterface
             );
         }
 
-        if ($filter instanceof Specification\Filter\InArray) {
+        if ($filter instanceof Specification\Filter\InArray || $filter instanceof Specification\Filter\NotInArray) {
             return $source->where(
                 $filter->getExpression(),
-                'IN',
+                self::ARRAY_OPERATORS[get_class($filter)],
                 new Parameter($this->fetchValue($filter->getValue()))
             );
         }
 
-        if ($filter instanceof Specification\Filter\NotInArray) {
+        if (isset(self::COMPARE_OPERATORS[get_class($filter)])) {
             return $source->where(
                 $filter->getExpression(),
-                'NOT IN',
-                new Parameter($this->fetchValue($filter->getValue()))
+                self::COMPARE_OPERATORS[get_class($filter)],
+                $this->fetchValue($filter->getValue())
             );
         }
 
@@ -148,6 +133,14 @@ class QueryWriter implements WriterInterface
      */
     protected function writeSorter($source, Specification\SorterInterface $sorter, Compiler $compiler)
     {
+        if ($sorter instanceof Specification\Sorter\SorterSet) {
+            foreach ($sorter->getSorters() as $subSorter) {
+                $source = $compiler->compile($source, $subSorter);
+            }
+
+            return $source;
+        }
+
         if (
             $sorter instanceof Specification\Sorter\AscSorter
             || $sorter instanceof Specification\Sorter\DescSorter
