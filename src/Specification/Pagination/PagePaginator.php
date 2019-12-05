@@ -45,7 +45,6 @@ final class PagePaginator implements FilterInterface
     /**
      * @param mixed $value
      * @return FilterInterface|null
-     * @see \Spiral\DataGrid\Specification\Filter\Map todo can use functonality
      */
     public function withValue($value): ?SpecificationInterface
     {

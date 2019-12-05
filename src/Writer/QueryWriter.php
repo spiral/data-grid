@@ -41,7 +41,7 @@ class QueryWriter implements WriterInterface
     ];
 
     // Sorter directions mapping
-    private const SORTERS = [
+    private const SORTER_DIRECTIONS = [
         Specification\Sorter\AscSorter::class  => 'ASC',
         Specification\Sorter\DescSorter::class => 'DESC',
     ];
@@ -145,7 +145,7 @@ class QueryWriter implements WriterInterface
             $sorter instanceof Specification\Sorter\AscSorter
             || $sorter instanceof Specification\Sorter\DescSorter
         ) {
-            $direction = static::SORTERS[get_class($sorter)];
+            $direction = static::SORTER_DIRECTIONS[get_class($sorter)];
             foreach ($sorter->getExpressions() as $expression) {
                 $source = $source->orderBy($expression, $direction);
             }
