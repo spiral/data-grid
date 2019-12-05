@@ -15,7 +15,7 @@ namespace Spiral\DataGrid\Specification\Value;
 use Spiral\DataGrid\Exception\ValueException;
 use Spiral\DataGrid\Specification\ValueInterface;
 
-final class BootValue implements ValueInterface
+final class BoolValue implements ValueInterface
 {
     /**
      * @inheritDoc

@@ -19,6 +19,9 @@ final class ScalarValue implements ValueInterface
     /** @var bool */
     private $allowEmpty;
 
+    /**
+     * @param bool $allowEmpty
+     */
     public function __construct(bool $allowEmpty = false)
     {
         $this->allowEmpty = $allowEmpty;

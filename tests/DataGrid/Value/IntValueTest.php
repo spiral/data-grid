@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Spiral\Tests\DataGrid\Value;
 
 use PHPUnit\Framework\TestCase;
-use Spiral\DataGrid\Specification\Value\IntValue;
+use Spiral\DataGrid\Specification\Value;
 
 class IntValueTest extends TestCase
 {
@@ -24,7 +24,7 @@ class IntValueTest extends TestCase
      */
     public function testAccepts($value, bool $expected): void
     {
-        $int = new IntValue();
+        $int = new Value\IntValue();
         $this->assertSame($expected, $int->accepts($value));
     }
 
@@ -35,7 +35,7 @@ class IntValueTest extends TestCase
      */
     public function testConvert($value, int $expected): void
     {
-        $int = new IntValue();
+        $int = new Value\IntValue();
         $this->assertSame($expected, $int->convert($value));
     }
 

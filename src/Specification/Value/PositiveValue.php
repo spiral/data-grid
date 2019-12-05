@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Spiral Framework. PHP Data Source
+ * Spiral Framework. PHP Data Grid
  *
  * @author Valentin Vintsukevich (vvval)
  */
