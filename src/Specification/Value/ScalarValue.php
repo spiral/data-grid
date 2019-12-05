@@ -16,12 +16,20 @@ use Spiral\DataGrid\Specification\ValueInterface;
 
 final class ScalarValue implements ValueInterface
 {
+    /** @var bool */
+    private $allowEmpty;
+
+    public function __construct(bool $allowEmpty = false)
+    {
+        $this->allowEmpty = $allowEmpty;
+    }
+
     /**
      * @inheritDoc
      */
     public function accepts($value): bool
     {
-        return is_scalar($value);
+        return is_scalar($value) && ($this->allowEmpty || (string)$value !== '');
     }
 
     /**
