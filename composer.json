@@ -18,7 +18,6 @@
   },
   "require-dev": {
     "phpunit/phpunit": "^7.0",
-    "cycle/orm": "^1.1",
     "spiral/code-style": "^1.0"
   },
   "autoload": {
