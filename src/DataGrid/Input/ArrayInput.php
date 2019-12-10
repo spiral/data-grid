@@ -14,6 +14,9 @@ namespace Spiral\DataGrid\Input;
 
 use Spiral\DataGrid\InputInterface;
 
+use function Spiral\DataGrid\getValue;
+use function Spiral\DataGrid\hasKey;
+
 final class ArrayInput implements InputInterface
 {
     /** @var array */
@@ -52,7 +55,7 @@ final class ArrayInput implements InputInterface
             return $default;
         }
 
-        return $this->data[$option];
+        return getValue($this->data, $option);
     }
 
     /**
@@ -60,6 +63,6 @@ final class ArrayInput implements InputInterface
      */
     public function hasValue(string $option): bool
     {
-        return array_key_exists($option, $this->data);
+        return hasKey($this->data, $option);
     }
 }

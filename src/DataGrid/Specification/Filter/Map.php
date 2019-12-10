@@ -15,6 +15,8 @@ namespace Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
+use function Spiral\DataGrid\hasKey;
+
 /**
  * Complex filter provides the ability to distribute complex array value across multiple
  * nested filters.
@@ -46,7 +48,7 @@ final class Map implements FilterInterface
         $map->filters = [];
 
         foreach ($this->filters as $name => $filter) {
-            if (!$this->hasKey($value, (string)$name)) {
+            if (!hasKey($value, (string)$name)) {
                 // all values must be provided
                 return null;
             }
@@ -80,21 +82,5 @@ final class Map implements FilterInterface
         }
 
         return null;
-    }
-
-    /**
-     * @param array  $array
-     * @param string $search
-     * @return bool
-     */
-    private function hasKey(array $array, string $search): bool
-    {
-        foreach ($array as $key => $value) {
-            if (strcasecmp($key, $search) === 0) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

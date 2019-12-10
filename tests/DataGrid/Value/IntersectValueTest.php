@@ -29,7 +29,7 @@ class IntersectValueTest extends TestCase
     /**
      * @return array
      */
-    public function acceptsProvider(): array
+    public function acceptsProvider(): iterable
     {
         return [
             [1, false],
