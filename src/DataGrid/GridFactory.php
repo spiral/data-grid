@@ -34,7 +34,7 @@ class GridFactory implements GridFactoryInterface
     private $input;
 
     /** @var InputInterface|null */
-    private $defaultInput;
+    private $defaults;
 
     /** @var GridInterface */
     private $view;
@@ -48,7 +48,7 @@ class GridFactory implements GridFactoryInterface
     {
         $this->compiler = $compiler;
         $this->input = $input ?? new NullInput();
-        $this->defaultInput = new NullInput();
+        $this->defaults = new NullInput();
         $this->view = $view ?? new Grid();
     }
 
@@ -75,7 +75,7 @@ class GridFactory implements GridFactoryInterface
     public function withDefaults(array $data): self
     {
         $generator = clone $this;
-        $generator->defaultInput = new ArrayInput($data);
+        $generator->defaults = new ArrayInput($data);
 
         return $generator;
     }
@@ -118,7 +118,7 @@ class GridFactory implements GridFactoryInterface
         }
         $view = $view->withOption(GridInterface::FILTERS, $filters);
 
-        if ($source instanceof Countable && $this->getOption(static::KEY_FETCH_COUNT)) {
+        if ($source instanceof Countable && $this->hasOption(static::KEY_FETCH_COUNT)) {
             $view = $view->withOption(GridInterface::COUNT, $source->count());
         }
 
@@ -156,7 +156,7 @@ class GridFactory implements GridFactoryInterface
      */
     private function hasOption(string $option): bool
     {
-        return $this->input->hasValue($option) || $this->defaultInput->hasValue($option);
+        return $this->input->hasValue($option) || $this->defaults->hasValue($option);
     }
 
     /**
@@ -187,6 +187,6 @@ class GridFactory implements GridFactoryInterface
             return $this->input->getValue($option);
         }
 
-        return $this->defaultInput->getValue($option);
+        return $this->defaults->getValue($option);
     }
 }

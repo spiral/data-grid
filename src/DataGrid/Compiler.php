@@ -47,12 +47,17 @@ final class Compiler
                 return $this->compile($source, ...$specification->getSpecifications());
             }
 
+            $isWritten = false;
             foreach ($this->writers as $writer) {
                 $result = $writer->write($source, $specification, $this);
                 if ($result !== null) {
                     $source = $result;
-                    continue 2;
+                    $isWritten = true;
                 }
+            }
+
+            if ($isWritten) {
+                continue;
             }
 
             throw new CompilerException(sprintf(
