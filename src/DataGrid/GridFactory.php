@@ -80,20 +80,6 @@ class GridFactory implements GridFactoryInterface
     }
 
     /**
-     * Isolate input in a given namespace (won't affect the default input).
-     *
-     * @param string $namespace
-     * @return GridFactory
-     */
-    public function withNamespace(string $namespace): self
-    {
-        $generator = clone $this;
-        $generator->input = $generator->input->withNamespace($namespace);
-
-        return $generator;
-    }
-
-    /**
      * Generate new grid view using given source and data schema.
      *
      * @param mixed      $source
@@ -117,7 +103,7 @@ class GridFactory implements GridFactoryInterface
         }
         $view = $view->withOption(GridInterface::FILTERS, $filters);
 
-        if (is_countable($source) && $this->hasOption(static::KEY_FETCH_COUNT)) {
+        if (is_countable($source) && $this->getOption(static::KEY_FETCH_COUNT)) {
             $view = $view->withOption(GridInterface::COUNT, count($source));
         }
 
@@ -145,17 +131,6 @@ class GridFactory implements GridFactoryInterface
         }
 
         return $view->withSource($source);
-    }
-
-    /**
-     * Check if option presented in input.
-     *
-     * @param string $option
-     * @return bool
-     */
-    private function hasOption(string $option): bool
-    {
-        return $this->input->hasValue($option) || $this->defaults->hasValue($option);
     }
 
     /**

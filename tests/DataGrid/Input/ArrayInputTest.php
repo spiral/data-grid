@@ -103,7 +103,8 @@ class ArrayInputTest extends TestCase
     public function namespaceProvider(): iterable
     {
         return [
-            ['', []],
+            ['', $this->data()],
+            ['  ', $this->data()],
             ['key1', []],
             [
                 'namespace1',
