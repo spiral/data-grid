@@ -39,7 +39,7 @@ final class ArrayInput implements InputInterface
 
         $namespace = trim($namespace);
         if ($namespace === '') {
-            return $this;
+            return $input;
         }
 
         $input->data = [];
