@@ -13,7 +13,9 @@ namespace Spiral\Tests\DataGrid;
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Compiler;
 use Spiral\DataGrid\Exception\CompilerException;
-use Spiral\DataGrid\Specification\Filter\Equals;
+use Spiral\DataGrid\Specification\Filter;
+use Spiral\DataGrid\Specification\Sequence;
+use Spiral\DataGrid\SpecificationInterface;
 use Spiral\DataGrid\WriterInterface;
 use Spiral\Tests\DataGrid\Fixture;
 
@@ -40,7 +42,7 @@ class CompilerTest extends TestCase
         $this->expectException(CompilerException::class);
 
         $compiler = new Compiler();
-        $compiler->compile($source, new Equals('', ''));
+        $compiler->compile($source, new Filter\Equals('', ''));
     }
 
     /**
@@ -51,7 +53,7 @@ class CompilerTest extends TestCase
     {
         $compiler = new Compiler();
         $compiler->addWriter(new Fixture\WriterOne());
-        $compiler->compile($source, new Equals('', ''));
+        $compiler->compile($source, new Filter\Equals('', ''));
 
         $this->assertTrue(true);
     }
@@ -69,16 +71,17 @@ class CompilerTest extends TestCase
 
     /**
      * @dataProvider writersProvider
-     * @param $expected
+     * @param                 $source
+     * @param                 $expected
      * @param WriterInterface ...$writers
      */
-    public function testWriters($expected, WriterInterface ...$writers): void
+    public function testWriters($source, $expected, WriterInterface ...$writers): void
     {
         $compiler = new Compiler();
         foreach ($writers as $writer) {
             $compiler->addWriter($writer);
         }
-        $this->assertSame($expected, $compiler->compile('some source, but not null', new Equals('', '')));
+        $this->assertSame($expected, $compiler->compile($source, new Filter\Equals('', '')));
     }
 
     /**
@@ -87,9 +90,54 @@ class CompilerTest extends TestCase
     public function writersProvider(): iterable
     {
         return [
-            [Fixture\WriterOne::OUTPUT, new Fixture\WriterOne()],
-            [Fixture\WriterOne::OUTPUT, new Fixture\WriterTwo(), new Fixture\WriterOne()],
-            [Fixture\WriterTwo::OUTPUT, new Fixture\WriterOne(), new Fixture\WriterTwo()],
+            [
+                ['some source, but not null'],
+                ['some source, but not null', Fixture\WriterOne::OUTPUT],
+                new Fixture\WriterOne()
+            ],
+            [
+                ['some source, but not null'],
+                ['some source, but not null', Fixture\WriterTwo::OUTPUT, Fixture\WriterOne::OUTPUT],
+                new Fixture\WriterTwo(),
+                new Fixture\WriterOne()
+            ],
+            [
+                ['some source, but not null'],
+                ['some source, but not null', Fixture\WriterOne::OUTPUT, Fixture\WriterTwo::OUTPUT],
+                new Fixture\WriterOne(),
+                new Fixture\WriterTwo()
+            ],
+            [
+                //Also test null-source
+                null,
+                null,
+                new Fixture\WriterOne(),
+                new Fixture\WriterTwo()
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider sequenceProvider
+     * @param                        $expected
+     * @param SpecificationInterface ...$specifications
+     */
+    public function testSequence($expected, SpecificationInterface ...$specifications): void
+    {
+        $compiler = new Compiler();
+        $compiler->addWriter(new Fixture\SequenceWriter());
+        $this->assertEquals($expected, $compiler->compile([], new Sequence([], ...$specifications)));
+    }
+
+    /**
+     * @return iterable
+     */
+    public function sequenceProvider(): iterable
+    {
+        return [
+            [[Filter\Equals::class], new Filter\Equals('', '')],
+            [[Filter\Equals::class, Filter\Lt::class], new Filter\Equals('', ''), new Filter\Lt('', '')],
+            [[Filter\Lt::class, Filter\Equals::class], new Filter\Lt('', ''), new Filter\Equals('', '')],
         ];
     }
 }

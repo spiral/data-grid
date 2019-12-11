@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Spiral\DataGrid\Exception;
 
-class SpecificationException extends \RuntimeException
+use RuntimeException;
+
+class SpecificationException extends RuntimeException
 {
 }

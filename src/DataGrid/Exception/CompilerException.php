@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Spiral\DataGrid\Exception;
 
-class CompilerException extends \LogicException
+use LogicException;
+
+class CompilerException extends LogicException
 {
 }

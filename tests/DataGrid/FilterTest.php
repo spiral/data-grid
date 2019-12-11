@@ -17,6 +17,7 @@ use Spiral\DataGrid\Specification\Filter\Equals;
 use Spiral\DataGrid\Specification\Filter\Gte;
 use Spiral\DataGrid\Specification\Filter\Lte;
 use Spiral\DataGrid\Specification\Filter\Map;
+use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\Specification\Value\IntValue;
 
 class FilterTest extends TestCase
@@ -56,9 +57,14 @@ class FilterTest extends TestCase
         $all = $c->withValue(['from' => 1, 'to' => 2]);
         $this->assertInstanceOf(Map::class, $all);
 
-        $filters = $all->getFilters();
+        /**
+         * @var FilterInterface $from
+         * @var FilterInterface $to
+         */
+        ['from' => $from, 'to' => $to] = $all->getFilters();
 
-        $this->assertSame(1, $filters['from']->getValue());
-        $this->assertSame(2, $filters['to']->getValue());
+
+        $this->assertSame(1, $from->getValue());
+        $this->assertSame(2, $to->getValue());
     }
 }

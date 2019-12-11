@@ -65,10 +65,12 @@ final class EnumValue implements ValueInterface
 
         $type = new ArrayValue($this->base);
         if (!$type->accepts($values)) {
-            throw new ValueException(sprintf(
-                '"Got non-compatible values, expected only compatible with `%s`.',
-                get_class($this->base)
-            ));
+            throw new ValueException(
+                sprintf(
+                    '"Got non-compatible values, expected only compatible with `%s`.',
+                    get_class($this->base)
+                )
+            );
         }
 
         return $type->convert($values);

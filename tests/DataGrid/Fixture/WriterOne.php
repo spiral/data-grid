@@ -23,6 +23,10 @@ class WriterOne implements WriterInterface
      */
     public function write($source, SpecificationInterface $specification, Compiler $compiler)
     {
-        return self::OUTPUT;
+        if (is_array($source)) {
+            $source[] = self::OUTPUT;
+        }
+
+        return $source;
     }
 }

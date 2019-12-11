@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Spiral\DataGrid\Exception;
 
-class ValueException extends \LogicException
+use LogicException;
+
+class ValueException extends LogicException
 {
 }

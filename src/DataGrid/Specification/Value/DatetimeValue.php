@@ -12,7 +12,9 @@ declare(strict_types=1);
 
 namespace Spiral\DataGrid\Specification\Value;
 
+use DateTimeImmutable;
 use Spiral\DataGrid\Specification\ValueInterface;
+use Throwable;
 
 final class DatetimeValue implements ValueInterface
 {
@@ -32,8 +34,8 @@ final class DatetimeValue implements ValueInterface
         try {
             $value = (string)$value;
 
-            return new \DateTimeImmutable(is_numeric($value) ? "@$value" : $value);
-        } catch (\Throwable $e) {
+            return new DateTimeImmutable(is_numeric($value) ? "@$value" : $value);
+        } catch (Throwable $e) {
             return null;
         }
     }

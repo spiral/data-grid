@@ -14,6 +14,7 @@ namespace Spiral\Tests\DataGrid\Value;
 
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Specification\Value;
+use stdClass;
 
 class IntValueTest extends TestCase
 {
@@ -64,7 +65,7 @@ class IntValueTest extends TestCase
             [null, false],
             ['null', false],
             [[], false],
-            [new \stdClass(), false],
+            [new stdClass(), false],
         ];
     }
 

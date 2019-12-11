@@ -10,65 +10,72 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
-use Spiral\DataGrid\Exception\SchemaException;
-use Spiral\DataGrid\GridSchema;
-use Spiral\DataGrid\Specification\Filter\Equals;
-use Spiral\DataGrid\Specification\Sorter\Sorter;
+use Spiral\DataGrid\Exception\GridViewException;
+use Spiral\DataGrid\Grid;
 
 class GridTest extends TestCase
 {
-    public function testAddFilter(): void
+    public function testOptions(): void
     {
-        $schema = new GridSchema();
-        $schema->addFilter('My Filter', new Equals('', ''));
-        $this->assertTrue($schema->hasFilter('My filter'));
-        $this->assertTrue($schema->hasFilter('my fIltEr'));
-        $this->assertTrue($schema->hasFilter('my filter'));
+        $grid = new Grid();
+        $this->assertNull($grid->getOption('option'));
 
-        $this->assertInstanceOf(Equals::class, $schema->getFilter('my filter'));
-        $this->assertArrayHasKey('my filter', $schema->getFilters());
+        $grid = $grid->withOption('option', 'value');
+        $this->assertEquals('value', $grid->getOption('option'));
     }
 
-    public function testFilterUniqueness(): void
+    public function testSource(): void
     {
-        $this->expectException(SchemaException::class);
-        $schema = new GridSchema();
-        $schema->addFilter('my filter', new Equals('', ''));
-        $schema->addFilter('my filter', new Equals('', ''));
+        $grid = new Grid();
+        $this->assertNull($grid->getSource());
+
+        $grid = $grid->withSource([]);
+        $this->assertNotNull($grid->getSource());
     }
 
-    public function testFilterNotFound(): void
+    public function testNoIterator(): void
     {
-        $this->expectException(SchemaException::class);
-        $schema = new GridSchema();
-        $schema->getFilter('my filter');
+        $this->assertTrue(true);
+        $this->expectException(GridViewException::class);
+
+        $grid = new Grid();
+        $iterator = $grid->getIterator();
+        //Generator will not throw anything until valid method called (or iterated)
+        $iterator->valid();
     }
 
-    public function testAddSorter(): void
+    /**
+     * @throws Exception
+     */
+    public function testView(): void
     {
-        $schema = new GridSchema();
-        $schema->addSorter('My Sorter', new Sorter(''));
-        $this->assertTrue($schema->hasSorter('My Sorter'));
-        $this->assertTrue($schema->hasSorter('my sOrtEr'));
-        $this->assertTrue($schema->hasSorter('my sorter'));
+        $grid = new Grid();
+        $grid = $grid->withSource(['a', 'b', 'c', 'hello']);
+        $grid = $grid->withView('ucfirst');
 
-        $this->assertInstanceOf(Sorter::class, $schema->getSorter('my sorter'));
-        $this->assertArrayHasKey('my sorter', $schema->getSorters());
+        $iterated = [];
+        foreach ($grid->getIterator() as $value) {
+            $iterated[] = $value;
+        }
+
+        $this->assertEquals(['A', 'B', 'C', 'Hello'], $iterated);
     }
 
-    public function testSorterUniqueness(): void
+    /**
+     * @throws Exception
+     */
+    public function testNoView(): void
     {
-        $this->expectException(SchemaException::class);
-        $schema = new GridSchema();
-        $schema->addSorter('my sorter', new Sorter(''));
-        $schema->addSorter('my sorter', new Sorter(''));
-    }
+        $grid = new Grid();
+        $grid = $grid->withSource(['a', 'b', 'c', 'hello']);
 
-    public function testSorterNotFound(): void
-    {
-        $this->expectException(SchemaException::class);
-        $schema = new GridSchema();
-        $schema->getSorter('my sorter');
+        $iterated = [];
+        foreach ($grid->getIterator() as $value) {
+            $iterated[] = $value;
+        }
+
+        $this->assertEquals(['a', 'b', 'c', 'hello'], $iterated);
     }
 }

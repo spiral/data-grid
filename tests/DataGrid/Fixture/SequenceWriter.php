@@ -14,17 +14,15 @@ use Spiral\DataGrid\Compiler;
 use Spiral\DataGrid\SpecificationInterface;
 use Spiral\DataGrid\WriterInterface;
 
-class WriterTwo implements WriterInterface
+class SequenceWriter implements WriterInterface
 {
-    public const OUTPUT = 'Hello from writer two';
-
     /**
      * {@inheritDoc}
      */
     public function write($source, SpecificationInterface $specification, Compiler $compiler)
     {
         if (is_array($source)) {
-            $source[] = self::OUTPUT;
+            $source[] = get_class($specification);
         }
 
         return $source;

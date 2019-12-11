@@ -21,7 +21,7 @@ class FunctionsTest extends TestCase
     /**
      * @dataProvider hasKeyProvider
      * @param string $key
-     * @param bool $expected
+     * @param bool   $expected
      */
     public function testHasKey(string $key, bool $expected): void
     {
@@ -50,9 +50,9 @@ class FunctionsTest extends TestCase
 
     /**
      * @dataProvider getValueProvider
-     * @param string $key
+     * @param string      $key
      * @param string|null $expectException
-     * @param $expected
+     * @param             $expected
      */
     public function testGetValue(string $key, ?string $expectException, $expected): void
     {

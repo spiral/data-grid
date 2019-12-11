@@ -12,6 +12,7 @@ namespace Spiral\Tests\DataGrid\Input;
 
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use ReflectionException;
 use Spiral\DataGrid\Input\ArrayInput;
 
 class ArrayInputTest extends TestCase
@@ -19,7 +20,7 @@ class ArrayInputTest extends TestCase
     /**
      * @dataProvider hasValueProvider
      * @param string $option
-     * @param bool $expected
+     * @param bool   $expected
      */
     public function testHasValue(string $option, bool $expected): void
     {
@@ -46,8 +47,8 @@ class ArrayInputTest extends TestCase
     /**
      * @dataProvider getValueProvider
      * @param string $option
-     * @param $default
-     * @param $expected
+     * @param        $default
+     * @param        $expected
      */
     public function testGetValue(string $option, $default, $expected): void
     {
@@ -81,8 +82,8 @@ class ArrayInputTest extends TestCase
     /**
      * @dataProvider namespaceProvider
      * @param string $namespace
-     * @param array $data
-     * @throws \ReflectionException
+     * @param array  $data
+     * @throws ReflectionException
      */
     public function testWithNamespace(string $namespace, array $data): void
     {
@@ -104,26 +105,38 @@ class ArrayInputTest extends TestCase
         return [
             ['', []],
             ['key1', []],
-            ['namespace1', [
-                'key4' => 'value4',
-                'Key5' => 'value5',
-                'key 6' => ['value6'],
-            ]],
-            ['Namespace1', [
-                'key4' => 'value4',
-                'Key5' => 'value5',
-                'key 6' => ['value6'],
-            ]],
-            ['namespace 2', [
-                'key7' => 'value7',
-                'Key8' => 'value8',
-                'key 9' => ['value9'],
-            ]],
-            ['nAmespace 2', [
-                'key7' => 'value7',
-                'Key8' => 'value8',
-                'key 9' => ['value9'],
-            ]],
+            [
+                'namespace1',
+                [
+                    'key4'  => 'value4',
+                    'Key5'  => 'value5',
+                    'key 6' => ['value6'],
+                ]
+            ],
+            [
+                'Namespace1',
+                [
+                    'key4'  => 'value4',
+                    'Key5'  => 'value5',
+                    'key 6' => ['value6'],
+                ]
+            ],
+            [
+                'namespace 2',
+                [
+                    'key7'  => 'value7',
+                    'Key8'  => 'value8',
+                    'key 9' => ['value9'],
+                ]
+            ],
+            [
+                'nAmespace 2',
+                [
+                    'key7'  => 'value7',
+                    'Key8'  => 'value8',
+                    'key 9' => ['value9'],
+                ]
+            ],
         ];
     }
 
@@ -133,17 +146,17 @@ class ArrayInputTest extends TestCase
     private function data(): array
     {
         return [
-            'key1' => 'value1',
-            'Key2' => 'value2',
-            'key 3' => ['value3'],
-            'namespace1' => [
-                'key4' => 'value4',
-                'Key5' => 'value5',
+            'key1'        => 'value1',
+            'Key2'        => 'value2',
+            'key 3'       => ['value3'],
+            'namespace1'  => [
+                'key4'  => 'value4',
+                'Key5'  => 'value5',
                 'key 6' => ['value6'],
             ],
             'Namespace 2' => [
-                'key7' => 'value7',
-                'Key8' => 'value8',
+                'key7'  => 'value7',
+                'Key8'  => 'value8',
                 'key 9' => ['value9'],
             ],
         ];

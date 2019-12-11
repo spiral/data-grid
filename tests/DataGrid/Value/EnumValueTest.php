@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid\Value;
 
+use Generator;
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Exception\ValueException;
 use Spiral\DataGrid\Specification\Value;
@@ -38,7 +39,7 @@ class EnumValueTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function incorrectEnumProvider(): \Generator
+    public function incorrectEnumProvider(): Generator
     {
         $types = [
             Value\AnyValue::class,

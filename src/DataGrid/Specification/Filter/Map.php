@@ -77,8 +77,8 @@ final class Map implements FilterInterface
      */
     public function getValue()
     {
-        foreach ($this->filters as $filter) {
-            return $filter->getValue();
+        if (count($this->filters) > 0) {
+            return array_values($this->filters)[0]->getValue();
         }
 
         return null;
