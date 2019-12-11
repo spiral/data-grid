@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Spiral\DataGrid;
 
-use Countable;
 use Spiral\DataGrid\Exception\CompilerException;
 use Spiral\DataGrid\Input\ArrayInput;
 use Spiral\DataGrid\Input\NullInput;
@@ -118,8 +117,8 @@ class GridFactory implements GridFactoryInterface
         }
         $view = $view->withOption(GridInterface::FILTERS, $filters);
 
-        if ($source instanceof Countable && $this->hasOption(static::KEY_FETCH_COUNT)) {
-            $view = $view->withOption(GridInterface::COUNT, $source->count());
+        if (is_countable($source) && $this->hasOption(static::KEY_FETCH_COUNT)) {
+            $view = $view->withOption(GridInterface::COUNT, count($source));
         }
 
         $sorters = [];

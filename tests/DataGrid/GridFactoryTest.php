@@ -33,6 +33,19 @@ class GridFactoryTest extends TestCase
         $this->assertNull($grid->getOption('option'));
     }
 
+    public function testFetchCount(): void
+    {
+        $factory = $this->factory();
+
+        $this->runFetchCountAssertions($factory, [], null);
+
+        $factory = $factory->withDefaults([GridFactory::KEY_FETCH_COUNT => false]); //whatever value
+        $this->runFetchCountAssertions($factory, [], 0);
+
+        $factory = $factory->withInput(new ArrayInput([GridFactory::KEY_FETCH_COUNT => false])); //whatever value
+        $this->runFetchCountAssertions($factory, [''], 1);
+    }
+
     /**
      * @dataProvider inputProvider
      * @param array           $defaults
@@ -108,5 +121,16 @@ class GridFactoryTest extends TestCase
         $grid = $factory->create([], $schema);
 
         $this->assertEquals($expected, $grid->getOption(GridInterface::FILTERS));
+    }
+
+    /**
+     * @param GridFactory $factory
+     * @param             $source
+     * @param             $expected
+     */
+    private function runFetchCountAssertions(GridFactory $factory, $source, $expected): void
+    {
+        $grid = $factory->create($source, new GridSchema());
+        $this->assertEquals($expected, $grid->getOption(GridInterface::COUNT));
     }
 }
