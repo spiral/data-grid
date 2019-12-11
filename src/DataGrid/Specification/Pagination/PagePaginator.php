@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Spiral\DataGrid\Specification\Pagination;
 
+use LogicException;
 use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\Specification\Sequence;
 use Spiral\DataGrid\Specification\Value;
@@ -71,6 +72,7 @@ final class PagePaginator implements FilterInterface
      */
     public function getValue(): void
     {
+        throw new LogicException('Should not be called, use the specification from `withValue($value)`');
     }
 
     /**

@@ -25,7 +25,7 @@ class PaginatorTest extends TestCase
      */
     public function testLimitPaginator(array $expected, $value): void
     {
-        $p = new PagePaginator(25, [25, 50, 100]);
+        $p = new PagePaginator(25, [50, 100]);
         $this->assertSame($expected, $p->withValue($value)->getValue());
     }
 
