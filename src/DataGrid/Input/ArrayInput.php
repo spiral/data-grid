@@ -35,12 +35,13 @@ final class ArrayInput implements InputInterface
      */
     public function withNamespace(string $namespace): InputInterface
     {
+        $input = clone $this;
+
         $namespace = trim($namespace);
         if ($namespace === '') {
             return $this;
         }
 
-        $input = clone $this;
         $input->data = [];
 
         $data = $this->getValue($namespace, []);
