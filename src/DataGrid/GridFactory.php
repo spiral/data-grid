@@ -21,7 +21,7 @@ use Spiral\DataGrid\Input\NullInput;
  */
 class GridFactory implements GridFactoryInterface
 {
-    public const KEY_FILTERS     = 'filter';
+    public const KEY_FILTER      = 'filter';
     public const KEY_SORT        = 'sort';
     public const KEY_PAGINATE    = 'paginate';
     public const KEY_FETCH_COUNT = 'fetchCount';
@@ -105,7 +105,7 @@ class GridFactory implements GridFactoryInterface
         $view = clone $this->view;
 
         $filters = [];
-        foreach ($this->getOptionArray(static::KEY_FILTERS) ?? [] as $name => $value) {
+        foreach ($this->getOptionArray(static::KEY_FILTER) ?? [] as $name => $value) {
             if ($schema->hasFilter($name)) {
                 $filter = $schema->getFilter($name)->withValue($value);
 

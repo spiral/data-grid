@@ -18,39 +18,50 @@ use Spiral\DataGrid\Specification\Sequence;
 
 class PaginatorTest extends TestCase
 {
-    public function testLimitPaginator(): void
+    /**
+     * @dataProvider getValueProvider
+     * @param array $expected
+     * @param       $value
+     */
+    public function testLimitPaginator(array $expected, $value): void
     {
         $p = new PagePaginator(25, [25, 50, 100]);
+        $this->assertSame($expected, $p->withValue($value)->getValue());
+    }
 
-        $this->assertInstanceOf(Sequence::class, $p->withValue(null));
-        $this->assertSame(
-            [
-                'limit' => 25,
-                'page'  => 1
-            ],
-            $p->withValue(null)->getValue()
-        );
+    /**
+     * @return iterable
+     */
+    public function getValueProvider(): iterable
+    {
+        return [
+            [['limit' => 25, 'page' => 1], null],
+            [['limit' => 25, 'page' => 2], ['page' => 2]],
+            [['limit' => 100, 'page' => 2], ['page' => 2, 'limit' => 100]],
+            [['limit' => 100, 'page' => 1], ['limit' => 100]],
+        ];
+    }
 
-        $this->assertInstanceOf(
-            Sequence::class,
-            $p->withValue([
-                'page' => 1
-            ])
-        );
+    /**
+     * @dataProvider withValueProvider
+     * @param $value
+     */
+    public function testWithValue($value): void
+    {
+        $p = new PagePaginator(25, [25, 50, 100]);
+        $this->assertInstanceOf(Sequence::class, $p->withValue($value));
+    }
 
-        $this->assertInstanceOf(
-            Sequence::class,
-            $p->withValue([
-                'page' => 2
-            ])
-        );
-
-        $this->assertSame(
-            [
-                'limit' => 100,
-                'page'  => 2
-            ],
-            $p->withValue(['page' => 2, 'limit' => 100])->getValue()
-        );
+    /**
+     * @return iterable
+     */
+    public function withValueProvider(): iterable
+    {
+        return [
+            [null],
+            ['page' => 1],
+            ['page' => 1, 'limit' => 50],
+            ['limit' => 50],
+        ];
     }
 }
