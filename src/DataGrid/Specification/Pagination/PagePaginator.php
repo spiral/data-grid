@@ -12,19 +12,22 @@ declare(strict_types=1);
 
 namespace Spiral\DataGrid\Specification\Pagination;
 
-use LogicException;
 use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\Specification\Sequence;
+use Spiral\DataGrid\Specification\SequenceInterface;
 use Spiral\DataGrid\Specification\Value;
 use Spiral\DataGrid\SpecificationInterface;
 
-final class PagePaginator implements FilterInterface
+final class PagePaginator implements SequenceInterface, FilterInterface
 {
     /** @var Value\EnumValue */
     private $limitValue;
 
     /** @var int */
     private $defaultLimit;
+
+    /** @var SequenceInterface|null */
+    private $sequence;
 
     /**
      * @param int   $defaultLimit
@@ -49,11 +52,15 @@ final class PagePaginator implements FilterInterface
      */
     public function withValue($value): ?SpecificationInterface
     {
+        $paginator = clone $this;
+
         $limit = $this->defaultLimit;
         $page = 1;
 
         if (!is_array($value)) {
-            return $this->createSequence($limit, $page);
+            $paginator->sequence = $this->createSequence($limit, $page);
+
+            return $paginator;
         }
 
         if (isset($value['limit']) && $this->limitValue->accepts($value['limit'])) {
@@ -64,15 +71,25 @@ final class PagePaginator implements FilterInterface
             $page = max((int)$value['page'], 1);
         }
 
-        return $this->createSequence($limit, $page);
+        $paginator->sequence = $this->createSequence($limit, $page);
+
+        return $paginator;
     }
 
     /**
-     * No value until paginated.
+     * {@inheritDoc}
      */
-    public function getValue(): void
+    public function getSpecifications(): array
     {
-        throw new LogicException('Should not be called, use the specification from `withValue($value)`');
+        return $this->sequence->getSpecifications();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getValue()
+    {
+        return $this->sequence->getValue();
     }
 
     /**

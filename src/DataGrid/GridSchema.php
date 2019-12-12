@@ -14,6 +14,7 @@ namespace Spiral\DataGrid;
 
 use Spiral\DataGrid\Exception\SchemaException;
 use Spiral\DataGrid\Specification\FilterInterface;
+use Spiral\DataGrid\Specification\SequenceInterface;
 use Spiral\DataGrid\Specification\SorterInterface;
 
 /**
@@ -28,7 +29,7 @@ class GridSchema
     /** @var SorterInterface[] */
     private $sorters = [];
 
-    /** @var FilterInterface|null */
+    /** @var SequenceInterface|null */
     private $paginator;
 
     /**
@@ -136,9 +137,9 @@ class GridSchema
     /**
      * Set the pagination filter.
      *
-     * @param FilterInterface $paginator
+     * @param SequenceInterface $paginator
      */
-    public function setPaginator(FilterInterface $paginator): void
+    public function setPaginator(SequenceInterface $paginator): void
     {
         $this->paginator = $paginator;
     }
@@ -146,9 +147,9 @@ class GridSchema
     /**
      * Get the pagination configuration associated with data source. When null - no pagination can be applied.
      *
-     * @return FilterInterface|null
+     * @return SequenceInterface|null
      */
-    public function getPaginator(): ?FilterInterface
+    public function getPaginator(): ?SequenceInterface
     {
         return $this->paginator;
     }

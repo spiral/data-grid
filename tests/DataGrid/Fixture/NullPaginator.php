@@ -10,10 +10,10 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid\Fixture;
 
-use Spiral\DataGrid\Specification\FilterInterface;
+use Spiral\DataGrid\Specification\SequenceInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
-class NullPaginator implements FilterInterface
+class NullPaginator implements SequenceInterface
 {
     /**
      * {@inheritDoc}
@@ -29,5 +29,10 @@ class NullPaginator implements FilterInterface
     public function withValue($value): ?SpecificationInterface
     {
         return null;
+    }
+
+    public function getSpecifications(): array
+    {
+        return [];
     }
 }

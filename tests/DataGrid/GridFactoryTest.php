@@ -20,6 +20,7 @@ use Spiral\DataGrid\Input\ArrayInput;
 use Spiral\DataGrid\Specification\Filter\Equals;
 use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\Specification\Pagination\PagePaginator;
+use Spiral\DataGrid\Specification\SequenceInterface;
 use Spiral\DataGrid\Specification\Sorter\Sorter;
 use Spiral\DataGrid\Specification\SorterInterface;
 use Spiral\DataGrid\Specification\Value;
@@ -180,14 +181,14 @@ class GridFactoryTest extends TestCase
      * @dataProvider paginatorProvider
      * @param array           $input
      * @param array           $defaults
-     * @param FilterInterface $paginator
+     * @param SequenceInterface $paginator
      * @param                 $expected
      * @param string|null     $expectedException
      */
     public function testPaginator(
         array $input,
         array $defaults,
-        FilterInterface $paginator,
+        SequenceInterface $paginator,
         $expected,
         string $expectedException = null
     ): void {

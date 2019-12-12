@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Spiral\DataGrid;
 
 use Spiral\DataGrid\Exception\CompilerException;
-use Spiral\DataGrid\Specification\SequenceInterface;
 
 /**
  * SpecificationWriter writes the specifications into target source using a set of associated compilers.
@@ -47,10 +46,6 @@ final class Compiler
         }
 
         foreach ($specifications as $specification) {
-            if ($specification instanceof SequenceInterface) {
-                return $this->compile($source, ...$specification->getSpecifications());
-            }
-
             $isWritten = false;
             foreach ($this->writers as $writer) {
                 $result = $writer->write($source, $specification, $this);

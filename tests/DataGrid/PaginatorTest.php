@@ -14,7 +14,6 @@ namespace Spiral\Tests\DataGrid;
 
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Specification\Pagination\PagePaginator;
-use Spiral\DataGrid\Specification\Sequence;
 
 class PaginatorTest extends TestCase
 {
@@ -40,16 +39,6 @@ class PaginatorTest extends TestCase
             [['limit' => 100, 'page' => 2], ['page' => 2, 'limit' => 100]],
             [['limit' => 100, 'page' => 1], ['limit' => 100]],
         ];
-    }
-
-    /**
-     * @dataProvider withValueProvider
-     * @param $value
-     */
-    public function testWithValue($value): void
-    {
-        $p = new PagePaginator(25, [25, 50, 100]);
-        $this->assertInstanceOf(Sequence::class, $p->withValue($value));
     }
 
     /**
