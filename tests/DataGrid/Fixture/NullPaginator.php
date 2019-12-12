@@ -10,10 +10,11 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid\Fixture;
 
+use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\Specification\SequenceInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
-class NullPaginator implements SequenceInterface
+class NullPaginator implements SequenceInterface, FilterInterface
 {
     /**
      * {@inheritDoc}
