@@ -179,11 +179,11 @@ class GridFactoryTest extends TestCase
 
     /**
      * @dataProvider paginatorProvider
-     * @param array           $input
-     * @param array           $defaults
+     * @param array             $input
+     * @param array             $defaults
      * @param SequenceInterface $paginator
-     * @param                 $expected
-     * @param string|null     $expectedException
+     * @param                   $expected
+     * @param string|null       $expectedException
      */
     public function testPaginator(
         array $input,

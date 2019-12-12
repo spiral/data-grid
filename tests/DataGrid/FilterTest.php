@@ -24,45 +24,45 @@ class FilterTest extends TestCase
 {
     public function testEquals(): void
     {
-        $e = new Equals('field', 1);
+        $equals = new Equals('field', 1);
 
-        $this->assertSame(1, $e->getValue());
+        $this->assertSame(1, $equals->getValue());
     }
 
     public function testEqualsApply(): void
     {
-        $e = new Equals('field', new IntValue());
+        $equals = new Equals('field', new IntValue());
 
-        $this->assertInstanceOf(IntValue::class, $e->getValue());
+        $this->assertInstanceOf(IntValue::class, $equals->getValue());
 
-        $e = $e->withValue('10');
-        $this->assertNotNull($e);
+        $equals = $equals->withValue('10');
+        $this->assertNotNull($equals);
 
-        $this->assertSame(10, $e->getValue());
+        $this->assertSame(10, $equals->getValue());
     }
 
-    public function testComplexFilter(): void
+    public function testMapFilter(): void
     {
-        $c = new Map([
+        $map = new Map([
             'from' => new Gte('balance', new IntValue()),
             'to'   => new Lte('balance', new IntValue()),
         ]);
 
-        $this->assertNull($c->withValue(null));
-        $this->assertNull($c->withValue('scalar'));
+        $this->assertNull($map->withValue(null));
+        $this->assertNull($map->withValue('scalar'));
 
-        $this->assertNull($c->withValue([]));
-        $this->assertNull($c->withValue(['from' => 1]));
+        $this->assertNull($map->withValue([]));
+        $this->assertNull($map->withValue(['from' => 1]));
 
-        $all = $c->withValue(['from' => 1, 'to' => 2]);
-        $this->assertInstanceOf(Map::class, $all);
+        /** @var Map $map */
+        $map = $map->withValue(['from' => 1, 'to' => 2]);
+        $this->assertInstanceOf(Map::class, $map);
 
         /**
          * @var FilterInterface $from
          * @var FilterInterface $to
          */
-        ['from' => $from, 'to' => $to] = $all->getFilters();
-
+        ['from' => $from, 'to' => $to] = $map->getFilters();
 
         $this->assertSame(1, $from->getValue());
         $this->assertSame(2, $to->getValue());
