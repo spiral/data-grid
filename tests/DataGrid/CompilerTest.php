@@ -118,6 +118,18 @@ class CompilerTest extends TestCase
     }
 
     /**
+     * @dataProvider sequenceProvider
+     * @param                        $expected
+     * @param SpecificationInterface ...$specifications
+     */
+    public function testSequence($expected, SpecificationInterface ...$specifications): void
+    {
+        $compiler = new Compiler();
+        $compiler->addWriter(new Fixture\SequenceWriter());
+        $this->assertEquals($expected, $compiler->compile([], new Sequence([], ...$specifications)));
+    }
+
+    /**
      * @return iterable
      */
     public function sequenceProvider(): iterable

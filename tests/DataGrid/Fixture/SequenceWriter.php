@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Spiral\Tests\DataGrid\Fixture;
 
 use Spiral\DataGrid\Compiler;
+use Spiral\DataGrid\Specification\SequenceInterface;
 use Spiral\DataGrid\SpecificationInterface;
 use Spiral\DataGrid\WriterInterface;
 
@@ -19,10 +20,12 @@ class SequenceWriter implements WriterInterface
     /**
      * {@inheritDoc}
      */
-    public function write($source, SpecificationInterface $specification, Compiler $compiler)
+    public function write($source, SpecificationInterface $sequence, Compiler $compiler)
     {
-        if (is_array($source)) {
-            $source[] = get_class($specification);
+        if (is_array($source) && $sequence instanceof SequenceInterface) {
+            foreach ($sequence->getSpecifications() as $specification) {
+                $source[] = get_class($specification);
+            }
         }
 
         return $source;
