@@ -46,6 +46,14 @@ class ArrayValueTest extends TestCase
             [['-2.2'], true],
             [[''], true],
 
+            [false, false],
+            ['false', false],
+            [true, false],
+            ['true', false],
+            [null, false],
+            ['null', false],
+            [new stdClass(), false],
+
             [[false], false],
             [['false'], false],
             [[true], false],
