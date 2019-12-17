@@ -41,7 +41,7 @@ class IntValueTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return iterable
      */
     public function acceptsProvider(): iterable
     {
@@ -70,7 +70,7 @@ class IntValueTest extends TestCase
     }
 
     /**
-     * @return array
+     * @return iterable
      */
     public function convertProvider(): iterable
     {
