@@ -17,7 +17,6 @@
     "php": "^7.2"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-master",
     "phpunit/phpunit": "^7.0",
     "spiral/code-style": "^1.0",
     "ramsey/uuid": "^3.9"
