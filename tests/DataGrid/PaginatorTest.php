@@ -13,8 +13,9 @@ declare(strict_types=1);
 namespace Spiral\Tests\DataGrid;
 
 use PHPUnit\Framework\TestCase;
+use Spiral\DataGrid\Specification\Pagination\Limit;
+use Spiral\DataGrid\Specification\Pagination\Offset;
 use Spiral\DataGrid\Specification\Pagination\PagePaginator;
-use Spiral\DataGrid\Specification\Sequence;
 
 class PaginatorTest extends TestCase
 {
@@ -25,8 +26,8 @@ class PaginatorTest extends TestCase
      */
     public function testLimitPaginator(array $expected, $value): void
     {
-        $p = new PagePaginator(25, [50, 100]);
-        $this->assertSame($expected, $p->withValue($value)->getValue());
+        $paginator = new PagePaginator(25, [50, 100]);
+        $this->assertSame($expected, $paginator->withValue($value)->getValue());
     }
 
     /**
@@ -43,25 +44,36 @@ class PaginatorTest extends TestCase
     }
 
     /**
-     * @dataProvider withValueProvider
-     * @param $value
+     * @dataProvider specificationsProvider
+     * @param                        $value
+     * @param array                  $expected
      */
-    public function testWithValue($value): void
+    public function testSpecifications($value, array $expected): void
     {
-        $p = new PagePaginator(25, [25, 50, 100]);
-        $this->assertInstanceOf(Sequence::class, $p->withValue($value));
+        /** @var PagePaginator $paginator */
+        $paginator = new PagePaginator(25, [50, 100]);
+        $paginator = $paginator->withValue($value);
+
+        $specifications = [];
+        foreach ($paginator->getSpecifications() as $specification) {
+            $specifications[] = get_class($specification);
+        }
+
+        $this->assertSame($expected, $specifications);
     }
 
     /**
      * @return iterable
      */
-    public function withValueProvider(): iterable
+    public function specificationsProvider(): iterable
     {
         return [
-            [null],
-            ['page' => 1],
-            ['page' => 1, 'limit' => 50],
-            ['limit' => 50],
+            [null, [Limit::class]],
+            [['page' => 1], [Limit::class]],
+            [['page' => 1, 'limit' => 50], [Limit::class]],
+            [['limit' => 50], [Limit::class]],
+            [['limit' => 25, 'page' => 2], [Limit::class, Offset::class]],
+            [['limit' => 100, 'page' => 2], [Limit::class, Offset::class]],
         ];
     }
 }

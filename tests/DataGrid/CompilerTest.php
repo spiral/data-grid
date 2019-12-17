@@ -14,7 +14,6 @@ use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Compiler;
 use Spiral\DataGrid\Exception\CompilerException;
 use Spiral\DataGrid\Specification\Filter;
-use Spiral\DataGrid\Specification\Sequence;
 use Spiral\DataGrid\SpecificationInterface;
 use Spiral\DataGrid\WriterInterface;
 use Spiral\Tests\DataGrid\Fixture;
@@ -126,7 +125,7 @@ class CompilerTest extends TestCase
     {
         $compiler = new Compiler();
         $compiler->addWriter(new Fixture\SequenceWriter());
-        $this->assertEquals($expected, $compiler->compile([], new Sequence([], ...$specifications)));
+        $this->assertEquals($expected, $compiler->compile([], new Fixture\Sequence([], ...$specifications)));
     }
 
     /**

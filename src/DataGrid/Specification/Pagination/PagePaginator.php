@@ -12,19 +12,21 @@ declare(strict_types=1);
 
 namespace Spiral\DataGrid\Specification\Pagination;
 
-use LogicException;
 use Spiral\DataGrid\Specification\FilterInterface;
-use Spiral\DataGrid\Specification\Sequence;
+use Spiral\DataGrid\Specification\SequenceInterface;
 use Spiral\DataGrid\Specification\Value;
 use Spiral\DataGrid\SpecificationInterface;
 
-final class PagePaginator implements FilterInterface
+final class PagePaginator implements SequenceInterface, FilterInterface
 {
     /** @var Value\EnumValue */
     private $limitValue;
 
     /** @var int */
-    private $defaultLimit;
+    private $limit;
+
+    /** @var int */
+    private $page;
 
     /**
      * @param int   $defaultLimit
@@ -32,11 +34,10 @@ final class PagePaginator implements FilterInterface
      */
     public function __construct(int $defaultLimit, array $allowedLimits = [])
     {
-        $this->defaultLimit = $defaultLimit;
+        $this->limit = $defaultLimit;
+        $this->page = 1;
 
-        if (!in_array($defaultLimit, $allowedLimits, true)) {
-            $allowedLimits[] = $defaultLimit;
-        }
+        $allowedLimits[] = $defaultLimit;
 
         sort($allowedLimits);
 
@@ -49,44 +50,43 @@ final class PagePaginator implements FilterInterface
      */
     public function withValue($value): ?SpecificationInterface
     {
-        $limit = $this->defaultLimit;
-        $page = 1;
-
+        $paginator = clone $this;
         if (!is_array($value)) {
-            return $this->createSequence($limit, $page);
+            return $paginator;
         }
 
-        if (isset($value['limit']) && $this->limitValue->accepts($value['limit'])) {
-            $limit = $this->limitValue->convert($value['limit']);
+        if (isset($value['limit']) && $paginator->limitValue->accepts($value['limit'])) {
+            $paginator->limit = $paginator->limitValue->convert($value['limit']);
         }
 
         if (isset($value['page']) && is_numeric($value['page'])) {
-            $page = max((int)$value['page'], 1);
+            $paginator->page = max((int)$value['page'], 1);
         }
 
-        return $this->createSequence($limit, $page);
+        return $paginator;
     }
 
     /**
-     * No value until paginated.
+     * {@inheritDoc}
      */
-    public function getValue(): void
+    public function getSpecifications(): array
     {
-        throw new LogicException('Should not be called, use the specification from `withValue($value)`');
+        $specifications = [new Limit($this->limit)];
+        if ($this->page > 1) {
+            $specifications[] = new Offset($this->limit * ($this->page - 1));
+        }
+
+        return $specifications;
     }
 
     /**
-     * @param int $limit
-     * @param int $page
-     * @return Sequence
+     * {@inheritDoc}
      */
-    private function createSequence(int $limit, int $page): Sequence
+    public function getValue()
     {
-        $specifications = [new Limit($limit)];
-        if ($page > 1) {
-            $specifications[] = new Offset($limit * ($page - 1));
-        }
-
-        return new Sequence(compact('limit', 'page'), ...$specifications);
+        return [
+            'limit' => $this->limit,
+            'page'  => $this->page,
+        ];
     }
 }

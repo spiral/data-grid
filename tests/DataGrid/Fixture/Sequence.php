@@ -10,14 +10,15 @@
 
 declare(strict_types=1);
 
-namespace Spiral\DataGrid\Specification;
+namespace Spiral\Tests\DataGrid\Fixture;
 
+use Spiral\DataGrid\Specification\SequenceInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
 /**
  * Mocks public value and set of underlying specifications.
  */
-final class Sequence implements SequenceInterface
+class Sequence implements SequenceInterface
 {
     /** @var array */
     private $value;
