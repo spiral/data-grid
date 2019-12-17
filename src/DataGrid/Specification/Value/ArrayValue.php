@@ -42,7 +42,7 @@ final class ArrayValue implements ValueInterface
             }
         }
 
-        return true;
+        return count($value) > 0;
     }
 
     /**
