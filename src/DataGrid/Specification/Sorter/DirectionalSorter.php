@@ -61,6 +61,7 @@ final class DirectionalSorter implements SorterInterface
 
     /**
      * @inheritDoc
+     * @return string|null
      */
     public function getValue(): ?string
     {

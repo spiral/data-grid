@@ -26,8 +26,9 @@ final class FloatValue implements ValueInterface
 
     /**
      * @inheritDoc
+     * @return float
      */
-    public function convert($value)
+    public function convert($value): float
     {
         return (float)$value;
     }

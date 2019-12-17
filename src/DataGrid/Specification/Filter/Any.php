@@ -60,6 +60,7 @@ final class Any implements FilterInterface
 
     /**
      * @inheritDoc
+     * @return mixed|null
      */
     public function getValue()
     {

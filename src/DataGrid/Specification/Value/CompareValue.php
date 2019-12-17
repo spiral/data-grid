@@ -18,13 +18,13 @@ abstract class CompareValue implements ValueInterface
     /** @var ValueInterface */
     private $base;
 
+    /**
+     * @param ValueInterface $base
+     */
     public function __construct(ValueInterface $base)
     {
         if ($base instanceof ArrayValue) {
-            throw new ValueException(sprintf(
-                'Scalar value type expected, got `%s`',
-                get_class($base)
-            ));
+            throw new ValueException(sprintf('Scalar value type expected, got `%s`', get_class($base)));
         }
 
         $this->base = $base;
@@ -32,6 +32,7 @@ abstract class CompareValue implements ValueInterface
 
     /**
      * @inheritDoc
+     * @return bool
      */
     public function accepts($value): bool
     {

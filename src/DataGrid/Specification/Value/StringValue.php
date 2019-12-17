@@ -37,8 +37,9 @@ final class StringValue implements ValueInterface
 
     /**
      * @inheritDoc
+     * @return string
      */
-    public function convert($value)
+    public function convert($value): string
     {
         return (string)$value;
     }

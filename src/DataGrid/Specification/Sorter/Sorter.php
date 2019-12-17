@@ -38,8 +38,9 @@ final class Sorter implements SorterInterface
 
     /**
      * @inheritDoc
+     * @return string|null
      */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->sorter->getValue();
     }

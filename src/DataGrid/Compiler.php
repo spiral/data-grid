@@ -37,7 +37,6 @@ final class Compiler
      * @param mixed                  $source
      * @param SpecificationInterface ...$specifications
      * @return mixed|null
-     *
      * @throws CompilerException
      */
     public function compile($source, SpecificationInterface ...$specifications)

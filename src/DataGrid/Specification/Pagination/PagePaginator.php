@@ -67,7 +67,7 @@ final class PagePaginator implements SequenceInterface, FilterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
     public function getSpecifications(): array
     {
@@ -80,9 +80,9 @@ final class PagePaginator implements SequenceInterface, FilterInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritDoc
      */
-    public function getValue()
+    public function getValue(): array
     {
         return [
             'limit' => $this->limit,

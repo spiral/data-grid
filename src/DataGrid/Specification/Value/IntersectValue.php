@@ -50,8 +50,9 @@ final class IntersectValue implements ValueInterface
 
     /**
      * @inheritDoc
+     * @return array
      */
-    public function convert($values)
+    public function convert($values): array
     {
         $result = [];
         foreach ($values as $value) {

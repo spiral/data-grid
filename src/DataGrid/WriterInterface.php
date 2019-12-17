@@ -26,7 +26,6 @@ interface WriterInterface
      * @param SpecificationInterface $specification
      * @param Compiler               $compiler
      * @return mixed|null
-     *
      * @throws SpecificationException
      */
     public function write($source, SpecificationInterface $specification, Compiler $compiler);

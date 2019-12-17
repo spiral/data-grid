@@ -16,6 +16,7 @@ final class AscSorter extends AbstractSorter
 {
     /**
      * @inheritDoc
+     * @return string
      */
     public function getValue(): string
     {

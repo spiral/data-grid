@@ -36,7 +36,6 @@ class GridSchema
      *
      * @param string          $name
      * @param FilterInterface $filter
-     *
      * @throws SchemaException
      */
     public function addFilter(string $name, FilterInterface $filter): void
@@ -62,7 +61,6 @@ class GridSchema
      *
      * @param string $name
      * @return FilterInterface
-     *
      * @throws SchemaException
      */
     public function getFilter(string $name): FilterInterface
@@ -87,7 +85,6 @@ class GridSchema
      *
      * @param string          $name
      * @param SorterInterface $sorter
-     *
      * @throws SchemaException
      */
     public function addSorter(string $name, SorterInterface $sorter): void
@@ -113,7 +110,6 @@ class GridSchema
      *
      * @param string $name
      * @return SorterInterface
-     *
      * @throws SchemaException
      */
     public function getSorter(string $name): SorterInterface

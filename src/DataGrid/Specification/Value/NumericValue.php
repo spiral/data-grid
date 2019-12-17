@@ -27,6 +27,7 @@ final class NumericValue implements ValueInterface
 
     /**
      * @inheritDoc
+     * @return int|float|double
      */
     public function convert($value)
     {

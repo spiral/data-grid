@@ -47,8 +47,9 @@ final class ArrayValue implements ValueInterface
 
     /**
      * @inheritDoc
+     * @return array
      */
-    public function convert($value)
+    public function convert($value): array
     {
         $result = [];
         foreach ($value as $child) {

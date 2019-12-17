@@ -74,6 +74,7 @@ final class Map implements FilterInterface
 
     /**
      * @inheritDoc
+     * @return mixed|null
      */
     public function getValue()
     {
