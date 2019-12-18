@@ -32,7 +32,7 @@ class GridFactory implements GridFactoryInterface
     /** @var InputInterface */
     private $input;
 
-    /** @var InputInterface|null */
+    /** @var InputInterface */
     private $defaults;
 
     /** @var GridInterface */

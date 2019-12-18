@@ -18,10 +18,9 @@ use Spiral\DataGrid\Specification\ValueInterface;
 final class NotInArray extends Expression
 {
     /**
-     * @param string $expression
-     * @param null   $value
+     * @inheritDoc
      */
-    public function __construct(string $expression, $value = null)
+    public function __construct(string $expression, $value)
     {
         if ($value instanceof ValueInterface && !$value instanceof ArrayValue) {
             $value = new ArrayValue($value);

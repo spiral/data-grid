@@ -20,9 +20,9 @@ final class Like extends Expression
     private $pattern;
 
     /**
-     * @param string $expression
-     * @param null   $value
-     * @param string $pattern
+     * @param string     $expression
+     * @param mixed|null $value
+     * @param string     $pattern
      */
     public function __construct(string $expression, $value = null, string $pattern = '%%%s%%')
     {

@@ -29,8 +29,8 @@ interface InputInterface
     public function hasValue(string $option): bool;
 
     /**
-     * @param string $option
-     * @param null   $default
+     * @param string     $option
+     * @param mixed|null $default
      * @return mixed
      */
     public function getValue(string $option, $default = null);
