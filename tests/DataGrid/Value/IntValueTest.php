@@ -30,17 +30,6 @@ class IntValueTest extends TestCase
     }
 
     /**
-     * @dataProvider convertProvider
-     * @param mixed $value
-     * @param int   $expected
-     */
-    public function testConvert($value, int $expected): void
-    {
-        $int = new Value\IntValue();
-        $this->assertSame($expected, $int->convert($value));
-    }
-
-    /**
      * @return iterable
      */
     public function acceptsProvider(): iterable
@@ -53,7 +42,6 @@ class IntValueTest extends TestCase
             [1.1, true],
             ['1.1', true],
             [-2, true],
-            [' -2 ', true],
             [-2.2, true],
             ['-2.2', true],
             ['', true],
@@ -67,6 +55,17 @@ class IntValueTest extends TestCase
             [[], false],
             [new stdClass(), false],
         ];
+    }
+
+    /**
+     * @dataProvider convertProvider
+     * @param mixed $value
+     * @param int   $expected
+     */
+    public function testConvert($value, int $expected): void
+    {
+        $int = new Value\IntValue();
+        $this->assertSame($expected, $int->convert($value));
     }
 
     /**
