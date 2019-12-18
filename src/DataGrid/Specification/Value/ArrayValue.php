@@ -24,7 +24,11 @@ final class ArrayValue implements ValueInterface
      */
     public function __construct(ValueInterface $base)
     {
-        $this->base = $base instanceof static ? $base->base : $base;
+        if ($base instanceof static) {
+            $base = $base->base;
+        }
+
+        $this->base = $base;
     }
 
     /**

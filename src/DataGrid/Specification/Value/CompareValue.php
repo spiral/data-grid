@@ -27,7 +27,11 @@ abstract class CompareValue implements ValueInterface
             throw new ValueException(sprintf('Scalar value type expected, got `%s`', get_class($base)));
         }
 
-        $this->base = $base instanceof static ? $base->base : $base;
+        if ($base instanceof static) {
+            $base = $base->base;
+        }
+
+        $this->base = $base;
     }
 
     /**
