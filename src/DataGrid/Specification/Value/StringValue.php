@@ -32,7 +32,7 @@ final class StringValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return is_string($value) && ($this->allowEmpty || trim($value) !== '');
+        return is_string($value) && ($this->allowEmpty || $value !== '');
     }
 
     /**
@@ -41,6 +41,6 @@ final class StringValue implements ValueInterface
      */
     public function convert($value): string
     {
-        return trim($value);
+        return (string)$value;
     }
 }

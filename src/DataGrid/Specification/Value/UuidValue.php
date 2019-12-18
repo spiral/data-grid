@@ -78,7 +78,7 @@ final class UuidValue implements ValueInterface
      */
     public function convert($value): string
     {
-        return trim($value);
+        return (string)$value;
     }
 
     /**
@@ -87,7 +87,7 @@ final class UuidValue implements ValueInterface
      */
     private function isValid(string $value): bool
     {
-        $uuid = str_replace(['urn:', 'uuid:', '{', '}'], '', trim($value));
+        $uuid = str_replace(['urn:', 'uuid:', '{', '}'], '', $value);
 
         if ($this->mask === self::NIL) {
             return $value === self::NIL_VALUE;

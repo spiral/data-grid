@@ -23,10 +23,6 @@ final class DatetimeValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        if (is_string($value)) {
-            $value = trim($value);
-        }
-
         return (is_numeric($value) || is_string($value)) && ($this->convert($value) !== null || (string)$value === '');
     }
 
@@ -37,7 +33,7 @@ final class DatetimeValue implements ValueInterface
     public function convert($value): ?DateTimeImmutable
     {
         try {
-            $value = trim($value);
+            $value = (string)$value;
 
             return new DateTimeImmutable(is_numeric($value) ? "@$value" : $value);
         } catch (Throwable $e) {
