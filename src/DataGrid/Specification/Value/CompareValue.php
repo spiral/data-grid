@@ -27,7 +27,7 @@ abstract class CompareValue implements ValueInterface
             throw new ValueException(sprintf('Scalar value type expected, got `%s`', get_class($base)));
         }
 
-        $this->base = $base;
+        $this->base = $base instanceof static ? $base->base : $base;
     }
 
     /**
@@ -36,6 +36,10 @@ abstract class CompareValue implements ValueInterface
      */
     public function accepts($value): bool
     {
+        if (is_string($value)) {
+            $value = trim($value);
+        }
+
         if (!$this->base->accepts($value)) {
             return false;
         }
@@ -48,6 +52,10 @@ abstract class CompareValue implements ValueInterface
      */
     public function convert($value)
     {
+        if (is_string($value)) {
+            $value = trim($value);
+        }
+
         return $this->base->convert($value);
     }
 

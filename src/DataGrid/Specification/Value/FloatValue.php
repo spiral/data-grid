@@ -21,7 +21,11 @@ final class FloatValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return is_numeric($value) || (is_string($value) && (string)$value === '');
+        if (is_string($value)) {
+            $value = trim($value);
+        }
+
+        return is_numeric($value) || (is_string($value) && $value === '');
     }
 
     /**
@@ -30,6 +34,10 @@ final class FloatValue implements ValueInterface
      */
     public function convert($value): float
     {
+        if (is_string($value)) {
+            $value = trim($value);
+        }
+
         return (float)$value;
     }
 }

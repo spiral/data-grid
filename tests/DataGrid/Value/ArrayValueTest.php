@@ -29,6 +29,17 @@ class ArrayValueTest extends TestCase
     }
 
     /**
+     * @dataProvider acceptsProvider
+     * @param mixed $value
+     * @param bool  $expected
+     */
+    public function testAcceptsNested($value, bool $expected): void
+    {
+        $array = new Value\ArrayValue(new Value\ArrayValue(new Value\IntValue()));
+        $this->assertSame($expected, $array->accepts($value));
+    }
+
+    /**
      * @return iterable
      */
     public function acceptsProvider(): iterable
@@ -73,6 +84,17 @@ class ArrayValueTest extends TestCase
     public function testConvert(array $value, array $expected): void
     {
         $array = new Value\ArrayValue(new Value\IntValue());
+        $this->assertSame($expected, $array->convert($value));
+    }
+
+    /**
+     * @dataProvider convertProvider
+     * @param array $value
+     * @param array $expected
+     */
+    public function testConvertNested(array $value, array $expected): void
+    {
+        $array = new Value\ArrayValue(new Value\ArrayValue(new Value\IntValue()));
         $this->assertSame($expected, $array->convert($value));
     }
 

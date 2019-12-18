@@ -24,11 +24,8 @@ class EnumValueTest extends TestCase
      * @param string|null    $expectedException
      * @param mixed          ...$values
      */
-    public function testIncorrectEnum(
-        ValueInterface $type,
-        ?string $expectedException,
-        ...$values
-    ): void {
+    public function testIncorrectEnum(ValueInterface $type, ?string $expectedException, ...$values): void
+    {
         if ($expectedException !== null) {
             $this->expectException($expectedException);
         }
@@ -55,6 +52,7 @@ class EnumValueTest extends TestCase
         foreach ($types as $type) {
             yield [new $type(), ValueException::class];
         }
+
         yield [new Value\StringValue(), ValueException::class, [1, '2']];
     }
 
@@ -79,5 +77,14 @@ class EnumValueTest extends TestCase
             ['1', true],
             ['3', false]
         ];
+    }
+
+    public function testNested(): void
+    {
+        $this->expectException(ValueException::class);
+        new Value\EnumValue(new Value\EnumValue(new Value\StringValue(), 'a', 'b'), 'c', 'd');
+
+        //we're only looking for expected exceptions
+        $this->assertTrue(true);
     }
 }

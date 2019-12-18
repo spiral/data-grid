@@ -32,7 +32,11 @@ final class ScalarValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return is_scalar($value) && ($this->allowEmpty || (string)$value !== '');
+        if (is_string($value)) {
+            $value = trim($value);
+        }
+
+        return is_scalar($value) && ($this->allowEmpty || $value !== '');
     }
 
     /**
@@ -40,6 +44,10 @@ final class ScalarValue implements ValueInterface
      */
     public function convert($value)
     {
+        if (is_string($value)) {
+            $value = trim($value);
+        }
+
         return $value;
     }
 }
