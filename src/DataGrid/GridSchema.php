@@ -118,7 +118,7 @@ class GridSchema
             throw new SchemaException("No such sorter `$name`");
         }
 
-        return $this->sorters[strtolower($name)] ?? null;
+        return $this->sorters[strtolower($name)];
     }
 
     /**
