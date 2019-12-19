@@ -73,7 +73,7 @@ class EnumValueTest extends TestCase
     public function acceptsProvider(): iterable
     {
         return [
-            [1, false],
+            [1, true],
             ['1', true],
             ['3', false]
         ];

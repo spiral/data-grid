@@ -38,9 +38,9 @@ class AccessorTest extends TestCase
      */
     public function testAccepts(string $accessor): void
     {
-        $string = new Value\StringValue();
-        $this->assertTrue($this->create($accessor, $string)->accepts('abc'));
-        $this->assertFalse($this->create($accessor, $string)->accepts(123));
+        $numeric = new Value\NumericValue();
+        $this->assertTrue($this->create($accessor, $numeric)->accepts('abc'));
+        $this->assertTrue($this->create($accessor, $numeric)->accepts(123));
 
         $scalar = new Value\ScalarValue();
         $this->assertTrue($this->create($accessor, $scalar)->accepts(123));
