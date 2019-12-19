@@ -51,17 +51,23 @@ final class UuidValue implements ValueInterface
     /** @var string */
     private $mask;
 
+    /** @var RegexValue|null */
+    private $regex;
+
     /**
      * @param string $mask
      */
     public function __construct(string $mask = self::VALID)
     {
-        $mask = strtolower($mask);
-        if ($mask !== self::NIL && !isset(self::MASK_REGEX_PATTERNS[$mask])) {
-            throw new ValueException('Invalid UUID version mask given. Please choose one of the constants.');
-        }
+        $this->mask = strtolower($mask);
 
-        $this->mask = $mask;
+        if ($this->mask !== self::NIL) {
+            if (!isset(self::MASK_REGEX_PATTERNS[$this->mask])) {
+                throw new ValueException('Invalid UUID version mask given. Please choose one of the constants.');
+            }
+
+            $this->regex = new RegexValue(self::MASK_REGEX_PATTERNS[$this->mask]);
+        }
     }
 
     /**
@@ -69,7 +75,7 @@ final class UuidValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return is_string($value) && $this->isValid($value);
+        return (is_numeric($value) || is_string($value)) && $this->isValid($this->convert($value));
     }
 
     /**
@@ -93,6 +99,6 @@ final class UuidValue implements ValueInterface
             return $value === self::NIL_VALUE;
         }
 
-        return (bool)preg_match(self::MASK_REGEX_PATTERNS[$this->mask], $uuid);
+        return $this->regex->accepts($uuid);
     }
 }
