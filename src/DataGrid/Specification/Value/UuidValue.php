@@ -33,7 +33,7 @@ final class UuidValue implements ValueInterface
     /**
      * An array of all validation regex patterns.
      */
-    private const MASK_REGEX_PATTERNS = [
+    private const PATTERNS = [
         self::VALID => '~^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$~i',
         self::V1    => '~^[0-9a-f]{8}-[0-9a-f]{4}-1[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$~i',
         self::V2    => '~^[0-9a-f]{8}-[0-9a-f]{4}-2[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$~i',
@@ -51,7 +51,7 @@ final class UuidValue implements ValueInterface
     /** @var string */
     private $mask;
 
-    /** @var RegexValue|null */
+    /** @var RegexValue */
     private $regex;
 
     /**
@@ -61,13 +61,11 @@ final class UuidValue implements ValueInterface
     {
         $this->mask = strtolower($mask);
 
-        if ($this->mask !== self::NIL) {
-            if (!isset(self::MASK_REGEX_PATTERNS[$this->mask])) {
-                throw new ValueException('Invalid UUID version mask given. Please choose one of the constants.');
-            }
-
-            $this->regex = new RegexValue(self::MASK_REGEX_PATTERNS[$this->mask]);
+        if ($this->mask !== self::NIL && !isset(self::PATTERNS[$this->mask])) {
+            throw new ValueException('Invalid UUID version mask given. Please choose one of the constants.');
         }
+
+        $this->regex = new RegexValue(self::PATTERNS[$this->mask !== self::NIL ? $this->mask : self::VALID]);
     }
 
     /**
