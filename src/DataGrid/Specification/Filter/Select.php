@@ -15,13 +15,12 @@ namespace Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
-use function Spiral\DataGrid\hasKey;
+use function Spiral\DataGrid\hasValue;
 
 /**
- * Complex filter provides the ability to distribute complex array value across multiple
- * nested filters.
+ * Complex filter provides the ability to select an intersect of filters by provided value (or array of values)
  */
-final class Map extends Group
+final class Select extends Group
 {
     /**
      * @param array|FilterInterface[] $filters
@@ -36,28 +35,18 @@ final class Map extends Group
      */
     public function withValue($value): ?SpecificationInterface
     {
-        if (!is_array($value)) {
-            // only array values are expected
-            return null;
-        }
-
-        $map = $this->clone($value);
+        $select = $this->clone($value);
+        $value = (array)$value;
 
         foreach ($this->filters as $name => $filter) {
             $name = (string)$name;
-            if (!hasKey($value, $name)) {
-                // all values must be provided
-                return null;
+            if (!hasValue($value, $name)) {
+                continue;
             }
 
-            $applied = $filter->withValue($value[$name]);
-            if ($applied === null) {
-                return null;
-            }
-
-            $map->filters[$name] = $applied;
+            $select->filters[$name] = $filter;
         }
 
-        return !empty($map->filters) ? $map : null;
+        return !empty($select->filters) ? $select : null;
     }
 }

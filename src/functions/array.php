@@ -15,14 +15,30 @@ use LogicException;
 /**
  * Case insensitive search for a key existence in the given array.
  *
- * @param array  $array
- * @param string $search
+ * @param array            $array
+ * @param string|int|float $search
  * @return bool
  */
-function hasKey(array $array, string $search): bool
+function hasKey(array $array, $search): bool
 {
     foreach ($array as $key => $value) {
-        if (strcasecmp($key, $search) === 0) {
+        if (equals($key, $search)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * @param array $array
+ * @param       $search
+ * @return bool
+ */
+function hasValue(array $array, $search): bool
+{
+    foreach ($array as $key => $value) {
+        if (equals($value, $search)) {
             return true;
         }
     }
@@ -41,10 +57,29 @@ function hasKey(array $array, string $search): bool
 function getValue(array $array, string $search)
 {
     foreach ($array as $key => $value) {
-        if (strcasecmp($key, $search) === 0) {
+        if (equals($key, $search)) {
             return $value;
         }
     }
 
     throw new LogicException("`$search` key is not presented in the array.");
+}
+
+/**
+ * @param mixed $value1
+ * @param mixed $value2
+ * @return bool
+ * @internal
+ */
+function equals($value1, $value2): bool
+{
+    if (is_string($value1) && is_string($value2) && strcasecmp($value1, $value2) === 0) {
+        return true;
+    }
+
+    if (is_numeric($value1) && is_numeric($value2) && strcasecmp((string)$value1, (string)$value2) === 0) {
+        return true;
+    }
+
+    return $value1 === $value2;
 }

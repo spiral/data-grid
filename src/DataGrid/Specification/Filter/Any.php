@@ -15,11 +15,8 @@ namespace Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
-final class Any implements FilterInterface
+final class Any extends Group
 {
-    /** @var FilterInterface[] */
-    private $filters;
-
     /**
      * @param FilterInterface ...$filter
      */
@@ -33,41 +30,19 @@ final class Any implements FilterInterface
      */
     public function withValue($value): ?SpecificationInterface
     {
-        $filter = clone $this;
-        $filter->filters = [];
+        $any = $this->clone($value);
 
-        foreach ($this->filters as $f) {
-            $applied = $f->withValue($value);
+        foreach ($this->filters as $filter) {
+            $applied = $filter->withValue($value);
 
             if ($applied === null) {
                 // all nested filters must be configured
                 continue;
             }
 
-            $filter->filters[] = $applied;
+            $any->filters[] = $applied;
         }
 
-        return !empty($filter->filters) ? $filter : null;
-    }
-
-    /**
-     * @return array|FilterInterface[]
-     */
-    public function getFilters(): array
-    {
-        return $this->filters;
-    }
-
-    /**
-     * @inheritDoc
-     * @return mixed|null
-     */
-    public function getValue()
-    {
-        if (count($this->filters) > 0) {
-            return array_values($this->filters)[0]->getValue();
-        }
-
-        return null;
+        return !empty($any->filters) ? $any : null;
     }
 }
