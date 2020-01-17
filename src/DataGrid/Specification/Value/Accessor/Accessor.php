@@ -12,6 +12,9 @@ namespace Spiral\DataGrid\Specification\Value\Accessor;
 
 use Spiral\DataGrid\Specification\ValueInterface;
 
+/**
+ * Note that the nested values/accessors are executed after the parent one.
+ */
 abstract class Accessor implements ValueInterface
 {
     /** @var ValueInterface */
