@@ -46,7 +46,7 @@ final class RangeValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return $this->base->accepts($value) && $this->acceptsStart($value) & $this->acceptsEnd($value);
+        return $this->base->accepts($value) && $this->acceptsStart($value) && $this->acceptsEnd($value);
     }
 
     /**
