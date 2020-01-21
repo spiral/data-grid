@@ -15,6 +15,7 @@ use Spiral\DataGrid\Exception\ValueException;
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value\BoolValue;
 use Spiral\DataGrid\Specification\Value\IntValue;
+use stdClass;
 
 class BetweenTest extends TestCase
 {
@@ -43,6 +44,7 @@ class BetweenTest extends TestCase
             [[1, 2], null],
             [[3, 2], null],
             ['string', ValueException::class],
+            [new stdClass(), ValueException::class],
             [[], ValueException::class],
             [[1], ValueException::class],
             [[2, 2], ValueException::class],
@@ -61,7 +63,12 @@ class BetweenTest extends TestCase
         $between = new Filter\Between('field', $value, false, false);
         $between = $between->withValue($with);
 
-        $this->assertEquals($valid, $between !== null);
+        if ($valid) {
+            $this->assertNotNull($between);
+            $this->assertIsArray($between->getValue());
+        } else {
+            $this->assertNull($between);
+        }
     }
 
     /**
@@ -75,7 +82,8 @@ class BetweenTest extends TestCase
             1,
             [],
             [1],
-            [1, 2, 3]
+            [1, 2, 3],
+            new stdClass()
         ];
 
         foreach ($incorrectValues as $incorrectValue) {
