@@ -23,22 +23,24 @@ final class RangeValue implements ValueInterface
     private $base;
 
     /** @var RangeValue\Boundary */
-    private $start;
+    private $from;
 
     /** @var RangeValue\Boundary */
-    private $end;
+    private $to;
 
-    public function __construct(
-        ValueInterface $base,
-        RangeValue\Boundary $start = null,
-        RangeValue\Boundary $end = null
-    ) {
+    /**
+     * @param ValueInterface           $base
+     * @param RangeValue\Boundary|null $from
+     * @param RangeValue\Boundary|null $to
+     */
+    public function __construct(ValueInterface $base, RangeValue\Boundary $from = null, RangeValue\Boundary $to = null)
+    {
         $this->base = $base;
-        $start = $start ?? RangeValue\Boundary::empty();
-        $end = $end ?? RangeValue\Boundary::empty();
+        $from = $from ?? RangeValue\Boundary::empty();
+        $to = $to ?? RangeValue\Boundary::empty();
 
-        $this->validateBoundaries($start, $end);
-        $this->setBoundaries($start, $end);
+        $this->validateBoundaries($from, $to);
+        $this->setBoundaries($from, $to);
     }
 
     /**
@@ -46,7 +48,7 @@ final class RangeValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return $this->base->accepts($value) && $this->acceptsStart($value) && $this->acceptsEnd($value);
+        return $this->base->accepts($value) && $this->acceptsFrom($value) && $this->acceptsTo($value);
     }
 
     /**
@@ -58,16 +60,16 @@ final class RangeValue implements ValueInterface
     }
 
     /**
-     * @param RangeValue\Boundary $start
-     * @param RangeValue\Boundary $end
+     * @param RangeValue\Boundary $from
+     * @param RangeValue\Boundary $to
      */
-    private function validateBoundaries(RangeValue\Boundary $start, RangeValue\Boundary $end): void
+    private function validateBoundaries(RangeValue\Boundary $from, RangeValue\Boundary $to): void
     {
-        if (!$this->acceptsBoundary($start) || !$this->acceptsBoundary($end)) {
+        if (!$this->acceptsBoundary($from) || !$this->acceptsBoundary($to)) {
             throw new ValueException('Range boundaries should be applicable via passed type.');
         }
 
-        if ($this->convertBoundaryValue($start) === $this->convertBoundaryValue($end)) {
+        if ($this->convertBoundaryValue($from) === $this->convertBoundaryValue($to)) {
             throw new ValueException('Range boundaries should be different.');
         }
     }
@@ -94,44 +96,44 @@ final class RangeValue implements ValueInterface
      * @param mixed $value
      * @return bool
      */
-    private function acceptsStart($value): bool
+    private function acceptsFrom($value): bool
     {
-        if ($this->start->empty) {
+        if ($this->from->empty) {
             return true;
         }
 
-        $startValue = $this->base->convert($this->start->value);
+        $from = $this->base->convert($this->from->value);
 
-        return $this->start->include ? ($value >= $startValue) : ($value > $startValue);
+        return $this->from->include ? ($value >= $from) : ($value > $from);
     }
 
     /**
      * @param mixed $value
      * @return bool
      */
-    private function acceptsEnd($value): bool
+    private function acceptsTo($value): bool
     {
-        if ($this->end->empty) {
+        if ($this->to->empty) {
             return true;
         }
 
-        $endValue = $this->base->convert($this->end->value);
+        $to = $this->base->convert($this->to->value);
 
-        return $this->end->include ? ($value <= $endValue) : ($value < $endValue);
+        return $this->to->include ? ($value <= $to) : ($value < $to);
     }
 
     /**
-     * @param RangeValue\Boundary $start
-     * @param RangeValue\Boundary $end
+     * @param RangeValue\Boundary $from
+     * @param RangeValue\Boundary $to
      */
-    private function setBoundaries(RangeValue\Boundary $start, RangeValue\Boundary $end): void
+    private function setBoundaries(RangeValue\Boundary $from, RangeValue\Boundary $to): void
     {
-        //Swap if start < end and both not empty
-        if (!$start->empty && !$end->empty && $start->value > $end->value) {
-            [$start, $end] = [$end, $start];
+        //Swap if from < to and both not empty
+        if (!$from->empty && !$to->empty && $from->value > $to->value) {
+            [$from, $to] = [$to, $from];
         }
 
-        $this->start = $start;
-        $this->end = $end;
+        $this->from = $from;
+        $this->to = $to;
     }
 }

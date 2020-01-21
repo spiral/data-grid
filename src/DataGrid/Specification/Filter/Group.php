@@ -36,7 +36,6 @@ abstract class Group implements FilterInterface
 
     /**
      * @inheritDoc
-     * @return mixed|null
      */
     public function getValue()
     {

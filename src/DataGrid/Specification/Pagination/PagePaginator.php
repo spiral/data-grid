@@ -81,6 +81,7 @@ final class PagePaginator implements SequenceInterface, FilterInterface
 
     /**
      * @inheritDoc
+     * @return array
      */
     public function getValue(): array
     {

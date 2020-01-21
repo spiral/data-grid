@@ -29,6 +29,7 @@ final class Offset implements SpecificationInterface
 
     /**
      * @inheritDoc
+     * @return int
      */
     public function getValue(): int
     {

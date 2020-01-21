@@ -46,6 +46,7 @@ final class SorterSet implements SorterInterface
 
     /**
      * @inheritDoc
+     * @return string
      */
     public function getValue(): string
     {
