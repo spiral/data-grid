@@ -83,10 +83,10 @@ class UuidValueTest extends TestCase
 
         $ns = '12345678-1234-1234-1234-1234567890ab';
         $nil = Uuid::NIL;
-        $uuid1 = Uuid::uuid1();
-        $uuid3 = Uuid::uuid3($ns, 'name');
-        $uuid4 = Uuid::uuid4();
-        $uuid5 = Uuid::uuid5($ns, 'name');
+        $uuid1 = Uuid::uuid1()->toString();
+        $uuid3 = Uuid::uuid3($ns, 'name')->toString();
+        $uuid4 = Uuid::uuid4()->toString();
+        $uuid5 = Uuid::uuid5($ns, 'name')->toString();
         $uuids = [$nil, $uuid1, $uuid3, $uuid4, $uuid5];
 
         foreach ($uuids as $uuid) {
