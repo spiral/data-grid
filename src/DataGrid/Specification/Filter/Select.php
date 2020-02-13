@@ -47,6 +47,10 @@ final class Select extends Group
             $select->filters[$name] = $filter;
         }
 
-        return !empty($select->filters) ? $select : null;
+        if (empty($select->filters)) {
+            return null;
+        }
+
+        return count($select->filters) === 1 ? array_values($select->filters)[0] : new All(...$select->filters);
     }
 }

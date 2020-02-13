@@ -57,10 +57,7 @@ class SelectTest extends TestCase
         /** @var Filter\Select $filter */
         $filter = $this->filter()->withValue(1);
 
-        $this->assertNotNull($filter);
-        $this->assertInstanceOf(Filter\Select::class, $filter);
-        $this->assertCount(1, $filter->getFilters());
-        $this->assertInstanceOf(Filter\Equals::class, array_values($filter->getFilters())[0]);
+        $this->assertInstanceOf(Filter\Equals::class, $filter);
     }
 
     public function testSingleValue(): void
@@ -68,10 +65,7 @@ class SelectTest extends TestCase
         /** @var Filter\Select $filter */
         $filter = $this->filter()->withValue('1');
 
-        $this->assertNotNull($filter);
-        $this->assertInstanceOf(Filter\Select::class, $filter);
-        $this->assertCount(1, $filter->getFilters());
-        $this->assertInstanceOf(Filter\Equals::class, array_values($filter->getFilters())[0]);
+        $this->assertInstanceOf(Filter\Equals::class, $filter);
     }
 
     public function testArrayValue(): void
@@ -80,7 +74,7 @@ class SelectTest extends TestCase
         $filter = $this->filter()->withValue(['1', '2']);
 
         $this->assertNotNull($filter);
-        $this->assertInstanceOf(Filter\Select::class, $filter);
+        $this->assertInstanceOf(Filter\All::class, $filter);
         $this->assertCount(2, $filter->getFilters());
         $this->assertInstanceOf(Filter\Equals::class, array_values($filter->getFilters())[0]);
         $this->assertInstanceOf(Filter\Any::class, array_values($filter->getFilters())[1]);
@@ -97,10 +91,7 @@ class SelectTest extends TestCase
         ]);
 
         $filter = $select->withValue(1);
-        $this->assertNotNull($filter);
-        $this->assertInstanceOf(Filter\Select::class, $filter);
-        $this->assertCount(1, $filter->getFilters());
-        $this->assertInstanceOf(Filter\Any::class, array_values($filter->getFilters())[0]);
+        $this->assertInstanceOf(Filter\Any::class, $filter);
     }
 
     /**
