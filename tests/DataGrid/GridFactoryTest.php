@@ -92,14 +92,30 @@ class GridFactoryTest extends TestCase
     /**
      * @dataProvider fetchCountProvider
      * @param array $defaults
-     * @param       $source
-     * @param       $expected
+     * @param mixed $source
+     * @param mixed $expected
      */
     public function testFetchCount(array $defaults, $source, $expected): void
     {
         $factory = $this->factory()->withDefaults($defaults);
         $grid = $factory->create($source, new GridSchema());
         $this->assertEquals($expected, $grid->getOption(GridInterface::COUNT));
+    }
+
+    /**
+     * @dataProvider fetchCountProvider
+     * @param array $defaults
+     * @param mixed $source
+     * @param mixed $expected
+     */
+    public function testFetchCustomCount(array $defaults, $source, $expected): void
+    {
+        $factory = $this->factory()->withDefaults($defaults)->withCounter(static function ($select): int {
+            return count($select) * 2;
+        });
+
+        $grid = $factory->create($source, new GridSchema());
+        $this->assertEquals($expected * 2, $grid->getOption(GridInterface::COUNT));
     }
 
     /**

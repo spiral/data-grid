@@ -26,6 +26,9 @@ class GridFactory implements GridFactoryInterface
     public const KEY_PAGINATE    = 'paginate';
     public const KEY_FETCH_COUNT = 'fetchCount';
 
+    /** @var callable */
+    private $count = 'count';
+
     /** @var Compiler */
     private $compiler;
 
@@ -80,6 +83,18 @@ class GridFactory implements GridFactoryInterface
     }
 
     /**
+     * @param callable $counter
+     * @return $this
+     */
+    public function withCounter(callable $counter): self
+    {
+        $generator = clone $this;
+        $generator->count = $counter;
+
+        return $generator;
+    }
+
+    /**
      * Generate new grid view using given source and data schema.
      *
      * @param mixed      $source
@@ -104,7 +119,7 @@ class GridFactory implements GridFactoryInterface
         $view = $view->withOption(GridInterface::FILTERS, $filters);
 
         if (is_countable($source) && $this->getOption(static::KEY_FETCH_COUNT)) {
-            $view = $view->withOption(GridInterface::COUNT, count($source));
+            $view = $view->withOption(GridInterface::COUNT, ($this->count)($source));
         }
 
         $sorters = [];
