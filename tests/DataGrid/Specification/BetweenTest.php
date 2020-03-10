@@ -153,4 +153,42 @@ class BetweenTest extends TestCase
         $between = new Filter\Between('field', new IntValue());
         yield [$between->withValue([3, 2])];
     }
+
+    /**
+     * @dataProvider originalProvider
+     * @param Filter\Between $between
+     * @param bool           $isOriginal
+     * @param string|null    $from
+     * @param string|null    $to
+     */
+    public function testOriginal(
+        Filter\Between $between,
+        bool $isOriginal,
+        ?string $from,
+        ?string $to
+    ): void {
+        $filters = $between->getFilters(true);
+
+        if ($isOriginal) {
+            $this->assertCount(1, $filters);
+            $this->assertInstanceOf(Filter\Between::class, $filters[0]);
+        } else {
+            $this->assertCount(2, $filters);
+            $this->assertInstanceOf($from, $filters[0]);
+            $this->assertInstanceOf($to, $filters[1]);
+        }
+    }
+
+    /**
+     * @return iterable
+     */
+    public function originalProvider(): iterable
+    {
+        return [
+            [new Filter\Between('field', [1, 2]), true, null, null],
+            [new Filter\Between('field', [1, 2], false), false, Filter\Gt::class, Filter\Lte::class],
+            [new Filter\Between('field', [1, 2], true, false), false, Filter\Gte::class, Filter\Lt::class],
+            [new Filter\Between('field', [1, 2], false, false), false, Filter\Gt::class, Filter\Lt::class],
+        ];
+    }
 }

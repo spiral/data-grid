@@ -88,10 +88,15 @@ final class Between implements FilterInterface
     }
 
     /**
+     * @param bool $original
      * @return SpecificationInterface[]
      */
-    public function getFilters(): array
+    public function getFilters(bool $original = false): array
     {
+        if ($original && $this->includeFrom && $this->includeTo) {
+            return [$this];
+        }
+
         return (new All($this->fromFilter(), $this->toFilter()))->getFilters();
     }
 
