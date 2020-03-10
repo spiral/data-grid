@@ -17,7 +17,7 @@ use Spiral\DataGrid\SpecificationInterface;
 
 final class Between implements FilterInterface
 {
-    /** @var string */
+    /** @var string|int|float|bool|null|ValueInterface */
     private $expression;
 
     /** @var ValueInterface|array */
@@ -29,15 +29,27 @@ final class Between implements FilterInterface
     /** @var bool */
     private $includeTo;
 
+    /** @var bool */
+    private $viaExpression;
+
     /**
-     * @param string               $expression
-     * @param ValueInterface|array $value
-     * @param bool                 $includeFrom
-     * @param bool                 $includeTo
+     * @param ValueInterface|string|int|float|bool|null $expression
+     * @param ValueInterface|array                      $value
+     * @param bool                                      $includeFrom
+     * @param bool                                      $includeTo
      */
-    public function __construct(string $expression, $value, bool $includeFrom = true, bool $includeTo = true)
+    public function __construct($expression, $value, bool $includeFrom = true, bool $includeTo = true)
     {
-        if (!$this->isValidValue($value)) {
+        if ($expression instanceof ValueInterface) {
+            //got value between 2 fields
+            if (!$this->isValidArray($value)) {
+                throw new ValueException(sprintf(
+                    'Value expected to be an array of 2 different elements, got %s.',
+                    $this->invalidValueType($value)
+                ));
+            }
+        } elseif (!$value instanceof ValueInterface && !$this->isValidArray($value)) {
+            //got field between 2 values
             throw new ValueException(sprintf(
                 'Value expected to be instance of `%s` or an array of 2 different elements, got %s.',
                 ValueInterface::class,
@@ -49,6 +61,7 @@ final class Between implements FilterInterface
         $this->value = $this->convertValue($value);
         $this->includeFrom = $includeFrom;
         $this->includeTo = $includeTo;
+        $this->viaExpression = $expression instanceof ValueInterface;
     }
 
     /**
@@ -58,33 +71,47 @@ final class Between implements FilterInterface
     public function withValue($value): ?SpecificationInterface
     {
         $between = clone $this;
-        if (!$between->value instanceof ValueInterface) {
-            // constant value
-            return $between;
-        }
 
-        if (!$this->isValidArray($value)) {
-            // only array of 2 values is expected
-            return null;
-        }
+        if ($between->viaExpression) {
+            if (!$between->expression instanceof ValueInterface) {
+                //constant value
+                return $between;
+            }
 
-        [$from, $to] = $this->convertValue($value);
-        if (!$between->value->accepts($from) || !$between->value->accepts($to)) {
-            return null;
-        }
+            if (!$between->expression->accepts($value)) {
+                return null;
+            }
 
-        $between->value = [$from, $to];
+            $between->expression = $between->expression->convert($value);
+        } else {
+            if (!$between->value instanceof ValueInterface) {
+                // constant value
+                return $between;
+            }
+
+            if (!$this->isValidArray($value)) {
+                // only array of 2 values is expected
+                return null;
+            }
+
+            [$from, $to] = $this->convertValue($value);
+            if (!$between->value->accepts($from) || !$between->value->accepts($to)) {
+                return null;
+            }
+
+            $between->value = [$from, $to];
+        }
 
         return $between;
     }
 
     /**
      * @inheritDoc
-     * @return ValueInterface|array
+     * @return ValueInterface|array|string|int|float|bool|null
      */
     public function getValue()
     {
-        return $this->value;
+        return $this->viaExpression ? $this->expression : $this->value;
     }
 
     /**
@@ -100,18 +127,6 @@ final class Between implements FilterInterface
         return (new All($this->fromFilter(), $this->toFilter()))->getFilters();
     }
 
-    /**
-     * @param $value
-     * @return bool
-     */
-    private function isValidValue($value): bool
-    {
-        if ($value instanceof ValueInterface) {
-            return true;
-        }
-
-        return $this->isValidArray($value);
-    }
 
     /**
      * @param mixed|array $value
@@ -168,6 +183,12 @@ final class Between implements FilterInterface
      */
     private function fromFilter(): FilterInterface
     {
+        if ($this->viaExpression) {
+            return $this->includeFrom
+                ? new Gte($this->value[0], $this->expression)
+                : new Gt($this->value[0], $this->expression);
+        }
+
         $value = $this->value instanceof ValueInterface ? $this->value : $this->value[0];
 
         return $this->includeFrom
@@ -180,6 +201,12 @@ final class Between implements FilterInterface
      */
     private function toFilter(): FilterInterface
     {
+        if ($this->viaExpression) {
+            return $this->includeTo
+                ? new Lte($this->value[1], $this->expression)
+                : new Lt($this->value[1], $this->expression);
+        }
+
         $value = $this->value instanceof ValueInterface ? $this->value : $this->value[1];
 
         return $this->includeTo
