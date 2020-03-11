@@ -53,28 +53,22 @@ class BetweenTest extends TestCase
     }
 
     /**
-     * @dataProvider valueValidationProvider
+     * @dataProvider withValueProvider
      * @param mixed $value
-     * @param mixed $with
+     * @param mixed $withValue
      * @param mixed $valid
      */
-    public function testValueValidation($value, $with, bool $valid): void
+    public function testWithValue($value, $withValue, bool $valid): void
     {
         $between = new Filter\Between('field', $value, false, false);
-        $between = $between->withValue($with);
 
-        if ($valid) {
-            $this->assertNotNull($between);
-            $this->assertIsArray($between->getValue());
-        } else {
-            $this->assertNull($between);
-        }
+        $this->assertEquals($valid, $between->withValue($withValue) !== null);
     }
 
     /**
      * @return iterable
      */
-    public function valueValidationProvider(): iterable
+    public function withValueProvider(): iterable
     {
         $incorrectValues = [
             'string',
@@ -91,9 +85,8 @@ class BetweenTest extends TestCase
             yield[new IntValue(), $incorrectValue, false];
         }
 
-        yield [new BoolValue(), [1, 2], false];
-
-        return [
+        yield from [
+            [new BoolValue(), 2, false],
             [[1, 2], [2, 3], true],
             [new IntValue(), [2, 3], true],
             [new IntValue(), [3, 2], true],

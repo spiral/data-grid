@@ -136,7 +136,16 @@ final class Between implements FilterInterface
         }
 
         if (is_array($value)) {
-            return count($value) === 2 ? 'array of 2 same elements' : 'array of ' . count($value) . ' elements';
+            $count = count($value);
+            if ($count === 0) {
+                return 'empty array';
+            }
+
+            if ($count !== 2) {
+                return "array of $count elements";
+            }
+
+            return 'array of 2 same elements';
         }
 
         return gettype($value);
