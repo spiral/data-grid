@@ -107,102 +107,112 @@ class ValueBetweenTst extends TestCase
      * @param string $from
      * @param string $to
      */
-//    public function testInclude(bool $includeFrom, bool $includeTo, string $from, string $to): void
-//    {
-//        $between = new Filter\ValueBetween('field', new IntValue(), $includeFrom, $includeTo);
-//        $between = $between->withValue([2, 3]);
-//        $filters = $between->getFilters();
-//
-//        $this->assertNotEmpty($filters);
-//        $this->assertInstanceOf($from, $filters[0]);
-//        $this->assertInstanceOf($to, $filters[1]);
-//    }
+    public function testInclude(bool $includeFrom, bool $includeTo, string $from, string $to): void
+    {
+        $between = new Filter\ValueBetween(1, ['created', 'updated'], $includeFrom, $includeTo);
+        $filters = $between->getFilters();
+
+        $this->assertNotEmpty($filters);
+        $this->assertInstanceOf($from, $filters[0]);
+        $this->assertInstanceOf($to, $filters[1]);
+    }
 
     /**
      * @return iterable
      */
-//    public function includeProvider(): iterable
-//    {
-//        return [
-//            [false, false, Filter\Gt::class, Filter\Lt::class],
-//            [true, false, Filter\Gte::class, Filter\Lt::class],
-//            [false, true, Filter\Gt::class, Filter\Lte::class],
-//            [true, true, Filter\Gte::class, Filter\Lte::class],
-//        ];
-//    }
+    public function includeProvider(): iterable
+    {
+        return [
+            [false, false, Filter\Gt::class, Filter\Lt::class],
+            [true, false, Filter\Gte::class, Filter\Lt::class],
+            [false, true, Filter\Gt::class, Filter\Lte::class],
+            [true, true, Filter\Gte::class, Filter\Lte::class],
+        ];
+    }
 
     /**
      * @dataProvider originalProvider
      * @param Filter\ValueBetween $between
-     * @param bool           $isOriginal
-     * @param string|null    $from
-     * @param string|null    $to
+     * @param bool                $isOriginal
+     * @param string|null         $from
+     * @param string|null         $to
      */
-//    public function testOriginal(
-//        Filter\ValueBetween $between,
-//        bool $isOriginal,
-//        ?string $from,
-//        ?string $to
-//    ): void {
-//        $filters = $between->getFilters(true);
-//
-//        if ($isOriginal) {
-//            $this->assertCount(1, $filters);
-//            $this->assertInstanceOf(Filter\ValueBetween::class, $filters[0]);
-//        } else {
-//            $this->assertCount(2, $filters);
-//            $this->assertInstanceOf($from, $filters[0]);
-//            $this->assertInstanceOf($to, $filters[1]);
-//        }
-//    }
+    public function testOriginal(
+        Filter\ValueBetween $between,
+        bool $isOriginal,
+        ?string $from,
+        ?string $to
+    ): void {
+        $filters = $between->getFilters(true);
+
+        if ($isOriginal) {
+            $this->assertCount(1, $filters);
+            $this->assertInstanceOf(Filter\ValueBetween::class, $filters[0]);
+        } else {
+            $this->assertCount(2, $filters);
+            $this->assertInstanceOf($from, $filters[0]);
+            $this->assertInstanceOf($to, $filters[1]);
+        }
+    }
 
     /**
      * @return iterable
      */
-//    public function originalProvider(): iterable
-//    {
-//        yield from [
-//            [new Filter\ValueBetween('field', new IntValue()), true, null, null],
-//            [new Filter\ValueBetween('field', [1, 2], false), false, Filter\Gt::class, Filter\Lte::class],
-//            [new Filter\ValueBetween('field', [1, 2], true, false), false, Filter\Gte::class, Filter\Lt::class],
-//            [new Filter\ValueBetween('field', [1, 2], false, false), false, Filter\Gt::class, Filter\Lt::class],
-//        ];
-//
-//        yield from [
-//            [new Filter\ValueBetween(new IntValue(), ['field1', 'field2']), true, null, null],
-//            [
-//                new Filter\ValueBetween(new IntValue(), ['field1', 'field2'], false),
-//                false,
-//                Filter\Gt::class,
-//                Filter\Lte::class
-//            ],
-//            [
-//                new Filter\ValueBetween(new IntValue(), ['field1', 'field2'], true, false),
-//                false,
-//                Filter\Gte::class,
-//                Filter\Lt::class
-//            ],
-//            [
-//                new Filter\ValueBetween(new IntValue(), ['field1', 'field2'], false, false),
-//                false,
-//                Filter\Gt::class,
-//                Filter\Lt::class
-//            ],
-//        ];
-//    }
+    public function originalProvider(): iterable
+    {
+        yield from [
+            [new Filter\ValueBetween(new IntValue(), ['created', 'updated']), true, null, null],
+            [
+                new Filter\ValueBetween('field', ['created', 'updated'], false),
+                false,
+                Filter\Gt::class,
+                Filter\Lte::class
+            ],
+            [
+                new Filter\ValueBetween('field', ['created', 'updated'], true, false),
+                false,
+                Filter\Gte::class,
+                Filter\Lt::class
+            ],
+            [
+                new Filter\ValueBetween('field', ['created', 'updated'], false, false),
+                false,
+                Filter\Gt::class,
+                Filter\Lt::class
+            ],
+        ];
 
-//    public function testGetValue(): void
-//    {
-//        $between = new Filter\ValueBetween('field', [1, 2]);
-//        $this->assertIsArray($between->getValue());
-//        $this->assertIsArray($between->withValue([3, 4])->getValue());
-//
-//        $between = new Filter\ValueBetween('field', new IntValue());
-//        $this->assertInstanceOf(IntValue::class, $between->getValue());
-//        $this->assertIsArray($between->withValue([3, 4])->getValue());
-//
-//        $between = new Filter\ValueBetween(new IntValue(), ['field1', 'field2']);
-//        $this->assertInstanceOf(IntValue::class, $between->getValue());
-//        $this->assertIsInt($between->withValue(3)->getValue());
-//    }
+        yield from [
+            [new Filter\ValueBetween(new IntValue(), ['created', 'updated']), true, null, null],
+            [
+                new Filter\ValueBetween(new IntValue(), ['created', 'updated'], false),
+                false,
+                Filter\Gt::class,
+                Filter\Lte::class
+            ],
+            [
+                new Filter\ValueBetween(new IntValue(), ['created', 'updated'], true, false),
+                false,
+                Filter\Gte::class,
+                Filter\Lt::class
+            ],
+            [
+                new Filter\ValueBetween(new IntValue(), ['created', 'updated'], false, false),
+                false,
+                Filter\Gt::class,
+                Filter\Lt::class
+            ],
+        ];
+    }
+
+    public function testGetValue(): void
+    {
+        $between = new Filter\ValueBetween(1, ['created', 'updated']);
+        $this->assertIsInt($between->getValue());
+        $this->assertIsInt($between->withValue(2)->getValue());
+
+        $between = new Filter\ValueBetween(new IntValue(), ['created', 'updated']);
+        $this->assertInstanceOf(IntValue::class, $between->getValue());
+        $this->assertIsInt($between->withValue(3)->getValue());
+    }
 }
