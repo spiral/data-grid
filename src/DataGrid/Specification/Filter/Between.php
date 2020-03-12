@@ -35,7 +35,7 @@ final class Between implements FilterInterface
      * @param bool                 $includeFrom
      * @param bool                 $includeTo
      */
-    public function __construct($expression, $value, bool $includeFrom = true, bool $includeTo = true)
+    public function __construct(string $expression, $value, bool $includeFrom = true, bool $includeTo = true)
     {
         if (!$value instanceof ValueInterface && !$this->isValidArray($value)) {
             //got field between 2 values
