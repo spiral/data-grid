@@ -15,6 +15,7 @@ use Spiral\DataGrid\Exception\ValueException;
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value\BoolValue;
 use Spiral\DataGrid\Specification\Value\IntValue;
+use Spiral\DataGrid\Specification\Value\StringValue;
 use stdClass;
 
 class BetweenTest extends TestCase
@@ -53,28 +54,22 @@ class BetweenTest extends TestCase
     }
 
     /**
-     * @dataProvider valueValidationProvider
+     * @dataProvider withValueProvider
      * @param mixed $value
-     * @param mixed $with
+     * @param mixed $withValue
      * @param mixed $valid
      */
-    public function testValueValidation($value, $with, bool $valid): void
+    public function testWithValue($value, $withValue, bool $valid): void
     {
         $between = new Filter\Between('field', $value, false, false);
-        $between = $between->withValue($with);
 
-        if ($valid) {
-            $this->assertNotNull($between);
-            $this->assertIsArray($between->getValue());
-        } else {
-            $this->assertNull($between);
-        }
+        $this->assertEquals($valid, $between->withValue($withValue) !== null);
     }
 
     /**
      * @return iterable
      */
-    public function valueValidationProvider(): iterable
+    public function withValueProvider(): iterable
     {
         $incorrectValues = [
             'string',
@@ -91,9 +86,8 @@ class BetweenTest extends TestCase
             yield[new IntValue(), $incorrectValue, false];
         }
 
-        yield [new BoolValue(), [1, 2], false];
-
-        return [
+        yield from [
+            [new BoolValue(), 2, false],
             [[1, 2], [2, 3], true],
             [new IntValue(), [2, 3], true],
             [new IntValue(), [3, 2], true],
@@ -152,5 +146,54 @@ class BetweenTest extends TestCase
 
         $between = new Filter\Between('field', new IntValue());
         yield [$between->withValue([3, 2])];
+    }
+
+    /**
+     * @dataProvider originalProvider
+     * @param Filter\Between $between
+     * @param bool           $isOriginal
+     * @param string|null    $from
+     * @param string|null    $to
+     */
+    public function testOriginal(
+        Filter\Between $between,
+        bool $isOriginal,
+        ?string $from,
+        ?string $to
+    ): void {
+        $filters = $between->getFilters(true);
+
+        if ($isOriginal) {
+            $this->assertCount(1, $filters);
+            $this->assertInstanceOf(Filter\Between::class, $filters[0]);
+        } else {
+            $this->assertCount(2, $filters);
+            $this->assertInstanceOf($from, $filters[0]);
+            $this->assertInstanceOf($to, $filters[1]);
+        }
+    }
+
+    /**
+     * @return iterable
+     */
+    public function originalProvider(): iterable
+    {
+        return [
+            [new Filter\Between('field', new IntValue()), true, null, null],
+            [new Filter\Between('field', [1, 2], false), false, Filter\Gt::class, Filter\Lte::class],
+            [new Filter\Between('field', [1, 2], true, false), false, Filter\Gte::class, Filter\Lt::class],
+            [new Filter\Between('field', [1, 2], false, false), false, Filter\Gt::class, Filter\Lt::class],
+        ];
+    }
+
+    public function testGetValue(): void
+    {
+        $between = new Filter\Between('field', [1, 2]);
+        $this->assertIsArray($between->getValue());
+        $this->assertEquals([1, 2], $between->withValue([3, 4])->getValue());
+
+        $between = new Filter\Between('field', new StringValue());
+        $this->assertInstanceOf(StringValue::class, $between->getValue());
+        $this->assertSame(['3', '4'], $between->withValue([3, 4])->getValue());
     }
 }

@@ -37,7 +37,7 @@ final class Between implements FilterInterface
      */
     public function __construct(string $expression, $value, bool $includeFrom = true, bool $includeTo = true)
     {
-        if (!$this->isValidValue($value)) {
+        if (!$value instanceof ValueInterface && !$this->isValidArray($value)) {
             throw new ValueException(sprintf(
                 'Value expected to be instance of `%s` or an array of 2 different elements, got %s.',
                 ValueInterface::class,
@@ -73,7 +73,7 @@ final class Between implements FilterInterface
             return null;
         }
 
-        $between->value = [$from, $to];
+        $between->value = [$between->value->convert($from), $between->value->convert($to)];
 
         return $between;
     }
@@ -88,25 +88,26 @@ final class Between implements FilterInterface
     }
 
     /**
-     * @return SpecificationInterface[]
+     * @return string
      */
-    public function getFilters(): array
+    public function getExpression(): string
     {
-        return (new All($this->fromFilter(), $this->toFilter()))->getFilters();
+        return $this->expression;
     }
 
     /**
-     * @param $value
-     * @return bool
+     * @param bool $asOriginal
+     * @return SpecificationInterface[]
      */
-    private function isValidValue($value): bool
+    public function getFilters(bool $asOriginal = false): array
     {
-        if ($value instanceof ValueInterface) {
-            return true;
+        if ($asOriginal && $this->includeFrom && $this->includeTo) {
+            return [$this];
         }
 
-        return $this->isValidArray($value);
+        return [$this->fromFilter(), $this->toFilter()];
     }
+
 
     /**
      * @param mixed|array $value
@@ -134,7 +135,16 @@ final class Between implements FilterInterface
         }
 
         if (is_array($value)) {
-            return count($value) === 2 ? 'array of 2 same elements' : 'array of ' . count($value) . ' elements';
+            $count = count($value);
+            if ($count === 0) {
+                return 'empty array';
+            }
+
+            if ($count !== 2) {
+                return "array of $count elements";
+            }
+
+            return 'array of 2 same elements';
         }
 
         return gettype($value);
