@@ -38,7 +38,6 @@ final class Between implements FilterInterface
     public function __construct(string $expression, $value, bool $includeFrom = true, bool $includeTo = true)
     {
         if (!$value instanceof ValueInterface && !$this->isValidArray($value)) {
-            //got field between 2 values
             throw new ValueException(sprintf(
                 'Value expected to be instance of `%s` or an array of 2 different elements, got %s.',
                 ValueInterface::class,
