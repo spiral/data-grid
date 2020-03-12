@@ -73,7 +73,7 @@ final class Between implements FilterInterface
             return null;
         }
 
-        $between->value = [$from, $to];
+        $between->value = [$between->value->convert($from), $between->value->convert($to)];
 
         return $between;
     }

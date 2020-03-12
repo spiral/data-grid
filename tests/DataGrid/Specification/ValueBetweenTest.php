@@ -15,9 +15,10 @@ use Spiral\DataGrid\Exception\ValueException;
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value\BoolValue;
 use Spiral\DataGrid\Specification\Value\IntValue;
+use Spiral\DataGrid\Specification\Value\StringValue;
 use stdClass;
 
-class ValueBetweenTst extends TestCase
+class ValueBetweenTest extends TestCase
 {
     /**
      * @dataProvider initValueProvider
@@ -209,10 +210,14 @@ class ValueBetweenTst extends TestCase
     {
         $between = new Filter\ValueBetween(1, ['created', 'updated']);
         $this->assertIsInt($between->getValue());
-        $this->assertIsInt($between->withValue(2)->getValue());
+        $this->assertSame(1, $between->withValue(2)->getValue());
 
         $between = new Filter\ValueBetween(new IntValue(), ['created', 'updated']);
         $this->assertInstanceOf(IntValue::class, $between->getValue());
-        $this->assertIsInt($between->withValue(3)->getValue());
+        $this->assertSame(2, $between->withValue(2)->getValue());
+
+        $between = new Filter\ValueBetween(new StringValue(), ['created', 'updated']);
+        $this->assertInstanceOf(StringValue::class, $between->getValue());
+        $this->assertSame('3', $between->withValue(3)->getValue());
     }
 }
