@@ -33,7 +33,9 @@ final class Sorter implements SorterInterface
      */
     public function withDirection($direction): ?SpecificationInterface
     {
-        return $this->sorter->withDirection($direction);
+        $sorter = clone $this;
+
+        return $sorter->sorter->withDirection($direction);
     }
 
     /**
