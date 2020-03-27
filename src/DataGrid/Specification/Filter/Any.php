@@ -31,7 +31,6 @@ final class Any extends Group
     public function withValue($value): ?SpecificationInterface
     {
         $any = $this->clone($value);
-
         foreach ($this->filters as $filter) {
             $applied = $filter->withValue($value);
 
