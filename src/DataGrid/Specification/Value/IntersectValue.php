@@ -55,7 +55,7 @@ final class IntersectValue implements ValueInterface
     public function convert($values): array
     {
         $result = [];
-        foreach ($values as $value) {
+        foreach ((array)$values as $value) {
             if ($this->enum->accepts($value)) {
                 $result[] = $this->enum->convert($value);
             }
