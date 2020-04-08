@@ -57,6 +57,6 @@ final class SorterSet implements SorterInterface
      */
     public function getValue(): string
     {
-        return '';
+        return '1';
     }
 }

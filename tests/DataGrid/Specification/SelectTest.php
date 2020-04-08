@@ -71,7 +71,14 @@ class SelectTest extends TestCase
     public function testArrayValue(): void
     {
         /** @var Filter\Select $filter */
-        $filter = $this->filter()->withValue(['1', '2']);
+        $filter = new Filter\Select([
+            'one' => new Filter\Equals('name', 'value'),
+            'two' => new Filter\Any(
+                new Filter\Equals('price', 2),
+                new Filter\Gt('quantity', 5)
+            )
+        ]);
+        $filter = $filter->withValue(['one', 'two']);
 
         $this->assertNotNull($filter);
         $this->assertInstanceOf(Filter\All::class, $filter);
