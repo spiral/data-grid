@@ -51,7 +51,7 @@ final class SubsetValue implements ValueInterface
      */
     public function convert($values)
     {
-        return $this->arrayType()->convert($values);
+        return $this->arrayType()->convert((array)$values);
     }
 
     /**

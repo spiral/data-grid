@@ -51,6 +51,8 @@ final class Select extends Group
             return null;
         }
 
-        return count($select->filters) === 1 ? array_values($select->filters)[0] : new All(...$select->filters);
+        $filters = array_values($select->filters);
+
+        return count($filters) === 1 ? $filters[0] : new All(...$filters);
     }
 }

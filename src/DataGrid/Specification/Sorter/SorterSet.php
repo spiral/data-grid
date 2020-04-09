@@ -33,7 +33,14 @@ final class SorterSet implements SorterInterface
      */
     public function withDirection($direction): SpecificationInterface
     {
-        return $this;
+        $sorter = clone $this;
+        $sorter->sorters = [];
+
+        foreach ($this->sorters as $s) {
+            $sorter->sorters[] = $s->withDirection($direction);
+        }
+
+        return $sorter;
     }
 
     /**
@@ -50,6 +57,6 @@ final class SorterSet implements SorterInterface
      */
     public function getValue(): string
     {
-        return '';
+        return '1';
     }
 }
