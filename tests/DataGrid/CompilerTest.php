@@ -63,7 +63,7 @@ class CompilerTest extends TestCase
     public function sourceProvider(): iterable
     {
         return [
-            [['some', 'iterable', 'source']],
+            ['some source, but not null'],
             [new Fixture\Source()]
         ];
     }
@@ -90,19 +90,26 @@ class CompilerTest extends TestCase
     {
         return [
             [
-                ['some', 'iterable', 'source'],
-                ['some', 'iterable', 'source', Fixture\WriterOne::OUTPUT],
+                ['some source, but not null'],
+                ['some source, but not null', Fixture\WriterOne::OUTPUT],
                 new Fixture\WriterOne()
             ],
             [
-                ['some', 'iterable', 'source'],
-                ['some', 'iterable', 'source', Fixture\WriterTwo::OUTPUT, Fixture\WriterOne::OUTPUT],
+                ['some source, but not null'],
+                ['some source, but not null', Fixture\WriterTwo::OUTPUT, Fixture\WriterOne::OUTPUT],
                 new Fixture\WriterTwo(),
                 new Fixture\WriterOne()
             ],
             [
-                ['some', 'iterable', 'source'],
-                ['some', 'iterable', 'source', Fixture\WriterOne::OUTPUT, Fixture\WriterTwo::OUTPUT],
+                ['some source, but not null'],
+                ['some source, but not null', Fixture\WriterOne::OUTPUT, Fixture\WriterTwo::OUTPUT],
+                new Fixture\WriterOne(),
+                new Fixture\WriterTwo()
+            ],
+            [
+                //Also test null-source
+                null,
+                null,
                 new Fixture\WriterOne(),
                 new Fixture\WriterTwo()
             ],
