@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid;
 
+use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Compiler;
 use Spiral\DataGrid\Exception\CompilerException;
@@ -64,7 +65,7 @@ class CompilerTest extends TestCase
     {
         return [
             [['some', 'iterable', 'source']],
-            [new Fixture\Source()]
+            [new ArrayIterator()]
         ];
     }
 
