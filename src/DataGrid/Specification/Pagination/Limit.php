@@ -29,6 +29,7 @@ final class Limit implements SpecificationInterface
 
     /**
      * @inheritDoc
+     * @return int
      */
     public function getValue(): int
     {

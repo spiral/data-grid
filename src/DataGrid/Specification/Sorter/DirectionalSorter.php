@@ -44,19 +44,21 @@ final class DirectionalSorter implements SorterInterface
      */
     public function withDirection($direction): ?SpecificationInterface
     {
-        $this->direction = $this->checkDirection($direction);
-        switch ($this->direction) {
+        $sorter = clone $this;
+        $sorter->direction = $sorter->checkDirection($direction);
+
+        switch ($sorter->direction) {
             case self::ASC:
-                $this->sorter = $this->asc->withDirection(self::ASC);
+                $sorter->sorter = $sorter->asc->withDirection(self::ASC);
                 break;
             case self::DESC:
-                $this->sorter = $this->desc->withDirection(self::DESC);
+                $sorter->sorter = $sorter->desc->withDirection(self::DESC);
                 break;
             default:
-                $this->sorter = null;
+                $sorter->sorter = null;
         }
 
-        return $this->sorter;
+        return $sorter->sorter;
     }
 
     /**

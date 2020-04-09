@@ -21,13 +21,10 @@ use function Spiral\DataGrid\hasKey;
  * Complex filter provides the ability to distribute complex array value across multiple
  * nested filters.
  */
-final class Map implements FilterInterface
+final class Map extends Group
 {
-    /** @var FilterInterface[] */
-    private $filters;
-
     /**
-     * @param array $filters
+     * @param array|FilterInterface[] $filters
      */
     public function __construct(array $filters)
     {
@@ -44,11 +41,10 @@ final class Map implements FilterInterface
             return null;
         }
 
-        $map = clone $this;
-        $map->filters = [];
-
+        $map = $this->clone($value);
         foreach ($this->filters as $name => $filter) {
-            if (!hasKey($value, (string)$name)) {
+            $name = (string)$name;
+            if (!hasKey($value, $name)) {
                 // all values must be provided
                 return null;
             }
@@ -61,27 +57,6 @@ final class Map implements FilterInterface
             $map->filters[$name] = $applied;
         }
 
-        return $map;
-    }
-
-    /**
-     * @return FilterInterface[]
-     */
-    public function getFilters(): array
-    {
-        return $this->filters;
-    }
-
-    /**
-     * @inheritDoc
-     * @return mixed|null
-     */
-    public function getValue()
-    {
-        if (count($this->filters) > 0) {
-            return array_values($this->filters)[0]->getValue();
-        }
-
-        return null;
+        return !empty($map->filters) ? $map : null;
     }
 }

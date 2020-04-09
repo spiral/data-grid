@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid\Value;
 
-use Generator;
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Exception\ValueException;
 use Spiral\DataGrid\Specification\Value;
@@ -24,11 +23,8 @@ class EnumValueTest extends TestCase
      * @param string|null    $expectedException
      * @param mixed          ...$values
      */
-    public function testIncorrectEnum(
-        ValueInterface $type,
-        ?string $expectedException,
-        ...$values
-    ): void {
+    public function testIncorrectEnum(ValueInterface $type, ?string $expectedException, ...$values): void
+    {
         if ($expectedException !== null) {
             $this->expectException($expectedException);
         }
@@ -39,7 +35,10 @@ class EnumValueTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function incorrectEnumProvider(): Generator
+    /**
+     * @return iterable
+     */
+    public function incorrectEnumProvider(): iterable
     {
         $types = [
             Value\AnyValue::class,
@@ -55,6 +54,7 @@ class EnumValueTest extends TestCase
         foreach ($types as $type) {
             yield [new $type(), ValueException::class];
         }
+
         yield [new Value\StringValue(), ValueException::class, [1, '2']];
     }
 
@@ -75,9 +75,18 @@ class EnumValueTest extends TestCase
     public function acceptsProvider(): iterable
     {
         return [
-            [1, false],
+            [1, true],
             ['1', true],
             ['3', false]
         ];
+    }
+
+    public function testNested(): void
+    {
+        $this->expectException(ValueException::class);
+        new Value\EnumValue(new Value\EnumValue(new Value\StringValue(), 'a', 'b'), 'c', 'd');
+
+        //we're only looking for expected exceptions
+        $this->assertTrue(true);
     }
 }

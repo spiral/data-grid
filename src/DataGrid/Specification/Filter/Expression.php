@@ -40,7 +40,6 @@ abstract class Expression implements FilterInterface
     public function withValue($value): ?SpecificationInterface
     {
         $filter = clone $this;
-
         if (!$filter->value instanceof ValueInterface) {
             // constant value
             return $filter;

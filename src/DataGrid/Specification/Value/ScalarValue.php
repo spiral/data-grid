@@ -32,7 +32,7 @@ final class ScalarValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return is_scalar($value) && ($this->allowEmpty || (string)$value !== '');
+        return is_scalar($value) && ($this->allowEmpty || $value !== '');
     }
 
     /**

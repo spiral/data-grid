@@ -22,10 +22,6 @@ final class InArray extends Expression
      */
     public function __construct(string $expression, $value)
     {
-        if ($value instanceof ValueInterface && !$value instanceof ArrayValue) {
-            $value = new ArrayValue($value);
-        }
-
-        parent::__construct($expression, $value);
+        parent::__construct($expression, $value instanceof ValueInterface ? new ArrayValue($value) : $value);
     }
 }

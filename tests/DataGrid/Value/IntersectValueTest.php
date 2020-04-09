@@ -32,11 +32,11 @@ class IntersectValueTest extends TestCase
     public function acceptsProvider(): iterable
     {
         return [
-            [1, false],
+            [1, true],
             ['1', true],
             ['3', false],
             [[], false],
-            [[1], false],
+            [[1], true],
             [['1'], true],
             [['1', '2'], true],
             [['1', 1], true],

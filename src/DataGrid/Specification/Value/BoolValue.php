@@ -28,7 +28,7 @@ final class BoolValue implements ValueInterface
         }
 
         if (is_scalar($value)) {
-            return in_array(strtolower($value), ['0', '1', 'true', 'false'], true);
+            return in_array(strtolower((string)$value), ['0', '1', 'true', 'false'], true);
         }
 
         return false;
@@ -45,7 +45,7 @@ final class BoolValue implements ValueInterface
         }
 
         if (is_scalar($value)) {
-            switch (strtolower($value)) {
+            switch (strtolower((string)$value)) {
                 case '0':
                 case 'false':
                     return false;

@@ -29,6 +29,10 @@ final class EnumValue implements ValueInterface
      */
     public function __construct(ValueInterface $base, ...$values)
     {
+        if ($base instanceof static) {
+            throw new ValueException(sprintf('Nested value type not allowed, got `%s`', get_class($base)));
+        }
+
         $this->base = $base;
         $this->values = $this->convertEnum(array_unique($values));
     }

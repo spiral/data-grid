@@ -21,7 +21,7 @@ final class FloatValue implements ValueInterface
      */
     public function accepts($value): bool
     {
-        return is_numeric($value) || (is_string($value) && (string)$value === '');
+        return is_numeric($value) || (is_string($value) && $value === '');
     }
 
     /**

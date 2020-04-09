@@ -25,8 +25,10 @@ class PositiveValueTest extends TestCase
      */
     public function testAccepts($value, bool $expected): void
     {
-        $int = new PositiveValue(new IntValue());
-        $this->assertSame($expected, $int->accepts($value));
+        $positive = new PositiveValue(new IntValue());
+        $nested = new PositiveValue($positive);
+        $this->assertSame($expected, $positive->accepts($value));
+        $this->assertSame($expected, $nested->accepts($value));
     }
 
     /**
