@@ -12,27 +12,27 @@ namespace Spiral\Tests\DataGrid\Fixture;
 
 class Source implements \Iterator
 {
-    public function current()
+    public function current(): void
     {
         // TODO: Implement current() method.
     }
 
-    public function key()
+    public function key(): void
     {
         // TODO: Implement key() method.
     }
 
-    public function next()
+    public function next(): void
     {
         // TODO: Implement next() method.
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         // TODO: Implement rewind() method.
     }
 
-    public function valid()
+    public function valid(): void
     {
         // TODO: Implement valid() method.
     }
