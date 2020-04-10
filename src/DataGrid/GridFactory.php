@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Spiral\DataGrid;
 
 use Spiral\DataGrid\Exception\CompilerException;
+use Spiral\DataGrid\Exception\GridViewException;
 use Spiral\DataGrid\Input\ArrayInput;
 use Spiral\DataGrid\Input\NullInput;
 
@@ -95,11 +96,7 @@ class GridFactory implements GridFactoryInterface
     }
 
     /**
-     * Generate new grid view using given source and data schema.
-     *
-     * @param mixed      $source
-     * @param GridSchema $schema
-     * @return GridInterface
+     * @inheritDoc
      */
     public function create($source, GridSchema $schema): GridInterface
     {
@@ -143,6 +140,10 @@ class GridFactory implements GridFactoryInterface
 
             $source = $this->compiler->compile($source, $paginator);
             $view = $view->withOption(GridInterface::PAGINATOR, $paginator->getValue());
+        }
+
+        if (!is_iterable($source)) {
+            throw new GridViewException('GridView expects the source to be iterable after all.');
         }
 
         return $view->withSource($source);

@@ -10,9 +10,11 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Compiler;
 use Spiral\DataGrid\Exception\CompilerException;
+use Spiral\DataGrid\Exception\GridViewException;
 use Spiral\DataGrid\GridFactory;
 use Spiral\DataGrid\GridInterface;
 use Spiral\DataGrid\GridSchema;
@@ -24,6 +26,7 @@ use Spiral\DataGrid\Specification\Sorter\Sorter;
 use Spiral\DataGrid\Specification\SorterInterface;
 use Spiral\DataGrid\Specification\Value;
 use Spiral\Tests\DataGrid\Fixture\NullPaginator;
+use Spiral\Tests\DataGrid\Fixture\WriterIterateNonIterable;
 use Spiral\Tests\DataGrid\Fixture\WriterOne;
 
 class GridFactoryTest extends TestCase
@@ -34,6 +37,31 @@ class GridFactoryTest extends TestCase
         $grid = $factory->create([], new GridSchema());
 
         $this->assertNull($grid->getOption('option'));
+    }
+
+    public function testNonIterable(): void
+    {
+        $this->expectException(GridViewException::class);
+
+        $factory = $this->factory();
+        $factory->create('some non-iterable source', new GridSchema());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testIterateToIterable(): void
+    {
+        $this->assertTrue(true);
+
+        $compiler = new Compiler();
+        $compiler->addWriter(new WriterIterateNonIterable());
+
+        $schema = new GridSchema();
+        $schema->setPaginator(new PagePaginator(10));
+
+        $factory = new GridFactory($compiler);
+        $factory->create('some non-iterable source', $schema);
     }
 
     /**

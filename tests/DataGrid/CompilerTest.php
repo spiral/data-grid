@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid;
 
+use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Compiler;
 use Spiral\DataGrid\Exception\CompilerException;
@@ -63,8 +64,9 @@ class CompilerTest extends TestCase
     public function sourceProvider(): iterable
     {
         return [
-            ['some source, but not null'],
-            [new Fixture\Source()]
+            [['some', 'iterable', 'source']],
+            ['some non-iterable source'],
+            [new ArrayIterator()]
         ];
     }
 
@@ -90,26 +92,19 @@ class CompilerTest extends TestCase
     {
         return [
             [
-                ['some source, but not null'],
-                ['some source, but not null', Fixture\WriterOne::OUTPUT],
+                ['some', 'iterable', 'source'],
+                ['some', 'iterable', 'source', Fixture\WriterOne::OUTPUT],
                 new Fixture\WriterOne()
             ],
             [
-                ['some source, but not null'],
-                ['some source, but not null', Fixture\WriterTwo::OUTPUT, Fixture\WriterOne::OUTPUT],
+                ['some', 'iterable', 'source'],
+                ['some', 'iterable', 'source', Fixture\WriterTwo::OUTPUT, Fixture\WriterOne::OUTPUT],
                 new Fixture\WriterTwo(),
                 new Fixture\WriterOne()
             ],
             [
-                ['some source, but not null'],
-                ['some source, but not null', Fixture\WriterOne::OUTPUT, Fixture\WriterTwo::OUTPUT],
-                new Fixture\WriterOne(),
-                new Fixture\WriterTwo()
-            ],
-            [
-                //Also test null-source
-                null,
-                null,
+                ['some', 'iterable', 'source'],
+                ['some', 'iterable', 'source', Fixture\WriterOne::OUTPUT, Fixture\WriterTwo::OUTPUT],
                 new Fixture\WriterOne(),
                 new Fixture\WriterTwo()
             ],
