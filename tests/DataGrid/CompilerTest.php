@@ -65,6 +65,7 @@ class CompilerTest extends TestCase
     {
         return [
             [['some', 'iterable', 'source']],
+            ['some non-iterable source'],
             [new ArrayIterator()]
         ];
     }

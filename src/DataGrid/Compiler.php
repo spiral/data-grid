@@ -39,8 +39,12 @@ final class Compiler
      * @return mixed|null
      * @throws CompilerException
      */
-    public function compile(iterable $source, SpecificationInterface ...$specifications)
+    public function compile($source, SpecificationInterface ...$specifications)
     {
+        if ($source === null) {
+            return null;
+        }
+
         foreach ($specifications as $specification) {
             if ($specification instanceof SequenceInterface) {
                 return $this->compile($source, ...$specification->getSpecifications());
