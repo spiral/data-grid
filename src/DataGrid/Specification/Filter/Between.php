@@ -15,14 +15,8 @@ use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\Specification\ValueInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
-final class Between implements FilterInterface
+final class Between extends Expression
 {
-    /** @var string */
-    private $expression;
-
-    /** @var ValueInterface|array */
-    private $value;
-
     /** @var bool */
     private $includeFrom;
 
@@ -45,8 +39,7 @@ final class Between implements FilterInterface
             ));
         }
 
-        $this->expression = $expression;
-        $this->value = $this->convertValue($value);
+        parent::__construct($expression, $this->convertValue($value));
         $this->includeFrom = $includeFrom;
         $this->includeTo = $includeTo;
     }
@@ -76,23 +69,6 @@ final class Between implements FilterInterface
         $between->value = [$between->value->convert($from), $between->value->convert($to)];
 
         return $between;
-    }
-
-    /**
-     * @inheritDoc
-     * @return ValueInterface|array
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @return string
-     */
-    public function getExpression(): string
-    {
-        return $this->expression;
     }
 
     /**
