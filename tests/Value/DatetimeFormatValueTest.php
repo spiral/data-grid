@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid\Value;
 
+use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Specification\Value\DatetimeFormatValue;
-use Spiral\Tests\Files\TestCase;
 
 class DatetimeFormatValueTest extends TestCase
 {

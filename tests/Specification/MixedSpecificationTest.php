@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid\Specification;
 
+use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Compiler;
 use Spiral\DataGrid\Specification\Filter\Equals;
 use Spiral\DataGrid\Specification\Filter\SortedFilter;
 use Spiral\DataGrid\Specification\Sorter\DescSorter;
 use Spiral\DataGrid\Specification\Sorter\FilteredSorter;
 use Spiral\Tests\DataGrid\Fixture\SequenceWriter;
-use Spiral\Tests\Files\TestCase;
 
 class MixedSpecificationTest extends TestCase
 {
