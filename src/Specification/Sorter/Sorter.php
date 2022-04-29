@@ -16,7 +16,7 @@ final class Sorter implements SorterInterface
         $this->sorter = new DirectionalSorter(new AscSorter(...$expressions), new DescSorter(...$expressions));
     }
 
-    public function withDirection(string $direction): ?SpecificationInterface
+    public function withDirection(int|string $direction): ?SpecificationInterface
     {
         $sorter = clone $this;
 

@@ -33,7 +33,7 @@ class FilteredSorter implements SequenceInterface, SorterInterface
         return $this->value;
     }
 
-    public function withDirection(string $direction): ?SpecificationInterface
+    public function withDirection(int|string $direction): ?SpecificationInterface
     {
         return $this;
     }

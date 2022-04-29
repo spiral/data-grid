@@ -16,7 +16,7 @@ final class SorterSet implements SorterInterface
         $this->sorters = $sorters;
     }
 
-    public function withDirection(string $direction): SpecificationInterface
+    public function withDirection(int|string $direction): SpecificationInterface
     {
         $sorter = clone $this;
         $sorter->sorters = [];

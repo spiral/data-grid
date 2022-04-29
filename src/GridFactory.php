@@ -125,7 +125,7 @@ class GridFactory implements GridFactoryInterface
         $sorters = [];
         foreach ($this->getOptionArray(static::KEY_SORT) ?? [] as $name => $value) {
             if ($schema->hasSorter($name)) {
-                $sorter = $schema->getSorter($name)->withDirection((string) $value);
+                $sorter = $schema->getSorter($name)->withDirection($value);
 
                 if ($sorter !== null) {
                     $source = $this->compiler->compile($source, $sorter);

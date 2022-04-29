@@ -18,7 +18,7 @@ final class DirectionalSorter implements SorterInterface
     ) {
     }
 
-    public function withDirection(string $direction): ?SpecificationInterface
+    public function withDirection(int|string $direction): ?SpecificationInterface
     {
         $sorter = clone $this;
         $sorter->direction = $sorter->checkDirection($direction);
@@ -37,13 +37,13 @@ final class DirectionalSorter implements SorterInterface
         return $this->direction;
     }
 
-    private function checkDirection(string $direction): ?string
+    private function checkDirection(int|string $direction): ?string
     {
         return match (true) {
-            \in_array($direction, ['-1', SORT_DESC], true) => self::DESC,
-            \in_array($direction, ['1', SORT_ASC], true) => self::ASC,
-            \strtolower($direction) === self::DESC => self::DESC,
-            \strtolower($direction) === self::ASC => self::ASC,
+            \in_array($direction, ['-1', -1, SORT_DESC], true) => self::DESC,
+            \in_array($direction, ['1', 1, SORT_ASC], true) => self::ASC,
+            \is_string($direction) && \strtolower($direction) === self::DESC => self::DESC,
+            \is_string($direction) && \strtolower($direction) === self::ASC => self::ASC,
             default => null
         };
     }

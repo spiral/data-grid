@@ -18,5 +18,5 @@ interface SorterInterface extends SpecificationInterface
     /**
      * Lock the sorter to the specific sorting direction.
      */
-    public function withDirection(string $direction): ?SpecificationInterface;
+    public function withDirection(int|string $direction): ?SpecificationInterface;
 }

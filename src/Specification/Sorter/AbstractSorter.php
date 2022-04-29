@@ -16,7 +16,7 @@ abstract class AbstractSorter implements SorterInterface
         $this->expressions = $expressions;
     }
 
-    public function withDirection(string $direction): SpecificationInterface
+    public function withDirection(int|string $direction): SpecificationInterface
     {
         return $this;
     }
