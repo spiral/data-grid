@@ -10,7 +10,7 @@ use Spiral\DataGrid\SpecificationInterface;
 
 final class ILike implements FilterInterface
 {
-    private readonly Like $like;
+    private Like $like;
 
     public function __construct(string $expression, mixed $value = null, string $pattern = '%%%s%%')
     {
@@ -20,8 +20,9 @@ final class ILike implements FilterInterface
     public function withValue(mixed $value): ?SpecificationInterface
     {
         $filter = clone $this;
+        $filter->like = $filter->like->withValue($value);
 
-        return $filter->like->withValue($value);
+        return $filter;
     }
 
     public function getExpression(): string
