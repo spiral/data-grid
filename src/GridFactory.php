@@ -20,13 +20,13 @@ class GridFactory implements GridFactoryInterface
     public const KEY_PAGINATE    = 'paginate';
     public const KEY_FETCH_COUNT = 'fetchCount';
 
-    private \Closure $count;
-    private InputInterface $defaults;
+    protected \Closure $count;
+    protected InputInterface $defaults;
 
     public function __construct(
-        private Compiler $compiler,
-        private InputInterface $input = new NullInput(),
-        private GridInterface $view = new Grid()
+        protected Compiler $compiler,
+        protected InputInterface $input = new NullInput(),
+        protected GridInterface $view = new Grid()
     ) {
         $this->defaults = new NullInput();
         $this->count = count(...);

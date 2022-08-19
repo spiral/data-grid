@@ -11,10 +11,10 @@ use Spiral\DataGrid\Exception\GridViewException;
  */
 class Grid implements GridInterface
 {
-    private array $options = [];
-    private ?iterable $source = null;
+    protected array $options = [];
+    protected ?iterable $source = null;
     /** @var callable|null */
-    private mixed $mapper = null;
+    protected mixed $mapper = null;
 
     public function getIterator(): \Generator
     {

@@ -15,12 +15,12 @@ use Spiral\DataGrid\Specification\SorterInterface;
 class GridSchema
 {
     /** @var FilterInterface[] */
-    private array $filters = [];
+    protected array $filters = [];
 
     /** @var SorterInterface[] */
-    private array $sorters = [];
+    protected array $sorters = [];
 
-    private ?FilterInterface $paginator = null;
+    protected ?FilterInterface $paginator = null;
 
     /**
      * Define new data filter.
