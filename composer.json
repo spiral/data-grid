@@ -24,8 +24,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5.20",
-        "ramsey/uuid": "^4.2.3",
-        "spiral/framework": "^3.0"
+        "ramsey/uuid": "^4.2.3"
     },
     "autoload": {
         "files": [
