@@ -14,10 +14,10 @@ use Spiral\DataGrid\Specification\SorterInterface;
  */
 class GridSchema
 {
-    /** @var FilterInterface[] */
+    /** @var array<non-empty-lowercase-string, FilterInterface> */
     protected array $filters = [];
 
-    /** @var SorterInterface[] */
+    /** @var array<non-empty-lowercase-string, SorterInterface> */
     protected array $sorters = [];
 
     protected ?FilterInterface $paginator = null;
