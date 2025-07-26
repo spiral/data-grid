@@ -15,9 +15,9 @@ use Spiral\DataGrid\Specification\FilterInterface;
  */
 class GridFactory implements GridFactoryInterface
 {
-    public const KEY_FILTER      = 'filter';
-    public const KEY_SORT        = 'sort';
-    public const KEY_PAGINATE    = 'paginate';
+    public const KEY_FILTER = 'filter';
+    public const KEY_SORT = 'sort';
+    public const KEY_PAGINATE = 'paginate';
     public const KEY_FETCH_COUNT = 'fetchCount';
 
     protected \Closure $count;
@@ -160,7 +160,7 @@ class GridFactory implements GridFactoryInterface
         }
 
         return [
-            'source'    => $this->compiler->compile($source, $withValue),
+            'source' => $this->compiler->compile($source, $withValue),
             'paginator' => $withValue->getValue(),
         ];
     }

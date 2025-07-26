@@ -9,10 +9,49 @@ use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\Specification\ValueInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
+/**
+ * Filters values that fall between two boundaries (range filtering).
+ *
+ * Real-world usage examples:
+ * - Price range filtering: Find products between $50 and $200
+ * - Date range filtering: Find orders placed between January 1st and March 31st
+ * - Age filtering: Find users between 18 and 65 years old
+ * - Score filtering: Find reviews with ratings between 3 and 5 stars
+ * - Salary range: Find job listings with salary between $60k and $120k
+ * - Temperature monitoring: Find readings between 20°C and 30°C
+ *
+ * @example
+ * // Price range filter for e-commerce
+ * $priceFilter = new Between('price', new NumericValue());
+ * $result = $priceFilter->withValue([50, 200]); // Products between $50-$200
+ *
+ * @example
+ * // Date range filter with fixed values
+ * $dateFilter = new Between('created_at', ['2024-01-01', '2024-03-31']);
+ *
+ * @example
+ * // Age range with boundary control
+ * $ageFilter = new Between('age', new IntValue(), true, false); // 18 <= age < 65
+ *
+ * @example
+ * // Rating filter (3 to 5 stars inclusive)
+ * $ratingFilter = new Between('rating', [3, 5], true, true);
+ *
+ * @example
+ * // Dynamic salary range
+ * $salaryFilter = new Between('salary', new NumericValue());
+ * $result = $salaryFilter->withValue([60000, 120000]);
+ */
 final class Between implements FilterInterface
 {
     private array|ValueInterface $value;
 
+    /**
+     * @param string $expression The field name to filter on
+     * @param array|ValueInterface $value Either fixed range [min, max] or ValueInterface for dynamic input
+     * @param bool $includeFrom Whether to include the lower boundary (>= vs >)
+     * @param bool $includeTo Whether to include the upper boundary (<= vs <)
+     */
     public function __construct(
         private readonly string $expression,
         array|ValueInterface $value,
@@ -20,11 +59,13 @@ final class Between implements FilterInterface
         private readonly bool $includeTo = true,
     ) {
         if (!$value instanceof ValueInterface && !$this->isValidArray($value)) {
-            throw new ValueException(\sprintf(
-                'Value expected to be instance of `%s` or an array of 2 different elements, got %s.',
-                ValueInterface::class,
-                $this->invalidValueType($value),
-            ));
+            throw new ValueException(
+                \sprintf(
+                    'Value expected to be instance of `%s` or an array of 2 different elements, got %s.',
+                    ValueInterface::class,
+                    $this->invalidValueType($value),
+                ),
+            );
         }
         $this->value = $this->convertValue($value);
     }
@@ -63,7 +104,10 @@ final class Between implements FilterInterface
     }
 
     /**
-     * @return SpecificationInterface[]
+     * Get the filters as separate conditions for compatibility with systems that don't support BETWEEN.
+     *
+     * @param bool $asOriginal If true and boundaries are inclusive, returns this filter as-is
+     * @return SpecificationInterface[] Array of filter specifications
      */
     public function getFilters(bool $asOriginal = false): array
     {

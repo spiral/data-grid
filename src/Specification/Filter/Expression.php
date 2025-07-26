@@ -8,8 +8,39 @@ use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\Specification\ValueInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
+/**
+ * Abstract base class for expression-based filters.
+ *
+ * Provides common functionality for filters that operate on a single field expression
+ * with a value. This is the foundation for most basic comparison filters.
+ *
+ * Real-world usage patterns:
+ * - Single field comparisons (equals, greater than, less than, etc.)
+ * - Text pattern matching (like, contains, starts with)
+ * - Membership testing (in array, not in array)
+ * - Null/empty checks
+ *
+ * @example
+ * // Custom expression filter
+ * class CustomFilter extends Expression {
+ *     // Implementation specific to your needs
+ * }
+ *
+ * @example
+ * // Using with dynamic values
+ * $filter = new SomeExpressionFilter('field_name', new StringValue());
+ * $result = $filter->withValue('user_input');
+ *
+ * @example
+ * // Using with fixed values
+ * $filter = new SomeExpressionFilter('status', 'active');
+ */
 abstract class Expression implements FilterInterface
 {
+    /**
+     * @param string $expression The field name or expression to filter on
+     * @param mixed $value Either a fixed value or ValueInterface for dynamic input validation
+     */
     public function __construct(
         protected string $expression,
         protected mixed $value,

@@ -10,12 +10,86 @@ use Spiral\DataGrid\SpecificationInterface;
 use function Spiral\DataGrid\hasValue;
 
 /**
- * Complex filter provides the ability to select an intersect of filters by provided value (or array of values)
+ * Provides filter selection from a predefined set of named filters.
+ * Users can select one or multiple filters by providing their keys.
+ * If multiple filters are selected, they are combined with AND logic.
+ *
+ * Real-world usage examples:
+ * - Predefined search filters: 'popular', 'recent', 'top_rated', 'featured'
+ * - Content categories: 'news', 'tutorials', 'reviews', 'announcements'
+ * - User status presets: 'active_users', 'new_members', 'premium_subscribers'
+ * - Product filters: 'on_sale', 'in_stock', 'bestsellers', 'new_arrivals'
+ * - Report presets: 'daily', 'weekly', 'monthly', 'quarterly'
+ * - Priority levels: 'urgent', 'high', 'normal', 'low'
+ * - Quality filters: 'verified', 'featured', 'recommended', 'trending'
+ *
+ * @example
+ * // Predefined content filters
+ * $contentFilter = new Select([
+ *     'popular' => new Gte('view_count', 1000),
+ *     'recent' => new Gte('created_at', '-7 days'),
+ *     'featured' => new Equals('is_featured', true),
+ *     'top_rated' => new Gte('rating', 4.5)
+ * ]);
+ *
+ * // Select single filter
+ * $result = $contentFilter->withValue('popular'); // Show popular content
+ *
+ * // Select multiple filters (AND logic)
+ * $result = $contentFilter->withValue(['popular', 'recent']); // Popular AND recent
+ *
+ * @example
+ * // E-commerce product filters
+ * $productFilter = new Select([
+ *     'on_sale' => new Gt('discount_percentage', 0),
+ *     'in_stock' => new Gt('quantity', 0),
+ *     'bestseller' => new Gte('sales_count', 100),
+ *     'new_arrival' => new Gte('created_at', '-30 days'),
+ *     'premium' => new Gte('price', 500)
+ * ]);
+ * $result = $productFilter->withValue('on_sale'); // Show sale items
+ *
+ * @example
+ * // User management presets
+ * $userFilter = new Select([
+ *     'active' => new Equals('status', 'active'),
+ *     'verified' => new Equals('email_verified', true),
+ *     'premium' => new Equals('subscription_type', 'premium'),
+ *     'new_members' => new Gte('created_at', '-30 days'),
+ *     'power_users' => new Gte('login_count', 100)
+ * ]);
+ * $result = $userFilter->withValue(['active', 'verified']); // Active AND verified users
+ *
+ * @example
+ * // Report time periods
+ * $reportFilter = new Select([
+ *     'today' => new Gte('date', 'today'),
+ *     'week' => new Gte('date', '-7 days'),
+ *     'month' => new Gte('date', '-30 days'),
+ *     'quarter' => new Gte('date', '-90 days'),
+ *     'year' => new Gte('date', '-365 days')
+ * ]);
+ * $result = $reportFilter->withValue('month'); // Last 30 days
+ *
+ * @example
+ * // Complex business rules
+ * $orderFilter = new Select([
+ *     'vip_orders' => new All(
+ *         new Gte('total_amount', 1000),
+ *         new Equals('customer_tier', 'vip')
+ *     ),
+ *     'urgent_orders' => new All(
+ *         new Equals('priority', 'urgent'),
+ *         new Lt('days_until_deadline', 3)
+ *     ),
+ *     'international' => new NotEquals('shipping_country', 'US')
+ * ]);
+ * $result = $orderFilter->withValue('vip_orders'); // VIP customer orders
  */
 final class Select extends Group
 {
     /**
-     * @param array|FilterInterface[] $filters
+     * @param array|FilterInterface[] $filters Associative array of filter names to FilterInterface instances
      */
     public function __construct(array $filters)
     {
