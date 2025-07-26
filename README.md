@@ -179,6 +179,13 @@ repetitive query code, you define **what's allowed once** and the component hand
 GET /api/products?filter[price]=100,500&filter[category]=Smartphones&sort[rating]=desc&paginate[page]=2&paginate[limit]=20
 ```
 
+**The schema serves as:**
+
+- Security gateway - Only defined operations are allowed
+- Validation rules - Input types and ranges are enforced
+- Business logic - Encodes what users can do with your data
+- Configuration - Reusable across multiple interfaces
+- 
 ```php
 // Define ONCE what users can do with product data
 class ProductSchema extends GridSchema 
@@ -187,12 +194,29 @@ class ProductSchema extends GridSchema
     {
         // Allow filtering by these fields
         $this->addFilter('price', new Between('price', new NumericValue()));
+        //                  ↑                    ↑
+        //              Input Key          Database Field
+        //          (from user request)    (actual column)
+        
         $this->addFilter('category', new Equals('category', new StringValue()));
-        $this->addFilter('name', new Like('name', new StringValue()));
+        //                  ↑                      ↑
+        //              Input Key            Database Field
+        
+        $this->addFilter('search', new Like('name', new StringValue()));
+        //                  ↑                   ↑
+        //             Input Key         Database Field
+        //         (?filter[search]=...)   (searches in 'name' column)
         
         // Allow sorting by these fields  
         $this->addSorter('price', new Sorter('price'));
+        //                 ↑                   ↑
+        //             Input Key         Database Field
+        //        (?sort[price]=desc)    (sorts by 'price' column)
+        
         $this->addSorter('popularity', new Sorter('popularity_score'));
+        //                    ↑                        ↑
+        //               Input Key              Database Field
+        //        (?sort[popularity]=desc)    (sorts by 'popularity_score' column)
         
         // Set pagination rules
         $this->setPaginator(new PagePaginator(20, [10, 20, 50, 100]));
@@ -200,12 +224,20 @@ class ProductSchema extends GridSchema
 }
 ```
 
-**The schema serves as:**
+### Why Separate Input Keys from Database Fields?
 
-- Security gateway - Only defined operations are allowed
-- Validation rules - Input types and ranges are enforced
-- Business logic - Encodes what users can do with your data
-- Configuration - Reusable across multiple interfaces
+Input keys provide a stable API while allowing database schema changes
+
+```php
+// Input key stays the same, but you can change database structure
+$this->addFilter('search', new Like('product_name', new StringValue()));
+
+// Later change to search multiple fields:
+$this->addFilter('search', new Any(
+    new Like('product_name', new StringValue()),
+    new Like('description', new StringValue())
+));
+```
 
 Now **any interface** (web page, mobile app, API) can use this schema:
 
