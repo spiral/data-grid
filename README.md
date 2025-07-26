@@ -34,7 +34,7 @@ Let's imagine you're building an **E-commerce website** where customers need to 
 - **Sort results** by popularity, price (low to high), or newest arrivals
 - **Navigate pages** - show 20 products per page instead of overwhelming them with 10,000 items at once
 
-```mermaid
+```
 GET: /api/products?min_price=50&max_price=200&category=Electronics&sort_by=popularity&sort_direction=desc&page=2&limit=20
 ```
 
