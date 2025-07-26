@@ -22,7 +22,7 @@ final class NumericValue implements ValueInterface
 
         throw new ValueException(\sprintf(
             'Value is expected to be numeric, got `%s`. Check the value with `accepts()` method first.',
-            \get_debug_type($value)
+            \get_debug_type($value),
         ));
     }
 }

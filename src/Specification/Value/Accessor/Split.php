@@ -10,7 +10,7 @@ class Split extends Accessor
 {
     public function __construct(
         ValueInterface $next,
-        private string $char = ','
+        private readonly string $char = ',',
     ) {
         parent::__construct($next);
     }

@@ -16,7 +16,7 @@ final class BoolValue implements ValueInterface
         }
 
         if (\is_scalar($value)) {
-            return \in_array(\strtolower((string)$value), ['0', '1', 'true', 'false'], true);
+            return \in_array(\strtolower((string) $value), ['0', '1', 'true', 'false'], true);
         }
 
         return false;
@@ -29,7 +29,7 @@ final class BoolValue implements ValueInterface
         }
 
         if (\is_scalar($value)) {
-            return match (\strtolower((string)$value)) {
+            return match (\strtolower((string) $value)) {
                 '0', 'false' => false,
                 '1', 'true' => true,
             };
@@ -37,7 +37,7 @@ final class BoolValue implements ValueInterface
 
         throw new ValueException(\sprintf(
             'Value is expected to be boolean, got `%s`. Check the value with `accepts()` method first.',
-            \get_debug_type($value)
+            \get_debug_type($value),
         ));
     }
 }

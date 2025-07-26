@@ -19,8 +19,6 @@ class EnumValueTest extends TestCase
 {
     /**
      * @dataProvider incorrectEnumProvider
-     * @param ValueInterface $type
-     * @param string|null    $expectedException
      * @param mixed          ...$values
      */
     public function testIncorrectEnum(ValueInterface $type, ?string $expectedException, ...$values): void
@@ -35,9 +33,6 @@ class EnumValueTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @return iterable
-     */
     public function incorrectEnumProvider(): iterable
     {
         $types = [
@@ -61,7 +56,6 @@ class EnumValueTest extends TestCase
     /**
      * @dataProvider acceptsProvider
      * @param mixed $value
-     * @param bool  $expected
      */
     public function testAccepts($value, bool $expected): void
     {
@@ -69,15 +63,12 @@ class EnumValueTest extends TestCase
         $this->assertSame($expected, $enum->accepts($value));
     }
 
-    /**
-     * @return iterable
-     */
     public function acceptsProvider(): iterable
     {
         return [
             [1, true],
             ['1', true],
-            ['3', false]
+            ['3', false],
         ];
     }
 

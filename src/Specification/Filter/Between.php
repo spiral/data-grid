@@ -17,13 +17,13 @@ final class Between implements FilterInterface
         private readonly string $expression,
         array|ValueInterface $value,
         private readonly bool $includeFrom = true,
-        private readonly bool $includeTo = true
+        private readonly bool $includeTo = true,
     ) {
         if (!$value instanceof ValueInterface && !$this->isValidArray($value)) {
             throw new ValueException(\sprintf(
                 'Value expected to be instance of `%s` or an array of 2 different elements, got %s.',
                 ValueInterface::class,
-                $this->invalidValueType($value)
+                $this->invalidValueType($value),
             ));
         }
         $this->value = $this->convertValue($value);

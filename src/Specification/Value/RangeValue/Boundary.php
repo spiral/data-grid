@@ -10,8 +10,7 @@ class Boundary
         public mixed $value,
         public bool $include,
         public bool $empty,
-    ) {
-    }
+    ) {}
 
     public static function empty(): self
     {

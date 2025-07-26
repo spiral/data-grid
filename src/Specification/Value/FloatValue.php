@@ -15,6 +15,6 @@ final class FloatValue implements ValueInterface
 
     public function convert(mixed $value): float
     {
-        return (float)$value;
+        return (float) $value;
     }
 }

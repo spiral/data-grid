@@ -10,9 +10,8 @@ final class DatetimeFormatValue implements ValueInterface
 {
     public function __construct(
         private readonly string $readFrom,
-        private readonly ?string $convertInto = null
-    ) {
-    }
+        private readonly ?string $convertInto = null,
+    ) {}
 
     public function accepts(mixed $value): bool
     {
@@ -22,7 +21,7 @@ final class DatetimeFormatValue implements ValueInterface
     public function convert(mixed $value): string|null|\DateTimeInterface
     {
         try {
-            $datetime = \DateTimeImmutable::createFromFormat($this->readFrom, (string)$value);
+            $datetime = \DateTimeImmutable::createFromFormat($this->readFrom, (string) $value);
             if (!$datetime instanceof \DateTimeImmutable) {
                 return null;
             }

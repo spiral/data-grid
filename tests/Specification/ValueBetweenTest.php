@@ -16,15 +16,12 @@ use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value\BoolValue;
 use Spiral\DataGrid\Specification\Value\IntValue;
 use Spiral\DataGrid\Specification\Value\StringValue;
-use stdClass;
 
 class ValueBetweenTest extends TestCase
 {
     /**
      * @dataProvider initValueProvider
      * @param mixed       $expression
-     * @param array       $value
-     * @param string|null $exception
      */
     public function testInitValue($expression, array $value, ?string $exception): void
     {
@@ -36,9 +33,6 @@ class ValueBetweenTest extends TestCase
         new Filter\ValueBetween($expression, $value, false, false);
     }
 
-    /**
-     * @return iterable
-     */
     public function initValueProvider(): iterable
     {
         return [
@@ -69,9 +63,6 @@ class ValueBetweenTest extends TestCase
         $this->assertEquals($valid, $between->withValue($withValue) !== null);
     }
 
-    /**
-     * @return iterable
-     */
     public function withValueProvider(): iterable
     {
         $incorrectValues = [
@@ -100,10 +91,6 @@ class ValueBetweenTest extends TestCase
 
     /**
      * @dataProvider includeProvider
-     * @param bool   $includeFrom
-     * @param bool   $includeTo
-     * @param string $from
-     * @param string $to
      */
     public function testInclude(bool $includeFrom, bool $includeTo, string $from, string $to): void
     {
@@ -115,9 +102,6 @@ class ValueBetweenTest extends TestCase
         $this->assertInstanceOf($to, $filters[1]);
     }
 
-    /**
-     * @return iterable
-     */
     public function includeProvider(): iterable
     {
         return [
@@ -130,16 +114,12 @@ class ValueBetweenTest extends TestCase
 
     /**
      * @dataProvider originalProvider
-     * @param Filter\ValueBetween $between
-     * @param bool                $isOriginal
-     * @param string|null         $from
-     * @param string|null         $to
      */
     public function testOriginal(
         Filter\ValueBetween $between,
         bool $isOriginal,
         ?string $from,
-        ?string $to
+        ?string $to,
     ): void {
         $filters = $between->getFilters(true);
 
@@ -153,9 +133,6 @@ class ValueBetweenTest extends TestCase
         }
     }
 
-    /**
-     * @return iterable
-     */
     public function originalProvider(): iterable
     {
         yield from [
@@ -164,19 +141,19 @@ class ValueBetweenTest extends TestCase
                 new Filter\ValueBetween('field', ['created', 'updated'], false),
                 false,
                 Filter\Gt::class,
-                Filter\Lte::class
+                Filter\Lte::class,
             ],
             [
                 new Filter\ValueBetween('field', ['created', 'updated'], true, false),
                 false,
                 Filter\Gte::class,
-                Filter\Lt::class
+                Filter\Lt::class,
             ],
             [
                 new Filter\ValueBetween('field', ['created', 'updated'], false, false),
                 false,
                 Filter\Gt::class,
-                Filter\Lt::class
+                Filter\Lt::class,
             ],
         ];
 
@@ -186,19 +163,19 @@ class ValueBetweenTest extends TestCase
                 new Filter\ValueBetween(new IntValue(), ['created', 'updated'], false),
                 false,
                 Filter\Gt::class,
-                Filter\Lte::class
+                Filter\Lte::class,
             ],
             [
                 new Filter\ValueBetween(new IntValue(), ['created', 'updated'], true, false),
                 false,
                 Filter\Gte::class,
-                Filter\Lt::class
+                Filter\Lt::class,
             ],
             [
                 new Filter\ValueBetween(new IntValue(), ['created', 'updated'], false, false),
                 false,
                 Filter\Gt::class,
-                Filter\Lt::class
+                Filter\Lt::class,
             ],
         ];
     }

@@ -11,16 +11,12 @@ declare(strict_types=1);
 namespace Spiral\Tests\DataGrid\Input;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use ReflectionException;
 use Spiral\DataGrid\Input\ArrayInput;
 
 class ArrayInputTest extends TestCase
 {
     /**
      * @dataProvider hasValueProvider
-     * @param string $option
-     * @param bool   $expected
      */
     public function testHasValue(string $option, bool $expected): void
     {
@@ -28,9 +24,6 @@ class ArrayInputTest extends TestCase
         $this->assertEquals($expected, $input->hasValue($option));
     }
 
-    /**
-     * @return iterable
-     */
     public function hasValueProvider(): iterable
     {
         return [
@@ -46,9 +39,6 @@ class ArrayInputTest extends TestCase
 
     /**
      * @dataProvider getValueProvider
-     * @param string $option
-     * @param        $default
-     * @param        $expected
      */
     public function testGetValue(string $option, $default, $expected): void
     {
@@ -56,9 +46,6 @@ class ArrayInputTest extends TestCase
         $this->assertEquals($expected, $input->getValue($option, $default));
     }
 
-    /**
-     * @return iterable
-     */
     public function getValueProvider(): iterable
     {
         return [
@@ -81,25 +68,20 @@ class ArrayInputTest extends TestCase
 
     /**
      * @dataProvider namespaceProvider
-     * @param string $namespace
-     * @param array  $data
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function testWithNamespace(string $namespace, array $data): void
     {
         $input = new ArrayInput($this->data());
         $input = $input->withNamespace($namespace);
 
-        $reflection = new ReflectionClass($input);
+        $reflection = new \ReflectionClass($input);
         $property = $reflection->getProperty('data');
         $property->setAccessible(true);
 
         $this->assertEquals($data, $property->getValue($input));
     }
 
-    /**
-     * @return iterable
-     */
     public function namespaceProvider(): iterable
     {
         return [
@@ -112,7 +94,7 @@ class ArrayInputTest extends TestCase
                     'key4'  => 'value4',
                     'Key5'  => 'value5',
                     'key 6' => ['value6'],
-                ]
+                ],
             ],
             [
                 'Namespace1',
@@ -120,7 +102,7 @@ class ArrayInputTest extends TestCase
                     'key4'  => 'value4',
                     'Key5'  => 'value5',
                     'key 6' => ['value6'],
-                ]
+                ],
             ],
             [
                 'namespace 2',
@@ -128,7 +110,7 @@ class ArrayInputTest extends TestCase
                     'key7'  => 'value7',
                     'Key8'  => 'value8',
                     'key 9' => ['value9'],
-                ]
+                ],
             ],
             [
                 'nAmespace 2',
@@ -136,14 +118,11 @@ class ArrayInputTest extends TestCase
                     'key7'  => 'value7',
                     'Key8'  => 'value8',
                     'key 9' => ['value9'],
-                ]
+                ],
             ],
         ];
     }
 
-    /**
-     * @return array
-     */
     private function data(): array
     {
         return [

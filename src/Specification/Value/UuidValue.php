@@ -17,6 +17,7 @@ final class UuidValue implements ValueInterface
      * Compare masks.
      */
     public const VALID = 'valid';
+
     public const NIL   = 'nil';
     public const V1    = 'v1';
     public const V2    = 'v2';
@@ -63,7 +64,7 @@ final class UuidValue implements ValueInterface
 
     public function convert(mixed $value): string
     {
-        return (string)$value;
+        return (string) $value;
     }
 
     private function isValid(string $value): bool

@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid\Value;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use Spiral\DataGrid\Exception\ValueException;
@@ -20,8 +19,6 @@ class UuidValueTest extends TestCase
 {
     /**
      * @dataProvider maskProvider
-     * @param string      $mask
-     * @param string|null $expectedException
      */
     public function testMask(?string $mask, ?string $expectedException): void
     {
@@ -34,9 +31,6 @@ class UuidValueTest extends TestCase
         $this->assertNotNull($uuid);
     }
 
-    /**
-     * @return iterable
-     */
     public function maskProvider(): iterable
     {
         return [
@@ -55,9 +49,6 @@ class UuidValueTest extends TestCase
 
     /**
      * @dataProvider validProvider
-     * @param string|null $mask
-     * @param string      $value
-     * @param bool        $expected
      */
     public function testAccepts(?string $mask, string $value, bool $expected): void
     {
@@ -67,13 +58,12 @@ class UuidValueTest extends TestCase
     }
 
     /**
-     * @return iterable
-     * @throws Exception
+     * @throws \Exception
      */
     public function validProvider(): iterable
     {
         $masks = ['valid', 'nil', 'v1', 'v2', 'v3', 'v4', 'v5'];
-        $random = bin2hex(random_bytes(10));
+        $random = \bin2hex(\random_bytes(10));
         foreach ($masks as $mask) {
             yield from [
                 [$mask, $random, false],

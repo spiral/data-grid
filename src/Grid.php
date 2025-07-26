@@ -13,6 +13,7 @@ class Grid implements GridInterface
 {
     protected array $options = [];
     protected ?iterable $source = null;
+
     /** @var callable|null */
     protected mixed $mapper = null;
 

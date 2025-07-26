@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid;
 
-use LogicException;
 use PHPUnit\Framework\TestCase;
 
 use function Spiral\DataGrid\getValue;
@@ -22,23 +21,19 @@ class FunctionsTest extends TestCase
     /**
      * @dataProvider hasKeyProvider
      * @param mixed $key
-     * @param bool  $expected
      */
     public function testHasKey($key, bool $expected): void
     {
         $data = [
             'key1' => 'value1',
             'Key2' => 'value2',
-            3      => 'value3',
-            '3'    => 'value3',
+            3 => 'value3',
+            '3' => 'value3',
         ];
 
         $this->assertSame($expected, hasKey($data, $key));
     }
 
-    /**
-     * @return iterable
-     */
     public function hasKeyProvider(): iterable
     {
         return [
@@ -57,7 +52,6 @@ class FunctionsTest extends TestCase
     /**
      * @dataProvider hasValueProvider
      * @param mixed $value
-     * @param bool  $expected
      */
     public function testHasValue($value, bool $expected): void
     {
@@ -70,9 +64,6 @@ class FunctionsTest extends TestCase
         $this->assertSame($expected, hasValue($data, $value));
     }
 
-    /**
-     * @return iterable
-     */
     public function hasValueProvider(): iterable
     {
         return [
@@ -90,9 +81,8 @@ class FunctionsTest extends TestCase
 
     /**
      * @dataProvider getValueProvider
-     * @param mixed       $key
-     * @param string|null $expectException
-     * @param mixed       $expected
+     * @param mixed $key
+     * @param mixed $expected
      */
     public function testGetValue($key, ?string $expectException, $expected): void
     {
@@ -108,9 +98,6 @@ class FunctionsTest extends TestCase
         $this->assertSame($expected, getValue($data, $key));
     }
 
-    /**
-     * @return iterable
-     */
     public function getValueProvider(): iterable
     {
         return [
@@ -120,7 +107,7 @@ class FunctionsTest extends TestCase
             ['Key2', null, 'value2'],
             ['keY2', null, 'value2'],
 
-            ['key 1', LogicException::class, null],
+            ['key 1', \LogicException::class, null],
         ];
     }
 }

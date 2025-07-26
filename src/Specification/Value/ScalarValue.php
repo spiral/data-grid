@@ -9,9 +9,8 @@ use Spiral\DataGrid\Specification\ValueInterface;
 final class ScalarValue implements ValueInterface
 {
     public function __construct(
-        private readonly bool $allowEmpty = false
-    ) {
-    }
+        private readonly bool $allowEmpty = false,
+    ) {}
 
     public function accepts(mixed $value): bool
     {

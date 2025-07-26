@@ -19,7 +19,7 @@ final class DatetimeValue implements ValueInterface
     public function convert(mixed $value): ?\DateTimeImmutable
     {
         try {
-            $value = (string)$value;
+            $value = (string) $value;
 
             return new \DateTimeImmutable(\is_numeric($value) ? \sprintf('@%s', $value) : $value);
         } catch (\Throwable) {

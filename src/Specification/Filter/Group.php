@@ -11,6 +11,7 @@ abstract class Group implements FilterInterface
 {
     /** @var FilterInterface[] */
     protected array $filters = [];
+
     private mixed $value = null;
 
     abstract public function withValue(mixed $value): ?SpecificationInterface;

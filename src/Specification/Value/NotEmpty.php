@@ -9,16 +9,15 @@ use Spiral\DataGrid\Specification\ValueInterface;
 final class NotEmpty implements ValueInterface
 {
     public function __construct(
-        private readonly ?ValueInterface $value = null
-    ) {
-    }
+        private readonly ?ValueInterface $value = null,
+    ) {}
 
     public function accepts(mixed $value): bool
     {
         return match (true) {
             empty($value) => false,
             $this->value instanceof ValueInterface => $this->value->accepts($value),
-            default => true
+            default => true,
         };
     }
 

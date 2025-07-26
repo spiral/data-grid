@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Compiler;
 use Spiral\DataGrid\Exception\CompilerException;
@@ -48,7 +47,7 @@ class GridFactoryTest extends TestCase
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function testIterateToIterable(): void
     {
@@ -66,18 +65,13 @@ class GridFactoryTest extends TestCase
 
     /**
      * @dataProvider filtersProvider
-     * @param array           $input
-     * @param array           $defaults
-     * @param string          $name
-     * @param FilterInterface $filter
-     * @param array           $expected
      */
     public function testFilters(
         array $input,
         array $defaults,
         string $name,
         FilterInterface $filter,
-        array $expected
+        array $expected,
     ): void {
         $factory = $this->factory()->withDefaults($defaults)->withInput(new ArrayInput($input));
 
@@ -88,9 +82,6 @@ class GridFactoryTest extends TestCase
         $this->assertEquals($expected, $grid->getOption(GridInterface::FILTERS));
     }
 
-    /**
-     * @return iterable
-     */
     public function filtersProvider(): iterable
     {
         $stringFilter = new Equals('field', new Value\StringValue());
@@ -119,7 +110,6 @@ class GridFactoryTest extends TestCase
 
     /**
      * @dataProvider fetchCountProvider
-     * @param array $defaults
      * @param mixed $source
      * @param mixed $expected
      */
@@ -132,23 +122,17 @@ class GridFactoryTest extends TestCase
 
     /**
      * @dataProvider fetchCountProvider
-     * @param array $defaults
      * @param mixed $source
      * @param mixed $expected
      */
     public function testFetchCustomCount(array $defaults, $source, $expected): void
     {
-        $factory = $this->factory()->withDefaults($defaults)->withCounter(static function ($select): int {
-            return count($select) * 2;
-        });
+        $factory = $this->factory()->withDefaults($defaults)->withCounter(static fn($select): int => \count($select) * 2);
 
         $grid = $factory->create($source, new GridSchema());
         $this->assertEquals($expected * 2, $grid->getOption(GridInterface::COUNT));
     }
 
-    /**
-     * @return iterable
-     */
     public function fetchCountProvider(): iterable
     {
         return [
@@ -166,18 +150,13 @@ class GridFactoryTest extends TestCase
 
     /**
      * @dataProvider sortersProvider
-     * @param array           $input
-     * @param array           $defaults
-     * @param string          $name
-     * @param SorterInterface $sorter
-     * @param array           $expected
      */
     public function testSorters(
         array $input,
         array $defaults,
         string $name,
         SorterInterface $sorter,
-        array $expected
+        array $expected,
     ): void {
         $factory = $this->factory()->withDefaults($defaults)->withInput(new ArrayInput($input));
 
@@ -188,9 +167,6 @@ class GridFactoryTest extends TestCase
         $this->assertEquals($expected, $grid->getOption(GridInterface::SORTERS));
     }
 
-    /**
-     * @return iterable
-     */
     public function sortersProvider(): iterable
     {
         $sorter = new Sorter('field');
@@ -222,18 +198,13 @@ class GridFactoryTest extends TestCase
 
     /**
      * @dataProvider paginatorProvider
-     * @param array           $input
-     * @param array           $defaults
-     * @param FilterInterface $paginator
-     * @param                 $expected
-     * @param string|null     $expectedException
      */
     public function testPaginator(
         array $input,
         array $defaults,
         FilterInterface $paginator,
         $expected,
-        string $expectedException = null
+        ?string $expectedException = null,
     ): void {
         if ($expectedException !== null) {
             $this->expectException($expectedException);
@@ -248,9 +219,6 @@ class GridFactoryTest extends TestCase
         $this->assertEquals($expected, $grid->getOption(GridInterface::PAGINATOR));
     }
 
-    /**
-     * @return iterable
-     */
     public function paginatorProvider(): iterable
     {
         $null = new NullPaginator();
@@ -278,9 +246,6 @@ class GridFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @return GridFactory
-     */
     private function factory(): GridFactory
     {
         $compiler = new Compiler();
@@ -289,12 +254,7 @@ class GridFactoryTest extends TestCase
         return new GridFactory($compiler);
     }
 
-    /**
-     * @param int|null $page
-     * @param int|null $limit
-     * @return array
-     */
-    private function paginatorInput(int $page = null, int $limit = null): array
+    private function paginatorInput(?int $page = null, ?int $limit = null): array
     {
         $result = [];
         if ($page === null && $limit === null) {

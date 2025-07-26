@@ -12,9 +12,8 @@ abstract class Expression implements FilterInterface
 {
     public function __construct(
         protected string $expression,
-        protected mixed $value
-    ) {
-    }
+        protected mixed $value,
+    ) {}
 
     public function withValue(mixed $value): ?SpecificationInterface
     {

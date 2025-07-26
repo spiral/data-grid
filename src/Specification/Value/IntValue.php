@@ -23,11 +23,11 @@ final class IntValue implements ValueInterface
          *  $isWhitespaceFramed = trim((string)$value) !== (string)$value;
          * </code>
          */
-        return $value === '' || (\is_numeric($value) && \trim((string)$value) === (string)$value);
+        return $value === '' || (\is_numeric($value) && \trim((string) $value) === (string) $value);
     }
 
     public function convert(mixed $value): int
     {
-        return (int)$value;
+        return (int) $value;
     }
 }

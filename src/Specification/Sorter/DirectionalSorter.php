@@ -14,9 +14,8 @@ final class DirectionalSorter implements SorterInterface
 
     public function __construct(
         private readonly SorterInterface $asc,
-        private readonly SorterInterface $desc
-    ) {
-    }
+        private readonly SorterInterface $desc,
+    ) {}
 
     public function withDirection(int|string $direction): ?SpecificationInterface
     {
@@ -44,7 +43,7 @@ final class DirectionalSorter implements SorterInterface
             \in_array($direction, ['1', 1, SORT_ASC], true) => self::ASC,
             \is_string($direction) && \strtolower($direction) === self::DESC => self::DESC,
             \is_string($direction) && \strtolower($direction) === self::ASC => self::ASC,
-            default => null
+            default => null,
         };
     }
 }

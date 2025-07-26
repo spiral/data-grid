@@ -17,3 +17,5 @@ Thumbs.db
 clover.xml
 .env
 builds
+.context
+runtime

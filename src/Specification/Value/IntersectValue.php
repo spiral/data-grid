@@ -17,7 +17,7 @@ final class IntersectValue implements ValueInterface
 
     public function accepts(mixed $value): bool
     {
-        $value = (array)$value;
+        $value = (array) $value;
 
         if (\count($value) === 1) {
             return $this->enum->accepts(\array_values($value)[0]);
@@ -35,7 +35,7 @@ final class IntersectValue implements ValueInterface
     public function convert(mixed $value): array
     {
         $result = [];
-        foreach ((array)$value as $v) {
+        foreach ((array) $value as $v) {
             if ($this->enum->accepts($v)) {
                 $result[] = $this->enum->convert($v);
             }

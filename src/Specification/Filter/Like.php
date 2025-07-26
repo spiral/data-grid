@@ -11,7 +11,7 @@ class Like extends Expression
     public function __construct(
         string $expression,
         mixed $value = null,
-        private readonly string $pattern = '%%%s%%'
+        private readonly string $pattern = '%%%s%%',
     ) {
         parent::__construct($expression, $value ?? new StringValue());
     }

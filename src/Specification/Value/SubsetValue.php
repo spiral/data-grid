@@ -22,13 +22,13 @@ final class SubsetValue implements ValueInterface
         return match (true) {
             \count($value) === 1 => $this->enum->accepts(\current($value)),
             empty($value) => false,
-            default => $this->arrayType()->accepts($value)
+            default => $this->arrayType()->accepts($value),
         };
     }
 
     public function convert(mixed $value): array
     {
-        return $this->arrayType()->convert((array)$value);
+        return $this->arrayType()->convert((array) $value);
     }
 
     private function arrayType(): ArrayValue

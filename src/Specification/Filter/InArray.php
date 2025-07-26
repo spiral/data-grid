@@ -13,7 +13,7 @@ class InArray extends Expression
     {
         parent::__construct(
             $expression,
-            $value instanceof ValueInterface && $wrapInArray ? new ArrayValue($value) : $value
+            $value instanceof ValueInterface && $wrapInArray ? new ArrayValue($value) : $value,
         );
     }
 }

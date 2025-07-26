@@ -26,7 +26,7 @@ class GridFactory implements GridFactoryInterface
     public function __construct(
         protected Compiler $compiler,
         protected InputInterface $input = new NullInput(),
-        protected GridInterface $view = new Grid()
+        protected GridInterface $view = new Grid(),
     ) {
         $this->defaults = new NullInput();
         $this->count = count(...);
@@ -105,7 +105,7 @@ class GridFactory implements GridFactoryInterface
 
     protected function applyCounter(GridInterface $view, mixed $source, GridSchema $schema): array
     {
-        if (is_countable($source) && $this->getOption(static::KEY_FETCH_COUNT)) {
+        if (\is_countable($source) && $this->getOption(static::KEY_FETCH_COUNT)) {
             $view = $view->withOption(GridInterface::COUNT, ($this->count)($source));
         }
 

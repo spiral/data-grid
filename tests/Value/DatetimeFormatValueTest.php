@@ -11,9 +11,6 @@ class DatetimeFormatValueTest extends TestCase
 {
     /**
      * @dataProvider invalidProvider
-     * @param string      $readFrom
-     * @param string|null $convertInto
-     * @param             $input
      */
     public function testInvalid(string $readFrom, ?string $convertInto, $input): void
     {

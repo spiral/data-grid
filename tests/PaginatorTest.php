@@ -21,8 +21,6 @@ class PaginatorTest extends TestCase
 {
     /**
      * @dataProvider getValueProvider
-     * @param array $expected
-     * @param       $value
      */
     public function testLimitPaginator(array $expected, $value): void
     {
@@ -30,9 +28,6 @@ class PaginatorTest extends TestCase
         $this->assertSame($expected, $paginator->withValue($value)->getValue());
     }
 
-    /**
-     * @return iterable
-     */
     public function getValueProvider(): iterable
     {
         return [
@@ -45,8 +40,6 @@ class PaginatorTest extends TestCase
 
     /**
      * @dataProvider specificationsProvider
-     * @param                        $value
-     * @param array                  $expected
      */
     public function testSpecifications($value, array $expected): void
     {
@@ -56,15 +49,12 @@ class PaginatorTest extends TestCase
 
         $specifications = [];
         foreach ($paginator->getSpecifications() as $specification) {
-            $specifications[] = get_class($specification);
+            $specifications[] = $specification::class;
         }
 
         $this->assertSame($expected, $specifications);
     }
 
-    /**
-     * @return iterable
-     */
     public function specificationsProvider(): iterable
     {
         return [

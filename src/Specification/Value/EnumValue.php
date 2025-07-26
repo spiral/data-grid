@@ -13,7 +13,7 @@ final class EnumValue implements ValueInterface
 
     public function __construct(
         private readonly ValueInterface $base,
-        mixed ...$values
+        mixed ...$values,
     ) {
         if ($base instanceof self) {
             throw new ValueException(\sprintf('Nested value type not allowed, got `%s`', $base::class));
@@ -47,8 +47,8 @@ final class EnumValue implements ValueInterface
             throw new ValueException(
                 \sprintf(
                     '"Got non-compatible values, expected only compatible with `%s`.',
-                    $this->base::class
-                )
+                    $this->base::class,
+                ),
             );
         }
 

@@ -25,10 +25,10 @@ final class Select extends Group
     public function withValue(mixed $value): ?SpecificationInterface
     {
         $select = $this->clone($value);
-        $value = (array)$value;
+        $value = (array) $value;
 
         foreach ($this->filters as $name => $filter) {
-            $name = (string)$name;
+            $name = (string) $name;
             if (!hasValue($value, $name)) {
                 continue;
             }

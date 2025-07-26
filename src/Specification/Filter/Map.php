@@ -32,7 +32,7 @@ final class Map extends Group
 
         $map = $this->clone($value);
         foreach ($this->filters as $name => $filter) {
-            $name = (string)$name;
+            $name = (string) $name;
             if (!hasKey($value, $name)) {
                 // all values must be provided
                 return null;

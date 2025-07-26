@@ -14,14 +14,12 @@ namespace Spiral\Tests\DataGrid\Value;
 
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Specification\Value;
-use stdClass;
 
 class IntValueTest extends TestCase
 {
     /**
      * @dataProvider acceptsProvider
      * @param mixed $value
-     * @param bool  $expected
      */
     public function testAccepts($value, bool $expected): void
     {
@@ -29,9 +27,6 @@ class IntValueTest extends TestCase
         $this->assertSame($expected, $int->accepts($value));
     }
 
-    /**
-     * @return iterable
-     */
     public function acceptsProvider(): iterable
     {
         return [
@@ -53,14 +48,13 @@ class IntValueTest extends TestCase
             [null, false],
             ['null', false],
             [[], false],
-            [new stdClass(), false],
+            [new \stdClass(), false],
         ];
     }
 
     /**
      * @dataProvider convertProvider
      * @param mixed $value
-     * @param int   $expected
      */
     public function testConvert($value, int $expected): void
     {
@@ -68,9 +62,6 @@ class IntValueTest extends TestCase
         $this->assertSame($expected, $int->convert($value));
     }
 
-    /**
-     * @return iterable
-     */
     public function convertProvider(): iterable
     {
         return [

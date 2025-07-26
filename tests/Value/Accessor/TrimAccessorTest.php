@@ -19,8 +19,6 @@ class TrimAccessorTest extends TestCase
      * @dataProvider acceptsProvider
      *
      * @param mixed $value
-     * @param bool  $expected
-     * @param bool  $expectedTrimmed
      */
     public function testAccepts($value, bool $expected, bool $expectedTrimmed): void
     {
@@ -30,9 +28,7 @@ class TrimAccessorTest extends TestCase
         $trim = new Value\Accessor\Trim($int);
         $this->assertSame($expectedTrimmed, $trim->accepts($value));
     }
-    /**
-     * @return iterable
-     */
+
     public function acceptsProvider(): iterable
     {
         return [
@@ -62,9 +58,6 @@ class TrimAccessorTest extends TestCase
         $this->assertSame($expected, $trim->convert($value));
     }
 
-    /**
-     * @return iterable
-     */
     public function convertProvider(): iterable
     {
         return [

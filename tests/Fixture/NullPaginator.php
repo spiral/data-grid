@@ -15,17 +15,11 @@ use Spiral\DataGrid\SpecificationInterface;
 
 class NullPaginator implements FilterInterface
 {
-    /**
-     * {@inheritDoc}
-     */
     public function getValue(): mixed
     {
         return $this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function withValue($value): ?SpecificationInterface
     {
         return null;

@@ -21,12 +21,12 @@ final class ValueBetween implements FilterInterface
         private ValueInterface|string|int|float $expression,
         array $value,
         private readonly bool $includeFrom = true,
-        private readonly bool $includeTo = true
+        private readonly bool $includeTo = true,
     ) {
         if (!$this->isValidArray($value)) {
             throw new ValueException(\sprintf(
                 'Value expected to be an array of 2 different scalar elements, got %s.',
-                $this->invalidValueType($value)
+                $this->invalidValueType($value),
             ));
         }
         $this->value = \array_values($value);
@@ -73,7 +73,6 @@ final class ValueBetween implements FilterInterface
 
         return [$this->fromFilter(), $this->toFilter()];
     }
-
 
     private function isValidArray(array $value): bool
     {

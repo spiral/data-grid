@@ -11,11 +11,11 @@ use Spiral\DataGrid\SpecificationInterface;
 class FilteredSorter implements SequenceInterface, SorterInterface
 {
     /** @var SpecificationInterface[] */
-    private array $specifications;
+    private readonly array $specifications;
 
     public function __construct(
-        private string $value,
-        SpecificationInterface ...$specifications
+        private readonly string $value,
+        SpecificationInterface ...$specifications,
     ) {
         $this->specifications = $specifications;
     }

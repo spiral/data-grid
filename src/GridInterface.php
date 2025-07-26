@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Spiral\DataGrid;
 
-use IteratorAggregate;
-
 /**
  * Responsible for grid data and specification representation.
  */
-interface GridInterface extends IteratorAggregate
+interface GridInterface extends \IteratorAggregate
 {
     public const FILTERS   = 'filters';
     public const SORTERS   = 'sorters';

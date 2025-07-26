@@ -17,7 +17,7 @@ final class PagePaginator implements SequenceInterface, FilterInterface
 
     public function __construct(
         private int $limit,
-        array $allowedLimits = []
+        array $allowedLimits = [],
     ) {
         $allowedLimits[] = $limit;
 
@@ -38,7 +38,7 @@ final class PagePaginator implements SequenceInterface, FilterInterface
         }
 
         if (isset($value['page']) && \is_numeric($value['page'])) {
-            $paginator->page = \max((int)$value['page'], 1);
+            $paginator->page = \max((int) $value['page'], 1);
         }
 
         return $paginator;

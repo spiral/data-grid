@@ -19,8 +19,8 @@ final class RangeValue implements ValueInterface
 
     public function __construct(
         private readonly ValueInterface $base,
-        RangeValue\Boundary $from = null,
-        RangeValue\Boundary $to = null
+        ?RangeValue\Boundary $from = null,
+        ?RangeValue\Boundary $to = null,
     ) {
         $from ??= RangeValue\Boundary::empty();
         $to ??= RangeValue\Boundary::empty();

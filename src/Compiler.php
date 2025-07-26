@@ -52,7 +52,7 @@ final class Compiler
             throw new CompilerException(\sprintf(
                 'Unable to compile specification `%s` for `%s`, no compiler found',
                 $specification::class,
-                \get_debug_type($source)
+                \get_debug_type($source),
             ));
         }
 

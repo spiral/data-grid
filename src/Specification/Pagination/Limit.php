@@ -9,9 +9,8 @@ use Spiral\DataGrid\SpecificationInterface;
 final class Limit implements SpecificationInterface
 {
     public function __construct(
-        private readonly int $value
-    ) {
-    }
+        private readonly int $value,
+    ) {}
 
     public function getValue(): int
     {

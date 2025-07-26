@@ -12,9 +12,8 @@ use Spiral\DataGrid\Specification\ValueInterface;
 abstract class Accessor implements ValueInterface
 {
     public function __construct(
-        protected ValueInterface $next
-    ) {
-    }
+        protected ValueInterface $next,
+    ) {}
 
     final public function accepts(mixed $value): bool
     {
