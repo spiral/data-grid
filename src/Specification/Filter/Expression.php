@@ -14,26 +14,21 @@ use Spiral\DataGrid\SpecificationInterface;
  * Provides common functionality for filters that operate on a single field expression
  * with a value. This is the foundation for most basic comparison filters.
  *
- * Real-world usage patterns:
- * - Single field comparisons (equals, greater than, less than, etc.)
- * - Text pattern matching (like, contains, starts with)
- * - Membership testing (in array, not in array)
- * - Null/empty checks
- *
- * @example
+ * ```
  * // Custom expression filter
  * class CustomFilter extends Expression {
  *     // Implementation specific to your needs
  * }
- *
- * @example
+ * ```
+ * ```
  * // Using with dynamic values
  * $filter = new SomeExpressionFilter('field_name', new StringValue());
  * $result = $filter->withValue('user_input');
- *
- * @example
+ * ```
+ * ```
  * // Using with fixed values
  * $filter = new SomeExpressionFilter('status', 'active');
+ * ```
  */
 abstract class Expression implements FilterInterface
 {

@@ -12,35 +12,28 @@ use Spiral\DataGrid\SpecificationInterface;
 /**
  * Filters values that fall between two boundaries (range filtering).
  *
- * Real-world usage examples:
- * - Price range filtering: Find products between $50 and $200
- * - Date range filtering: Find orders placed between January 1st and March 31st
- * - Age filtering: Find users between 18 and 65 years old
- * - Score filtering: Find reviews with ratings between 3 and 5 stars
- * - Salary range: Find job listings with salary between $60k and $120k
- * - Temperature monitoring: Find readings between 20°C and 30°C
- *
- * @example
+ * ```
  * // Price range filter for e-commerce
  * $priceFilter = new Between('price', new NumericValue());
  * $result = $priceFilter->withValue([50, 200]); // Products between $50-$200
- *
- * @example
+ * ```
+ * ```
  * // Date range filter with fixed values
  * $dateFilter = new Between('created_at', ['2024-01-01', '2024-03-31']);
- *
- * @example
+ * ```
+ * ```
  * // Age range with boundary control
  * $ageFilter = new Between('age', new IntValue(), true, false); // 18 <= age < 65
- *
- * @example
+ * ```
+ * ```
  * // Rating filter (3 to 5 stars inclusive)
  * $ratingFilter = new Between('rating', [3, 5], true, true);
- *
- * @example
+ * ```
+ * ```
  * // Dynamic salary range
  * $salaryFilter = new Between('salary', new NumericValue());
  * $result = $salaryFilter->withValue([60000, 120000]);
+ * ```
  */
 final class Between implements FilterInterface
 {

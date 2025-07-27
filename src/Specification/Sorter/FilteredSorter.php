@@ -13,23 +13,13 @@ use Spiral\DataGrid\SpecificationInterface;
  * This allows creating predefined filter-sort combinations that apply both
  * filtering criteria and sorting rules together.
  *
- * Real-world usage examples:
- * - "Top rated": Filter by high ratings AND sort by rating descending
- * - "Recent popular": Filter by recent date AND sort by popularity
- * - "Premium featured": Filter by premium status AND sort by feature priority
- * - "Sale items": Filter by discount AND sort by discount percentage
- * - "New releases": Filter by release date AND sort by release date descending
- * - "Best sellers": Filter by sales volume AND sort by sales count
- * - "Staff picks": Filter by staff recommendation AND sort by recommendation score
- * - "Limited time": Filter by time-sensitive offers AND sort by expiration date
- *
  * This is useful for:
  * - Predefined categories that need both filtering and sorting
  * - Business logic that requires specific filter-sort combinations
  * - User experience presets (like "Popular", "Trending", "New")
  * - Complex business rules that can't be separated into independent filter/sort
  *
- * @example
+ * ```
  * // "Trending products" - recent AND popular, sorted by engagement
  * $trendingProducts = new FilteredSorter(
  *     'trending',
@@ -39,8 +29,8 @@ use Spiral\DataGrid\SpecificationInterface;
  *     ),
  *     new DescSorter('engagement_score')        // Sort: By engagement
  * );
- *
- * @example
+ * ```
+ * ```
  * // "Premium deals" - premium products on sale, sorted by discount
  * $premiumDeals = new FilteredSorter(
  *     'premium_deals',
@@ -50,16 +40,16 @@ use Spiral\DataGrid\SpecificationInterface;
  *     ),
  *     new DescSorter('discount_percentage')     // Sort: Biggest discounts first
  * );
- *
- * @example
+ * ```
+ * ```
  * // "New arrivals" - recent products sorted by newest first
  * $newArrivals = new FilteredSorter(
  *     'new_arrivals',
  *     new Gte('created_at', '-14 days'),       // Filter: Last 2 weeks
  *     new DescSorter('created_at')              // Sort: Newest first
  * );
- *
- * @example
+ * ```
+ * ```
  * // "Top performers" - high-rated items sorted by performance metrics
  * $topPerformers = new FilteredSorter(
  *     'top_performers',
@@ -69,16 +59,16 @@ use Spiral\DataGrid\SpecificationInterface;
  *     ),
  *     new DescSorter('performance_score')       // Sort: Best performance first
  * );
- *
- * @example
+ * ```
+ * ```
  * // "Staff favorites" - curated content sorted by recommendation strength
  * $staffFavorites = new FilteredSorter(
  *     'staff_favorites',
  *     new Equals('staff_recommended', true),    // Filter: Staff recommended
  *     new DescSorter('recommendation_score')    // Sort: Strongest recommendations first
  * );
- *
- * @example
+ * ```
+ * ```
  * // "Limited time offers" - time-sensitive deals sorted by urgency
  * $limitedOffers = new FilteredSorter(
  *     'limited_time',
@@ -88,8 +78,8 @@ use Spiral\DataGrid\SpecificationInterface;
  *     ),
  *     new AscSorter('expires_at')               // Sort: Most urgent first
  * );
- *
- * @example
+ * ```
+ * ```
  * // Usage in Select filter for multiple presets
  * $presetFilter = new Select([
  *     'trending' => new FilteredSorter(
@@ -108,8 +98,8 @@ use Spiral\DataGrid\SpecificationInterface;
  *         new DescSorter('created_at')
  *     )
  * ]);
- *
- * @example
+ * ```
+ * ```
  * // Complex business rule: VIP customer orders
  * $vipOrders = new FilteredSorter(
  *     'vip_orders',
@@ -119,6 +109,7 @@ use Spiral\DataGrid\SpecificationInterface;
  *     ),
  *     new DescSorter('order_total', 'created_at') // Sort: Largest orders first
  * );
+ * ```
  */
 class FilteredSorter implements SequenceInterface, SorterInterface
 {

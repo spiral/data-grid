@@ -12,19 +12,11 @@ use Spiral\DataGrid\SpecificationInterface;
  * This allows different fields or logic to be used for each direction, unlike regular Sorter
  * which uses the same fields for both directions.
  *
- * Real-world usage examples:
- * - Different sort logic: Sort by creation date ASC, but by popularity DESC
- * - Asymmetric sorting: Different fields for different directions
- * - Complex business rules: Different sorting algorithms based on direction
- * - Multi-criteria sorting: Primary sort field changes based on direction
- * - Performance optimization: Use different indexes for different directions
- * - User experience: Show different relevant fields based on sort direction
- *
  * When to use DirectionalSorter vs regular Sorter:
  * - Use DirectionalSorter: When ASC and DESC need different fields/logic
  * - Use regular Sorter: When same fields used for both directions
  *
- * @example
+ * ```
  * // Different fields for different directions
  * $productSort = new DirectionalSorter(
  *     new AscSorter('name', 'sku'),        // ASC: Sort by name, then SKU
@@ -32,50 +24,50 @@ use Spiral\DataGrid\SpecificationInterface;
  * );
  * $ascResult = $productSort->withDirection('asc');   // Uses name, sku
  * $descResult = $productSort->withDirection('desc'); // Uses popularity, sales
- *
- * @example
+ * ```
+ * ```
  * // Time-based asymmetric sorting
  * $eventSort = new DirectionalSorter(
  *     new AscSorter('start_date'),         // ASC: Earliest events first
  *     new DescSorter('end_date')           // DESC: Latest ending events first
  * );
- *
- * @example
+ * ```
+ * ```
  * // Performance-optimized sorting
  * $userSort = new DirectionalSorter(
  *     new AscSorter('last_name', 'first_name'),  // ASC: Alphabetical by name
  *     new DescSorter('last_activity_at')         // DESC: Most active users first
  * );
- *
- * @example
+ * ```
+ * ```
  * // Content discovery patterns
  * $contentSort = new DirectionalSorter(
  *     new AscSorter('title'),                    // ASC: Alphabetical browsing
  *     new DescSorter('view_count', 'rating')     // DESC: Popular content first
  * );
- *
- * @example
+ * ```
+ * ```
  * // Financial data sorting
  * $transactionSort = new DirectionalSorter(
  *     new AscSorter('date', 'reference_number'), // ASC: Chronological with reference
  *     new DescSorter('amount', 'date')           // DESC: Largest amounts first
  * );
- *
- * @example
+ * ```
+ * ```
  * // E-commerce product discovery
  * $shopSort = new DirectionalSorter(
  *     new AscSorter('price', 'name'),            // ASC: Cheapest first, then name
  *     new DescSorter('rating', 'review_count')   // DESC: Best rated first
  * );
- *
- * @example
+ * ```
+ * ```
  * // Task management
  * $taskSort = new DirectionalSorter(
  *     new AscSorter('due_date', 'priority'),     // ASC: Earliest due date first
  *     new DescSorter('priority', 'created_at')   // DESC: Highest priority first
  * );
- *
- * @example
+ * ```
+ * ```
  * // Usage with user input
  * $sorter = new DirectionalSorter($ascSorter, $descSorter);
  *
@@ -91,6 +83,7 @@ use Spiral\DataGrid\SpecificationInterface;
  *
  * // Invalid direction
  * $result = $sorter->withDirection('invalid'); // Returns null
+ * ```
  */
 final class DirectionalSorter implements SorterInterface
 {

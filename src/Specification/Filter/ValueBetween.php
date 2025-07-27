@@ -14,55 +14,46 @@ use Spiral\DataGrid\SpecificationInterface;
  * This is the inverse of Between - instead of checking if a field is between two values,
  * it checks if a single value falls between two fields.
  *
- * Real-world usage examples:
- * - Age range matching: Check if user's age (25) falls between job's min_age and max_age
- * - Price range checking: Check if budget ($500) falls between product's min_price and max_price
- * - Date validity: Check if current date falls between event's start_date and end_date
- * - Salary matching: Check if expected salary falls between job's salary_min and salary_max
- * - Geographic boundaries: Check if coordinates fall between boundary limits
- * - Capacity checking: Check if group size falls between venue's min_capacity and max_capacity
- * - Time slot availability: Check if requested time falls between available start_time and end_time
- * - Version compatibility: Check if software version falls between min_version and max_version
- *
- * @example
+ * ```
  * // Job age requirement matching
  * $ageFilter = new ValueBetween(new IntValue(), ['min_age', 'max_age']);
  * $result = $ageFilter->withValue(25); // Find jobs where 25 is between min_age and max_age
- *
- * @example
+ * ```
+ * ```
  * // Budget-friendly product search
  * $budgetFilter = new ValueBetween(new NumericValue(), ['min_price', 'max_price']);
  * $result = $budgetFilter->withValue(500); // Products where $500 is within price range
- *
- * @example
+ * ```
+ * ```
  * // Event availability checking
  * $dateFilter = new ValueBetween(new DatetimeValue(), ['start_date', 'end_date']);
  * $result = $dateFilter->withValue('2024-06-15'); // Events active on this date
- *
- * @example
+ * ```
+ * ```
  * // Fixed value between dynamic fields
  * $currentTimeFilter = new ValueBetween('2024-06-15 14:30:00', ['start_time', 'end_time']);
  * // Find events active at this specific time
- *
- * @example
+ * ```
+ * ```
  * // Salary range matching for job seekers
  * $salaryFilter = new ValueBetween(new NumericValue(), ['salary_min', 'salary_max']);
  * $result = $salaryFilter->withValue(75000); // Jobs where $75k is within salary range
- *
- * @example
+ * ```
+ * ```
  * // Venue capacity matching
  * $capacityFilter = new ValueBetween(new IntValue(), ['min_capacity', 'max_capacity']);
  * $result = $capacityFilter->withValue(150); // Venues that can accommodate 150 people
- *
- * @example
+ * ```
+ * ```
  * // Geographic coordinate checking
  * $latitudeFilter = new ValueBetween(new FloatValue(), ['south_boundary', 'north_boundary']);
  * $result = $latitudeFilter->withValue(40.7128); // Areas containing this latitude
- *
- * @example
+ * ```
+ * ```
  * // Software version compatibility
  * $versionFilter = new ValueBetween(new StringValue(), ['min_version', 'max_version']);
  * $result = $versionFilter->withValue('2.1.5'); // Compatible software versions
+ * ```
  */
 final class ValueBetween implements FilterInterface
 {

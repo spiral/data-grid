@@ -13,13 +13,7 @@ use Spiral\DataGrid\SpecificationInterface;
  * Provides common functionality for filters that contain and operate on
  * collections of other filters, such as AND/OR logic combinations.
  *
- * Real-world usage patterns:
- * - Logical combinations: All, Any filters
- * - Complex filter sets: Map filters with named sub-filters
- * - Conditional filtering: Select filters that choose from predefined options
- * - Nested filter hierarchies: Groups within groups for complex business logic
- *
- * @example
+ * ```
  * // Custom group filter
  * class CustomGroup extends Group {
  *     public function withValue(mixed $value): ?SpecificationInterface {
@@ -27,11 +21,13 @@ use Spiral\DataGrid\SpecificationInterface;
  *         return $this->combineFilters($value);
  *     }
  * }
+ * ```
  *
- * @example
+ * ```
  * // Accessing grouped filters
  * $group = new All($filter1, $filter2, $filter3);
  * $filters = $group->getFilters(); // Get all contained filters
+ * ```
  *
  * @see All For AND logic combination
  * @see Any For OR logic combination

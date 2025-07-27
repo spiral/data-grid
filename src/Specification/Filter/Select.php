@@ -14,16 +14,7 @@ use function Spiral\DataGrid\hasValue;
  * Users can select one or multiple filters by providing their keys.
  * If multiple filters are selected, they are combined with AND logic.
  *
- * Real-world usage examples:
- * - Predefined search filters: 'popular', 'recent', 'top_rated', 'featured'
- * - Content categories: 'news', 'tutorials', 'reviews', 'announcements'
- * - User status presets: 'active_users', 'new_members', 'premium_subscribers'
- * - Product filters: 'on_sale', 'in_stock', 'bestsellers', 'new_arrivals'
- * - Report presets: 'daily', 'weekly', 'monthly', 'quarterly'
- * - Priority levels: 'urgent', 'high', 'normal', 'low'
- * - Quality filters: 'verified', 'featured', 'recommended', 'trending'
- *
- * @example
+ * ```
  * // Predefined content filters
  * $contentFilter = new Select([
  *     'popular' => new Gte('view_count', 1000),
@@ -37,8 +28,8 @@ use function Spiral\DataGrid\hasValue;
  *
  * // Select multiple filters (AND logic)
  * $result = $contentFilter->withValue(['popular', 'recent']); // Popular AND recent
- *
- * @example
+ * ```
+ * ```
  * // E-commerce product filters
  * $productFilter = new Select([
  *     'on_sale' => new Gt('discount_percentage', 0),
@@ -48,8 +39,8 @@ use function Spiral\DataGrid\hasValue;
  *     'premium' => new Gte('price', 500)
  * ]);
  * $result = $productFilter->withValue('on_sale'); // Show sale items
- *
- * @example
+ * ```
+ * ```
  * // User management presets
  * $userFilter = new Select([
  *     'active' => new Equals('status', 'active'),
@@ -59,8 +50,8 @@ use function Spiral\DataGrid\hasValue;
  *     'power_users' => new Gte('login_count', 100)
  * ]);
  * $result = $userFilter->withValue(['active', 'verified']); // Active AND verified users
- *
- * @example
+ * ```
+ * ```
  * // Report time periods
  * $reportFilter = new Select([
  *     'today' => new Gte('date', 'today'),
@@ -70,8 +61,8 @@ use function Spiral\DataGrid\hasValue;
  *     'year' => new Gte('date', '-365 days')
  * ]);
  * $result = $reportFilter->withValue('month'); // Last 30 days
- *
- * @example
+ * ```
+ * ```
  * // Complex business rules
  * $orderFilter = new Select([
  *     'vip_orders' => new All(
@@ -85,6 +76,7 @@ use function Spiral\DataGrid\hasValue;
  *     'international' => new NotEquals('shipping_country', 'US')
  * ]);
  * $result = $orderFilter->withValue('vip_orders'); // VIP customer orders
+ * ```
  */
 final class Select extends Group
 {

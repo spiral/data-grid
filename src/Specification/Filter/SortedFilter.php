@@ -12,25 +12,15 @@ use Spiral\DataGrid\SpecificationInterface;
  * Combines filtering and sorting operations into a single specification.
  * This is useful for predefined filter-sort combinations that should be applied together.
  *
- * Real-world usage examples:
- * - "Popular posts": Filter by high engagement AND sort by popularity score
- * - "Recent sales": Filter by last 30 days AND sort by date descending
- * - "Top products": Filter by high ratings AND sort by sales volume
- * - "New arrivals": Filter by recent creation date AND sort by newest first
- * - "Trending content": Filter by recent activity AND sort by engagement metrics
- * - "Best deals": Filter by discount percentage AND sort by savings amount
- * - "Featured items": Filter by featured status AND sort by priority/promotion level
- * - "Premium content": Filter by subscription tier AND sort by quality score
- *
- * @example
+ * ```
  * // Popular posts filter-sort combination
  * $popularPosts = new SortedFilter(
  *     'popular_posts',
  *     new Gte('view_count', 1000),           // Filter: views >= 1000
  *     new DescSorter('popularity_score')     // Sort: by popularity descending
  * );
- *
- * @example
+ * ```
+ * ```
  * // Recent high-rated products
  * $topRecentProducts = new SortedFilter(
  *     'top_recent',
@@ -40,16 +30,16 @@ use Spiral\DataGrid\SpecificationInterface;
  *     ),
  *     new DescSorter('rating')               // Sort: by rating descending
  * );
- *
- * @example
+ * ```
+ * ```
  * // Sale items sorted by discount
  * $bestDeals = new SortedFilter(
  *     'best_deals',
  *     new Gt('discount_percentage', 20),     // Filter: discount > 20%
  *     new DescSorter('discount_percentage')  // Sort: biggest discounts first
  * );
- *
- * @example
+ * ```
+ * ```
  * // New premium content
  * $premiumNew = new SortedFilter(
  *     'premium_new',
@@ -59,8 +49,8 @@ use Spiral\DataGrid\SpecificationInterface;
  *     ),
  *     new DescSorter('published_at')         // Sort: newest first
  * );
- *
- * @example
+ * ```
+ * ```
  * // Urgent high-priority orders
  * $urgentOrders = new SortedFilter(
  *     'urgent_orders',
@@ -70,8 +60,8 @@ use Spiral\DataGrid\SpecificationInterface;
  *     ),
  *     new AscSorter('deadline_date')         // Sort: most urgent deadline first
  * );
- *
- * @example
+ * ```
+ * ```
  * // Usage in grid schema
  * $schema->addFilter('popular', new Select([
  *     'trending' => new SortedFilter(
@@ -85,6 +75,7 @@ use Spiral\DataGrid\SpecificationInterface;
  *         new DescSorter('sales_count')
  *     )
  * ]));
+ * ```
  */
 class SortedFilter implements SequenceInterface, FilterInterface
 {
