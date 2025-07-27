@@ -34,7 +34,6 @@ class AccessorTest extends TestCase
 
     /**
      * @dataProvider accessorProvider
-     * @param string $accessor
      */
     public function testAccepts(string $accessor): void
     {
@@ -79,11 +78,6 @@ class AccessorTest extends TestCase
         $this->assertSame(123, (new Accessor\ToLower($scalar))->convert(123));
     }
 
-    /**
-     * @param string         $accessor
-     * @param ValueInterface $value
-     * @return Accessor\Accessor
-     */
     private function create(string $accessor, ValueInterface $value): Accessor\Accessor
     {
         return new $accessor($value);

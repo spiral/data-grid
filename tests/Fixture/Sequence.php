@@ -20,19 +20,11 @@ use Spiral\DataGrid\SpecificationInterface;
  */
 class Sequence implements SequenceInterface
 {
-    /** @var array */
-    private $value;
-
     /** @var SpecificationInterface[] */
     private $specifications;
 
-    /**
-     * @param array                  $value
-     * @param SpecificationInterface ...$specifications
-     */
-    public function __construct(array $value, SpecificationInterface ...$specifications)
+    public function __construct(private readonly array $value, SpecificationInterface ...$specifications)
     {
-        $this->value = $value;
         $this->specifications = $specifications;
     }
 
@@ -44,9 +36,6 @@ class Sequence implements SequenceInterface
         return $this->specifications;
     }
 
-    /**
-     * @return array
-     */
     public function getValue(): array
     {
         return $this->value;

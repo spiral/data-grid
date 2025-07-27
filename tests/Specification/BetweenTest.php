@@ -16,14 +16,12 @@ use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\Value\BoolValue;
 use Spiral\DataGrid\Specification\Value\IntValue;
 use Spiral\DataGrid\Specification\Value\StringValue;
-use stdClass;
 
 class BetweenTest extends TestCase
 {
     /**
      * @dataProvider initValueProvider
      * @param mixed       $value
-     * @param string|null $exception
      */
     public function testInitValue($value, ?string $exception): void
     {
@@ -35,9 +33,6 @@ class BetweenTest extends TestCase
         new Filter\Between('field', $value, false, false);
     }
 
-    /**
-     * @return iterable
-     */
     public function initValueProvider(): iterable
     {
         return [
@@ -64,9 +59,6 @@ class BetweenTest extends TestCase
         $this->assertEquals($valid, $between->withValue($withValue) !== null);
     }
 
-    /**
-     * @return iterable
-     */
     public function withValueProvider(): iterable
     {
         $incorrectValues = [
@@ -76,7 +68,7 @@ class BetweenTest extends TestCase
             [],
             [1],
             [1, 2, 3],
-            new stdClass()
+            new \stdClass(),
         ];
 
         foreach ($incorrectValues as $incorrectValue) {
@@ -94,10 +86,6 @@ class BetweenTest extends TestCase
 
     /**
      * @dataProvider includeProvider
-     * @param bool   $includeFrom
-     * @param bool   $includeTo
-     * @param string $from
-     * @param string $to
      */
     public function testInclude(bool $includeFrom, bool $includeTo, string $from, string $to): void
     {
@@ -110,9 +98,6 @@ class BetweenTest extends TestCase
         $this->assertInstanceOf($to, $filters[1]);
     }
 
-    /**
-     * @return iterable
-     */
     public function includeProvider(): iterable
     {
         return [
@@ -125,7 +110,6 @@ class BetweenTest extends TestCase
 
     /**
      * @dataProvider swapBoundariesProvider
-     * @param Filter\Between $between
      */
     public function testSwapBoundaries(Filter\Between $between): void
     {
@@ -135,9 +119,6 @@ class BetweenTest extends TestCase
         $this->assertEquals(3, $filters[1]->getValue());
     }
 
-    /**
-     * @return iterable
-     */
     public function swapBoundariesProvider(): iterable
     {
         yield [new Filter\Between('field', [3, 2])];
@@ -148,16 +129,12 @@ class BetweenTest extends TestCase
 
     /**
      * @dataProvider originalProvider
-     * @param Filter\Between $between
-     * @param bool           $isOriginal
-     * @param string|null    $from
-     * @param string|null    $to
      */
     public function testOriginal(
         Filter\Between $between,
         bool $isOriginal,
         ?string $from,
-        ?string $to
+        ?string $to,
     ): void {
         $filters = $between->getFilters(true);
 
@@ -171,9 +148,6 @@ class BetweenTest extends TestCase
         }
     }
 
-    /**
-     * @return iterable
-     */
     public function originalProvider(): iterable
     {
         return [

@@ -25,9 +25,6 @@ class SelectTest extends TestCase
         $this->assertNull($select->withValue($value));
     }
 
-    /**
-     * @return iterable
-     */
     public function emptyProvider(): iterable
     {
         return [
@@ -75,16 +72,16 @@ class SelectTest extends TestCase
             'one' => new Filter\Equals('name', 'value'),
             'two' => new Filter\Any(
                 new Filter\Equals('price', 2),
-                new Filter\Gt('quantity', 5)
-            )
+                new Filter\Gt('quantity', 5),
+            ),
         ]);
         $filter = $filter->withValue(['one', 'two']);
 
         $this->assertNotNull($filter);
         $this->assertInstanceOf(Filter\All::class, $filter);
         $this->assertCount(2, $filter->getFilters());
-        $this->assertInstanceOf(Filter\Equals::class, array_values($filter->getFilters())[0]);
-        $this->assertInstanceOf(Filter\Any::class, array_values($filter->getFilters())[1]);
+        $this->assertInstanceOf(Filter\Equals::class, \array_values($filter->getFilters())[0]);
+        $this->assertInstanceOf(Filter\Any::class, \array_values($filter->getFilters())[1]);
     }
 
     public function testNoKeyValues(): void
@@ -93,25 +90,22 @@ class SelectTest extends TestCase
             new Filter\Equals('name', 'value'),
             new Filter\Any(
                 new Filter\Equals('price', 2),
-                new Filter\Gt('quantity', 5)
-            )
+                new Filter\Gt('quantity', 5),
+            ),
         ]);
 
         $filter = $select->withValue(1);
         $this->assertInstanceOf(Filter\Any::class, $filter);
     }
 
-    /**
-     * @return Filter\Select
-     */
     private function filter(): Filter\Select
     {
         return new Filter\Select([
             '1' => new Filter\Equals('name', 'value'),
             '2' => new Filter\Any(
                 new Filter\Equals('price', 2),
-                new Filter\Gt('quantity', 5)
-            )
+                new Filter\Gt('quantity', 5),
+            ),
         ]);
     }
 }

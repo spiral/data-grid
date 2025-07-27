@@ -7,14 +7,15 @@ namespace Spiral\DataGrid\Specification\Value\Accessor;
 use Spiral\DataGrid\Specification\ValueInterface;
 
 /**
- * Note that the nested values/accessors are executed after the parent one.
+ * Abstract base class for value accessors that transform input before passing to underlying ValueInterface.
+ * Accessors act as middleware for value processing, allowing you to apply transformations like trimming,
+ * case conversion, splitting, or other modifications before the actual value validation occurs.
  */
 abstract class Accessor implements ValueInterface
 {
     public function __construct(
-        protected ValueInterface $next
-    ) {
-    }
+        protected ValueInterface $next,
+    ) {}
 
     final public function accepts(mixed $value): bool
     {

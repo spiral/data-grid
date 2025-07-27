@@ -7,6 +7,27 @@ namespace Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\Specification\FilterInterface;
 use Spiral\DataGrid\SpecificationInterface;
 
+/**
+ * Combines multiple filters with AND logic - all filters must match.
+ *
+ * ```
+ * // Find products that are electronics, under $100, and in stock
+ * $filter = new All(
+ *     new Equals('category', 'electronics'),
+ *     new Lt('price', 100),
+ *     new Gt('stock_quantity', 0)
+ * );
+ * ```
+ *
+ * ```
+ * // Find users with specific criteria
+ * $filter = new All(
+ *     new Equals('status', 'active'),
+ *     new Equals('email_verified', true),
+ *     new Gte('created_at', '2024-01-01')
+ * );
+ * ```
+ */
 final class All extends Group
 {
     public function __construct(FilterInterface ...$filter)

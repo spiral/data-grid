@@ -15,18 +15,14 @@ use Spiral\DataGrid\Specification\ValueInterface;
 
 class Multiply extends Accessor
 {
-    /** @var int */
-    private $val;
-
-    public function __construct(ValueInterface $next, int $val)
+    public function __construct(ValueInterface $next, private readonly int $val)
     {
         parent::__construct($next);
-        $this->val = $val;
     }
 
     protected function acceptsCurrent($value): bool
     {
-        return is_numeric($value);
+        return \is_numeric($value);
     }
 
     protected function convertCurrent($value): mixed

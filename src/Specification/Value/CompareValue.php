@@ -7,6 +7,20 @@ namespace Spiral\DataGrid\Specification\Value;
 use Spiral\DataGrid\Exception\ValueException;
 use Spiral\DataGrid\Specification\ValueInterface;
 
+/**
+ * Abstract base class for value types that compare values against zero.
+ * Provides common functionality for positive/negative/non-positive/non-negative value validation.
+ * This is used by PositiveValue, NegativeValue, NonPositiveValue, and NonNegativeValue.
+ *
+ * ```
+ * // Custom comparison value implementation
+ * class CustomCompareValue extends CompareValue {
+ *     protected function compare(mixed $value): bool {
+ *         return $value % 2 === 0; // Only even numbers
+ *     }
+ * }
+ * ```
+ */
 abstract class CompareValue implements ValueInterface
 {
     private readonly ValueInterface $base;

@@ -19,14 +19,11 @@ class RangeValueTest extends TestCase
 {
     /**
      * @dataProvider incorrectBoundariesProvider
-     * @param ValueInterface                 $type
-     * @param string|null                    $expectedException
-     * @param Value\RangeValue\Boundary|null ...$boundaries
      */
     public function testIncorrectBoundaries(
         ValueInterface $type,
         ?string $expectedException,
-        ?Value\RangeValue\Boundary ...$boundaries
+        ?Value\RangeValue\Boundary ...$boundaries,
     ): void {
         if ($expectedException !== null) {
             $this->expectException($expectedException);
@@ -38,9 +35,6 @@ class RangeValueTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @return iterable
-     */
     public function incorrectBoundariesProvider(): iterable
     {
         $types = [
@@ -68,19 +62,19 @@ class RangeValueTest extends TestCase
             new Value\IntValue(),
             ValueException::class,
             Value\RangeValue\Boundary::including(2),
-            Value\RangeValue\Boundary::including(2)
+            Value\RangeValue\Boundary::including(2),
         ];
         yield [
             new Value\IntValue(),
             ValueException::class,
             Value\RangeValue\Boundary::excluding(2),
-            Value\RangeValue\Boundary::including(2)
+            Value\RangeValue\Boundary::including(2),
         ];
         yield [
             new Value\IntValue(),
             null,
             Value\RangeValue\Boundary::including(1),
-            Value\RangeValue\Boundary::including(2)
+            Value\RangeValue\Boundary::including(2),
         ];
     }
 
@@ -94,16 +88,13 @@ class RangeValueTest extends TestCase
         $range = new Value\RangeValue(
             new Value\IntValue(),
             Value\RangeValue\Boundary::including($start),
-            Value\RangeValue\Boundary::including($end)
+            Value\RangeValue\Boundary::including($end),
         );
 
         $this->assertTrue($range->accepts($start));
         $this->assertTrue($range->accepts($end));
     }
 
-    /**
-     * @return iterable
-     */
     public function swapBoundariesProvider(): iterable
     {
         return [
@@ -115,8 +106,6 @@ class RangeValueTest extends TestCase
     /**
      * @dataProvider acceptsProvider
      * @param mixed                          $value
-     * @param bool                           $expected
-     * @param Value\RangeValue\Boundary|null ...$boundaries
      */
     public function testAccepts($value, bool $expected, ?Value\RangeValue\Boundary ...$boundaries): void
     {
@@ -124,9 +113,6 @@ class RangeValueTest extends TestCase
         $this->assertSame($expected, $enum->accepts($value));
     }
 
-    /**
-     * @return iterable
-     */
     public function acceptsProvider(): iterable
     {
         return [

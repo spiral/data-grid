@@ -18,9 +18,6 @@ class WriterTwo implements WriterInterface
 {
     public const OUTPUT = 'Hello from writer two';
 
-    /**
-     * {@inheritDoc}
-     */
     public function write($source, SpecificationInterface $specification, Compiler $compiler): mixed
     {
         if (\is_array($source)) {

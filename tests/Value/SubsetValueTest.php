@@ -18,7 +18,6 @@ class SubsetValueTest extends TestCase
     /**
      * @dataProvider acceptsProvider
      * @param mixed $value
-     * @param bool  $expected
      */
     public function testAccepts($value, bool $expected): void
     {
@@ -32,9 +31,6 @@ class SubsetValueTest extends TestCase
         $this->assertTrue($subset->accepts('1'));
     }
 
-    /**
-     * @return iterable
-     */
     public function acceptsProvider(): iterable
     {
         return [

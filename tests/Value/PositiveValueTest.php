@@ -21,7 +21,6 @@ class PositiveValueTest extends TestCase
     /**
      * @dataProvider acceptsProvider
      * @param mixed $value
-     * @param bool  $expected
      */
     public function testAccepts($value, bool $expected): void
     {
@@ -31,9 +30,6 @@ class PositiveValueTest extends TestCase
         $this->assertSame($expected, $nested->accepts($value));
     }
 
-    /**
-     * @return iterable
-     */
     public function acceptsProvider(): iterable
     {
         return [

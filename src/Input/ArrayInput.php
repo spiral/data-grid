@@ -12,9 +12,8 @@ use function Spiral\DataGrid\hasKey;
 final class ArrayInput implements InputInterface
 {
     public function __construct(
-        private array $data
-    ) {
-    }
+        private array $data,
+    ) {}
 
     public function withNamespace(string $namespace): InputInterface
     {

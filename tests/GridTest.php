@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Exception\GridViewException;
 use Spiral\DataGrid\Grid;
@@ -47,7 +46,7 @@ class GridTest extends TestCase
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function testView(): void
     {
@@ -64,7 +63,7 @@ class GridTest extends TestCase
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function testNoView(): void
     {

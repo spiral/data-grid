@@ -1,0 +1,206 @@
+$schema: 'https://raw.githubusercontent.com/context-hub/generator/refs/heads/main/json-schema.json'
+
+# Import shared configurations for common patterns
+import:
+  - type: url
+    url: https://gist.githubusercontent.com/butschster/1b7e597691cc1a6476b15dc120ecbddb/raw/a4d706bf0738e440da04b71a32707bb9bb950f86/prompts.yaml
+
+documents:
+  - description: Project structure overview and architecture
+    outputPath: project/structure-overview.md
+    sources:
+      - type: tree
+        description: Complete project structure with file organization
+        sourcePaths: src
+        maxDepth: 4
+        includeFiles: true
+        showSize: true
+
+  - description: Official Data Grid component documentation
+    outputPath: docs/data-grid-documentation.md
+    overwrite: false
+    sources:
+      - type: github
+        branch: "3.14"
+        repository: spiral/docs
+        showTreeView: true
+        sourcePaths:
+          - docs/en/component/data-grid.md
+
+  - description: Core Data Grid system - main interfaces and implementations
+    outputPath: project/core-system.md
+    sources:
+      - type: file
+        description: Primary grid system components and compiler
+        sourcePaths:
+          - src/GridInterface.php
+          - src/Grid.php
+          - src/GridFactoryInterface.php
+          - src/GridFactory.php
+          - src/GridSchema.php
+          - src/Compiler.php
+          - src/WriterInterface.php
+          - src/SpecificationInterface.php
+        filePattern: "*.php"
+
+  - description: Input handling system for data sources
+    outputPath: project/input-system.md
+    sources:
+      - type: file
+        description: Input interfaces and implementations for various data sources
+        sourcePaths:
+          - src/InputInterface.php
+          - src/Input
+        filePattern: "*.php"
+
+  - description: Specification system - base interfaces and abstractions
+    outputPath: project/specification-base.md
+    sources:
+      - type: file
+        description: Base specification interfaces and abstract classes
+        sourcePaths:
+          - src/Specification/FilterInterface.php
+          - src/Specification/SorterInterface.php
+          - src/Specification/SequenceInterface.php
+          - src/Specification/ValueInterface.php
+        filePattern: "*.php"
+
+  - description: Filter specifications - complete filtering system
+    outputPath: project/filter-specifications.md
+    sources:
+      - type: file
+        description: All filter specification implementations
+        sourcePaths:
+          - src/Specification/Filter
+        filePattern: "*.php"
+        notPath:
+          - "*/Postgres/*"
+
+  - description: PostgreSQL specific filter extensions
+    outputPath: project/postgres-filters.md
+    sources:
+      - type: file
+        description: PostgreSQL-specific filter implementations
+        sourcePaths:
+          - src/Specification/Filter/Postgres
+        filePattern: "*.php"
+
+  - description: Sorter specifications - sorting and ordering system
+    outputPath: project/sorter-specifications.md
+    sources:
+      - type: file
+        description: All sorter specification implementations
+        sourcePaths:
+          - src/Specification/Sorter
+        filePattern: "*.php"
+
+  - description: Pagination specifications - data pagination system
+    outputPath: project/pagination-specifications.md
+    sources:
+      - type: file
+        description: Pagination specification implementations
+        sourcePaths:
+          - src/Specification/Pagination
+        filePattern: "*.php"
+
+  - description: Value system - data validation and transformation
+    outputPath: project/value-system.md
+    sources:
+      - type: file
+        description: Core value interfaces and basic implementations
+        sourcePaths:
+          - src/Specification/Value/AnyValue.php
+          - src/Specification/Value/ArrayValue.php
+          - src/Specification/Value/BoolValue.php
+          - src/Specification/Value/CompareValue.php
+          - src/Specification/Value/NotEmpty.php
+        filePattern: "*.php"
+
+  - description: Numeric and string value types
+    outputPath: project/value-types-basic.md
+    sources:
+      - type: file
+        description: Basic value type implementations for numbers and strings
+        sourcePaths:
+          - src/Specification/Value/IntValue.php
+          - src/Specification/Value/FloatValue.php
+          - src/Specification/Value/NumericValue.php
+          - src/Specification/Value/StringValue.php
+          - src/Specification/Value/ScalarValue.php
+          - src/Specification/Value/RegexValue.php
+          - src/Specification/Value/UuidValue.php
+        filePattern: "*.php"
+
+  - description: Advanced value types - collections and ranges
+    outputPath: project/value-types-advanced.md
+    sources:
+      - type: file
+        description: Advanced value types for collections, ranges and enums
+        sourcePaths:
+          - src/Specification/Value/EnumValue.php
+          - src/Specification/Value/IntersectValue.php
+          - src/Specification/Value/SubsetValue.php
+          - src/Specification/Value/RangeValue.php
+          - src/Specification/Value/RangeValue
+        filePattern: "*.php"
+
+  - description: Date and time value handling
+    outputPath: project/value-datetime.md
+    sources:
+      - type: file
+        description: Date and time value implementations
+        sourcePaths:
+          - src/Specification/Value/DatetimeValue.php
+          - src/Specification/Value/DatetimeFormatValue.php
+        filePattern: "*.php"
+
+  - description: Numeric comparison value types
+    outputPath: project/value-numeric-comparison.md
+    sources:
+      - type: file
+        description: Numeric comparison value implementations
+        sourcePaths:
+          - src/Specification/Value/PositiveValue.php
+          - src/Specification/Value/NegativeValue.php
+          - src/Specification/Value/NonPositiveValue.php
+          - src/Specification/Value/NonNegativeValue.php
+        filePattern: "*.php"
+
+  - description: Value accessors - data transformation utilities
+    outputPath: project/value-accessors.md
+    sources:
+      - type: file
+        description: Value accessor implementations for data transformation
+        sourcePaths:
+          - src/Specification/Value/Accessor
+        filePattern: "*.php"
+
+  - description: Exception handling system
+    outputPath: project/exception-system.md
+    sources:
+      - type: file
+        description: All exception classes for error handling
+        sourcePaths:
+          - src/Exception
+        filePattern: "*.php"
+
+  - description: Utility functions and helpers
+    outputPath: project/utilities.md
+    sources:
+      - type: file
+        description: Helper functions and utilities
+        sourcePaths:
+          - src/helpers.php
+        filePattern: "*.php"
+
+  - description: Core
+    outputPath: project/core.md
+    sources:
+      - type: file
+        sourcePaths:
+          - src
+        filePattern: "*.php"
+        modifiers:
+          - name: php-content-filter
+            options:
+              keep_doc_comments: false

@@ -17,9 +17,7 @@ class RegexValueTest extends TestCase
 {
     /**
      * @dataProvider acceptsProvider
-     * @param string $pattern
      * @param mixed  $value
-     * @param bool   $expected
      */
     public function testAccepts(string $pattern, $value, bool $expected): void
     {
@@ -27,9 +25,6 @@ class RegexValueTest extends TestCase
         $this->assertSame($expected, $regex->accepts($value));
     }
 
-    /**
-     * @return iterable
-     */
     public function acceptsProvider(): iterable
     {
         return [

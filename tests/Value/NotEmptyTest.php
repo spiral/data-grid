@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid\Value;
 
-use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Specification\Value;
 use Spiral\DataGrid\Specification\ValueInterface;
@@ -20,8 +19,6 @@ class NotEmptyTest extends TestCase
     /**
      * @dataProvider acceptsProvider
      * @param mixed               $value
-     * @param bool                $expected
-     * @param ValueInterface|null $base
      */
     public function testAccepts($value, bool $expected, ?ValueInterface $base = null): void
     {
@@ -29,9 +26,6 @@ class NotEmptyTest extends TestCase
         $this->assertSame($expected, $notEmpty->accepts($value));
     }
 
-    /**
-     * @return iterable
-     */
     public function acceptsProvider(): iterable
     {
         $emptyString = new Value\StringValue(true);
@@ -62,7 +56,6 @@ class NotEmptyTest extends TestCase
      * @dataProvider convertProvider
      * @param mixed               $value
      * @param int                 $expected
-     * @param ValueInterface|null $base
      */
     public function testConvert($value, $expected, ?ValueInterface $base = null): void
     {
@@ -70,9 +63,6 @@ class NotEmptyTest extends TestCase
         $this->assertSame($expected, $notEmpty->convert($value));
     }
 
-    /**
-     * @return iterable
-     */
     public function convertProvider(): iterable
     {
         return [
@@ -96,6 +86,6 @@ class NotEmptyTest extends TestCase
         $notEmpty = new Value\NotEmpty(new Value\DatetimeValue());
         $this->assertTrue($notEmpty->accepts('now'));
         $this->assertFalse($notEmpty->accepts(''));
-        $this->assertInstanceOf(DateTimeInterface::class, $notEmpty->convert(''));
+        $this->assertInstanceOf(\DateTimeInterface::class, $notEmpty->convert(''));
     }
 }

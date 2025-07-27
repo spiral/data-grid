@@ -10,20 +10,17 @@ declare(strict_types=1);
 
 namespace Spiral\Tests\DataGrid;
 
-use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use Spiral\DataGrid\Compiler;
 use Spiral\DataGrid\Exception\CompilerException;
 use Spiral\DataGrid\Specification\Filter;
 use Spiral\DataGrid\SpecificationInterface;
 use Spiral\DataGrid\WriterInterface;
-use Spiral\Tests\DataGrid\Fixture;
 
 class CompilerTest extends TestCase
 {
     /**
      * @dataProvider sourceProvider
-     * @param $source
      */
     public function testNoSpecifications($source): void
     {
@@ -35,7 +32,6 @@ class CompilerTest extends TestCase
 
     /**
      * @dataProvider sourceProvider
-     * @param $source
      */
     public function testNoWriter($source): void
     {
@@ -47,7 +43,6 @@ class CompilerTest extends TestCase
 
     /**
      * @dataProvider sourceProvider
-     * @param $source
      */
     public function testHasWriter($source): void
     {
@@ -58,23 +53,17 @@ class CompilerTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /**
-     * @return iterable
-     */
     public function sourceProvider(): iterable
     {
         return [
             [['some', 'iterable', 'source']],
             ['some non-iterable source'],
-            [new ArrayIterator()]
+            [new \ArrayIterator()],
         ];
     }
 
     /**
      * @dataProvider writersProvider
-     * @param                 $source
-     * @param                 $expected
-     * @param WriterInterface ...$writers
      */
     public function testWriters($source, $expected, WriterInterface ...$writers): void
     {
@@ -85,36 +74,31 @@ class CompilerTest extends TestCase
         $this->assertSame($expected, $compiler->compile($source, new Filter\Equals('', '')));
     }
 
-    /**
-     * @return iterable
-     */
     public function writersProvider(): iterable
     {
         return [
             [
                 ['some', 'iterable', 'source'],
                 ['some', 'iterable', 'source', Fixture\WriterOne::OUTPUT],
-                new Fixture\WriterOne()
+                new Fixture\WriterOne(),
             ],
             [
                 ['some', 'iterable', 'source'],
                 ['some', 'iterable', 'source', Fixture\WriterTwo::OUTPUT, Fixture\WriterOne::OUTPUT],
                 new Fixture\WriterTwo(),
-                new Fixture\WriterOne()
+                new Fixture\WriterOne(),
             ],
             [
                 ['some', 'iterable', 'source'],
                 ['some', 'iterable', 'source', Fixture\WriterOne::OUTPUT, Fixture\WriterTwo::OUTPUT],
                 new Fixture\WriterOne(),
-                new Fixture\WriterTwo()
+                new Fixture\WriterTwo(),
             ],
         ];
     }
 
     /**
      * @dataProvider sequenceProvider
-     * @param                        $expected
-     * @param SpecificationInterface ...$specifications
      */
     public function testSequence($expected, SpecificationInterface ...$specifications): void
     {
@@ -123,9 +107,6 @@ class CompilerTest extends TestCase
         $this->assertEquals($expected, $compiler->compile([], new Fixture\Sequence([], ...$specifications)));
     }
 
-    /**
-     * @return iterable
-     */
     public function sequenceProvider(): iterable
     {
         return [

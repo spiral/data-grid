@@ -49,11 +49,13 @@ final class Compiler
                 continue;
             }
 
-            throw new CompilerException(\sprintf(
-                'Unable to compile specification `%s` for `%s`, no compiler found',
-                $specification::class,
-                \get_debug_type($source)
-            ));
+            throw new CompilerException(
+                \sprintf(
+                    'Unable to compile specification `%s` for `%s`, no compiler found',
+                    $specification::class,
+                    \get_debug_type($source),
+                ),
+            );
         }
 
         return $source;
